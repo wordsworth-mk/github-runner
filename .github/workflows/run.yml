@@ -1,0 +1,101 @@
+name: 🚚 运行应用
+
+on:
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      APP:
+        description: "mypy/apps 下的应用名称"
+        required: true
+        type: string
+      ARGS:
+        description: "应用参数"
+        type: string
+        required: false
+      SIMPLE_RUN:
+        description: "是否安装程序依赖和字体"
+        type: boolean
+        required: false
+        default: false
+
+  # 流水线调用
+  workflow_call:
+    inputs:
+      APP:
+        description: "mypy/apps 下的应用名称"
+        required: true
+        type: string
+      ARGS:
+        description: "应用参数"
+        type: string
+        required: false
+      SIMPLE_RUN:
+        description: "是否安装程序依赖和字体"
+        type: boolean
+        required: false
+        default: false
+
+# env 上下文只能在 run 步骤中使用
+env:
+  APP_BASE_PATH: mypy/apps
+  APP_ENTRY: main.py
+  FONT_DIR: mypy/assets/font
+  ENV_INIT_SCRIPT: mypy/env_init.sh
+  TIME_ZONE: "Asia/Singapore"
+  DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        # uses 之后不能再用 run
+        uses: actions/checkout@v4
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: ${{ env.TIME_ZONE }}
+          timezoneMacos: ${{ env.TIME_ZONE }}
+          timezoneWindows: ${{ env.TIME_ZONE }}
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: 安装依赖程序
+        uses: ConorMacBride/install-package@v1.1.0
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        with:
+          apt: ${{ env.DEPENDENT_BINARY }}
+
+      - name: 安装字体
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        run: |
+          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 初始化运行环境
+        run: |
+          bash ${{ env.ENV_INIT_SCRIPT }}
+
+      - name: 🔴🟡🟢 运行 🟢🟡🔴
+        run: |
+          cd ${{ env.APP_BASE_PATH }}/${{ inputs.APP }}
+          python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
+
+      - name: 保存运行过程修改的配置
+        if: ${{ success() }} # 这一步只会在前一步成功时执行
+        env:
+          # 这个 token 不需要配置，默认自带的
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "github_action"
+          git pull
+          # 为了让 `**` 在Git命令中递归地工作，需要在你的Git配置中设置 core.globstar 为true
+          git config --global core.globstar true
+          git add **/*.ini
+          git diff --exit-code || git commit -am "[UPD][${{ inputs.APP }}]: commit githubaction change"
+          git push origin master

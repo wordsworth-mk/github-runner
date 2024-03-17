@@ -1,0 +1,19 @@
+name: Clone Public Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  clone_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clone Public Repo
+        run: |
+          git clone git@github.com:M-Kepler/Python.git
+          cd Python
