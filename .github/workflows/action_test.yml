@@ -23,7 +23,7 @@ jobs:
         with:
           ssh-key: $ {{secrets.MYPY_TOKEN }}
           # token: ${{ secrets.MYPY_ACCESS_TOKEN }}
-          repository: M-Kepler/Python.git
+          repository: M-Kepler/Python
           path: ./.github/actions/Python
 
       - name: run
