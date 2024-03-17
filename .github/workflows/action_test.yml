@@ -1,0 +1,34 @@
+name: Clone Public Repo
+
+on:
+  push:
+    branches:
+      - main
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      ARGS:
+        description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  clone_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ssh-key: $ {{secrets.MYPY_TOKEN }}
+          # token: ${{ secrets.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python.git
+          path: ./.github/actions/Python
+
+      - name: run
+        uses: ./.github/actions/Python/.github/workflows/run.yml
+        with:
+          APP: qlx_work_schedules
+          ARGS: ${{ inputs.ARGS }}
+          SIMPLE_RUN: true
