@@ -21,8 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ssh-key: $ {{secrets.MYPY_TOKEN }}
-          # token: ${{ secrets.MYPY_ACCESS_TOKEN }}
+          # ssh-key: $ {{secrets.MYPY_TOKEN }}
+          token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
           path: ./.github/actions/Python
 
