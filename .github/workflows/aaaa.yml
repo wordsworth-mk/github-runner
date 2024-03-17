@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Clone Public Repo
-        run: |
-          git clone git@github.com:M-Kepler/Python.git
-          cd Python
+        with:
+          repository: M-Kepler/Python.git
+          token: ${{ secrets.MYPY_ACCESS_TOKEN }}
