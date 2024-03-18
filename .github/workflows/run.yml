@@ -17,6 +17,10 @@ on:
         type: boolean
         required: false
         default: false
+    secrets:
+      MYPY_ACCESS_TOKEN:
+        required: true
+        type: string
 
   # 流水线调用
   workflow_call:
