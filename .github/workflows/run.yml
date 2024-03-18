@@ -15,7 +15,7 @@ on:
         type: string
         required: false
       SIMPLE_RUN:
-        description: "是否安装程序依赖和字体"
+        description: "是否简单运行，不安装程序依赖和字体"
         type: boolean
         required: false
         default: false
