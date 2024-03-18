@@ -1,5 +1,7 @@
 name: 🚚 运行应用
 
+# 和 M-Kepler/Python/.github/workflows/run.yml@master 一样
+
 on:
   # 手动触发
   workflow_dispatch:

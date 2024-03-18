@@ -1,0 +1,18 @@
+name: 🍎 app_y2dy
+
+on:
+  workflow_dispatch:
+
+  # 定时执行
+  schedule:
+    # 代表国际标准时间，实际北京时间需要 +8 小时
+    - cron: "30 00 * * *"
+
+jobs:
+  run:
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    with:
+      APP: youtu2douyin
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
+
