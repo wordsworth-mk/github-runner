@@ -25,6 +25,9 @@ jobs:
           token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
           path: ./.github/actions/Python
+      - name: test
+        run: |
+          ls -al ./.github/actions/Python
 
       - name: run
         uses: ./.github/actions/Python/.github/workflows/run.yml
