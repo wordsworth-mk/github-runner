@@ -28,10 +28,9 @@ jobs:
       - name: test
         run: |
           ls -al ./.github/actions/
-
-      - name: Run My Action
-        uses: ./.github/actions/my-action # 确保这里的路径指向包含 action.yml 的目录
-        with:
-          APP: qlx_work_schedules
-          ARGS: ${{ inputs.ARGS }}
-          SIMPLE_RUN: true
+  run:
+    uses: ./.github/workflows/run.yml
+    with:
+      APP: qlx_work_schedules
+      ARGS: ${{ inputs.ARGS }}
+      SIMPLE_RUN: true
