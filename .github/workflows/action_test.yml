@@ -30,7 +30,7 @@ jobs:
           ls -al .
 
       - name: run
-        uses: Python/.github/workflows/run.yml
+        uses: ./Python/.github/workflows/run.yml
         with:
           APP: qlx_work_schedules
           ARGS: ${{ inputs.ARGS }}
