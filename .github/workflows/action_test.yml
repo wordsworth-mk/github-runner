@@ -32,7 +32,7 @@ jobs:
           ls -al ./.github/actions/
   run:
     # uses 关键字是用来引用动作（actions），而不是工作流文件。动作可以是公共的、位于同一仓库的或者位于其他仓库的，但它们必须包含 action.yml、action.yaml 或 Dockerfile。
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@master
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: qlx_work_schedules
       ARGS: ${{ inputs.ARGS }}
