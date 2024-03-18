@@ -38,6 +38,9 @@ on:
         type: boolean
         required: false
         default: false
+    secrets:
+      MYPY_ACCESS_TOKEN:
+        required: true
 
 # env 上下文只能在 run 步骤中使用
 env:
