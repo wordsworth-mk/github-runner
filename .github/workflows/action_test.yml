@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  # 手动触发
   workflow_dispatch:
     inputs:
       ARGS:
@@ -24,13 +23,14 @@ jobs:
           # ssh-key: $ {{secrets.MYPY_TOKEN }}
           token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
-          # path: ./.github/actions/Python
+          # path: ./.github/actions/Python # 如果您想要检出到特定路径，请取消注释这一行
+
       - name: test
         run: |
-          ls -al .
+          ls -al ./.github/actions/
 
-      - name: run
-        uses: ./.github/workflows/run.yml
+      - name: Run My Action
+        uses: ./.github/actions/my-action # 确保这里的路径指向包含 action.yml 的目录
         with:
           APP: qlx_work_schedules
           ARGS: ${{ inputs.ARGS }}
