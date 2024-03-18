@@ -15,14 +15,10 @@ on:
         type: string
         required: false
       SIMPLE_RUN:
-        description: "是否简单运行，不安装程序依赖和字体"
+        description: "是否简单运行（不安装程序依赖和字体）"
         type: boolean
         required: false
-        default: false
-    secrets:
-      MYPY_ACCESS_TOKEN:
-        required: true
-        type: string
+        default: true
 
   # 流水线调用
   workflow_call:
@@ -40,9 +36,10 @@ on:
         type: boolean
         required: false
         default: false
+    # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
       MYPY_ACCESS_TOKEN:
-        required: true
+        required: false
 
 # env 上下文只能在 run 步骤中使用
 env:
@@ -61,6 +58,7 @@ jobs:
       - name: Checkout
         # uses 之后不能再用 run
         uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
         with:
           token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
