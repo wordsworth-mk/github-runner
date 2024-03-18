@@ -24,13 +24,13 @@ jobs:
           # ssh-key: $ {{secrets.MYPY_TOKEN }}
           token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
-          path: ./.github/actions/Python
+          # path: ./.github/actions/Python
       - name: test
         run: |
-          ls -al ./.github/actions/Python
+          ls -al .
 
       - name: run
-        uses: ./.github/actions/Python/.github/workflows/run.yml
+        uses: Python/.github/workflows/run.yml
         with:
           APP: qlx_work_schedules
           ARGS: ${{ inputs.ARGS }}
