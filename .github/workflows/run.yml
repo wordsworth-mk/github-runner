@@ -54,6 +54,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
 
       - name: 设置时区
         uses: szenius/set-timezone@v1.2
