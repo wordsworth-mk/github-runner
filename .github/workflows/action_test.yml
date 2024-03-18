@@ -29,7 +29,8 @@ jobs:
         run: |
           ls -al ./.github/actions/
   run:
-    uses: ./.github/workflows/run.yml
+    # uses 关键字是用来引用动作（actions），而不是工作流文件。动作可以是公共的、位于同一仓库的或者位于其他仓库的，但它们必须包含 action.yml、action.yaml 或 Dockerfile。
+    uses: M-Kepler/Python/.github/workflows/run.yml@master
     with:
       APP: qlx_work_schedules
       ARGS: ${{ inputs.ARGS }}
