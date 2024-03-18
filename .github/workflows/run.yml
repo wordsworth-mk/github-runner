@@ -1,6 +1,5 @@
-name: 🚚 运行应用
-
 # 和 M-Kepler/Python/.github/workflows/run.yml@master 一样
+name: 🚚 运行应用
 
 on:
   # 手动触发
@@ -10,6 +9,7 @@ on:
         description: "mypy/apps 下的应用名称"
         required: true
         type: string
+        default: "test_app"
       ARGS:
         description: "应用参数"
         type: string
@@ -59,8 +59,10 @@ jobs:
         # uses 之后不能再用 run
         uses: actions/checkout@v4
         # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.MYPY_ACCESS_TOKEN }}
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
 
       - name: 设置时区
