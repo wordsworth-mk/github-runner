@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # ssh-key: $ {{secrets.MYPY_TOKEN }}
+          ssh-key: $ {{secrets.MYPY_TOKEN }}
           # token: ${{ secrets.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
           # path: ./.github/actions/Python # 如果您想要检出到特定路径，请取消注释这一行
