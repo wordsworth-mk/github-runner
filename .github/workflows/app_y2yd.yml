@@ -2,6 +2,12 @@ name: 🍎 app_y2dy
 
 on:
   workflow_dispatch:
+    inputs:
+      ARGS:
+        description: "-m once 表示运行一次; -m loop 表示持续监控"
+        required: false
+        type: string
+        default: "-m once"
 
   # 定时执行
   schedule:
@@ -13,7 +19,7 @@ jobs:
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: youtu2douyin
-      ARGS: "-m loop"
+      ARGS: ${{ inputs.ARGS }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
 
