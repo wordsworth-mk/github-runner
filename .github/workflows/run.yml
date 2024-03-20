@@ -95,7 +95,7 @@ jobs:
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
           cd ${{ env.APP_BASE_PATH }}/${{ inputs.APP }}
-          if [ -z "${{ inputs.ARGS }}" ]; then
+          if [ ! -z "${{ inputs.ARGS }}" ]; then
               python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
           else
               python ${{ env.APP_ENTRY }}
