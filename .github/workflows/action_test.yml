@@ -8,6 +8,10 @@ on:
         required: false
         type: string
         default: ""
+  # # 定时执行
+  # schedule:
+  #   # 代表国际标准时间，实际北京时间需要 +8 小时
+  #   - cron: "* * * * *"
 
 jobs:
   clone_repo:

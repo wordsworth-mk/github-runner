@@ -95,7 +95,11 @@ jobs:
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
           cd ${{ env.APP_BASE_PATH }}/${{ inputs.APP }}
-          python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
+          if [ -z "${{ inputs.ARGS }}" ]; then
+              python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
+          else
+              python ${{ env.APP_ENTRY }}
+          fi
 
       - name: 保存运行过程修改的配置
         if: ${{ success() }} # 这一步只会在前一步成功时执行
