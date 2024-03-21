@@ -7,13 +7,12 @@ on:
         description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
         required: false
         type: string
-        default: ""
+        default: "-u 0,0,0,0,0,0,0"
 
   # 定时执行
   schedule:
     # 代表国际标准时间，实际北京时间需要 +8 小时
     - cron: "00 14 * * *"
-
 
 jobs:
   run:
