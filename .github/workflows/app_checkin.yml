@@ -37,15 +37,11 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: step2. setup run environment
-        # 执行的命令； | 标识多行字符串
-        run: |
-          python -m pip install --upgrade pip
-          pip3 install -r requirements.txt
-
-      - name: step3. run
+      - name: step2. run
         run: |
           cd mypy/apps/checkin
+          python -m pip install --upgrade pip
+          pip3 install -r requirements.txt
           python3 main.py
 
   second_jobs:
