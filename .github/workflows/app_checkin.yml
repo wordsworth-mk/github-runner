@@ -40,8 +40,7 @@ jobs:
       - name: step2. run
         run: |
           cd mypy/apps/checkin
-          python -m pip install --upgrade pip
-          pip3 install -r requirements.txt
+          pip3 install -r requirements.txt > /dev/null 2>&1
           python3 main.py
 
   second_jobs:
