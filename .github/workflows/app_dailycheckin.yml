@@ -1,0 +1,15 @@
+name: 🍎 app_dailycheckin
+
+on:
+  workflow_dispatch:
+
+  # 定时执行
+  schedule:
+    # 代表国际标准时间，实际北京时间需要 +8 小时
+    - cron: "30 21 * * *"
+
+jobs:
+  run:
+    uses: M-Kepler/Python/.github/workflows/run.yml@master
+    with:
+      APP: dailycheckin
