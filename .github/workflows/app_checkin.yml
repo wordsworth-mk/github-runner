@@ -22,7 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 使用别人预先设置好的 Actions，引用 actions/checkout 这个 action，与所在的github仓库同名
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
 
       # 步骤的名称（github action 是一步一步按顺序执行下去的）
       - name: step1. setup python
