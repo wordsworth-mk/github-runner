@@ -1,0 +1,54 @@
+# 流水线的名称
+name: 🍎 app_checkin
+
+# 触发条件 通常是某些事件，例如：​​release​​​、​​push​​​、​​pull_request​​​等
+on:
+  workflow_dispatch:
+  # 使用 cron 定时执行
+  schedule:
+    # 代表国际标准时间 21 点 30 分，北京时间需要 +8 小时，代表北京时间上午 5 点 30 分点运行
+    - cron: "30 21 * * *"
+
+  # 当某分支有 push 动作时
+  push:
+    branches:
+      - master
+
+# workflow 文件的主体内容，表示要执行的一项或多项任务
+jobs:
+  # 定义一个任务
+  first_job:
+    # 在什么环境运行任务
+    runs-on: ubuntu-latest
+    steps:
+      # 使用别人预先设置好的 Actions，引用 actions/checkout 这个 action，与所在的github仓库同名
+      - uses: actions/checkout@v3
+
+      # 步骤的名称（github action 是一步一步按顺序执行下去的）
+      - name: step1. setup python
+        uses: actions/setup-python@v3
+        # 指定某个 action 可能需要输入的参数
+        with:
+          python-version: "3.10"
+
+      - name: step2. setup run environment
+        # 执行的命令； | 标识多行字符串
+        run: |
+          cd mypy/apps/checkin
+          python -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+
+      - name: step3. run
+        run: |
+          python3 main.py
+
+  second_jobs:
+    # 设定当前任务的执行依赖关系，即执行运行顺序
+    needs: first_job
+    # 每个任务默认超时时间
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          echo "All mission done."
