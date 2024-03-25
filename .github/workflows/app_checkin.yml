@@ -37,14 +37,3 @@ jobs:
           cd mypy/apps/checkin
           pip3 install -r requirements.txt > /dev/null 2>&1
           python3 main.py
-
-  second_jobs:
-    # 设定当前任务的执行依赖关系，即执行运行顺序
-    needs: first_job
-    # 每个任务默认超时时间
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        run: |
-          echo "All mission done."
