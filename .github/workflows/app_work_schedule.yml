@@ -1,24 +1,25 @@
-name: 🍎 app_work_schedule
+name: 🟢 app_work_schedule
 
 on:
-  # 手动触发
   workflow_dispatch:
     inputs:
       ARGS:
         description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
         required: false
         type: string
-        default: ""
+        default: "-u 0,0,0,0,0,0,0"
 
   # 定时执行
   schedule:
     # 代表国际标准时间，实际北京时间需要 +8 小时
-    - cron: "20 14 * * *"
+    - cron: "00 13 * * *"
 
 jobs:
   run:
-    uses: M-Kepler/Python/.github/workflows/run.yml@master
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: qlx_work_schedules
       ARGS: ${{ inputs.ARGS }}
       SIMPLE_RUN: true
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

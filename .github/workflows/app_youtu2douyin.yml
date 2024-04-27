@@ -1,0 +1,31 @@
+name: 🟢 app_youtu2douyin
+
+on:
+  workflow_dispatch:
+    inputs:
+      ARGS:
+        description: |
+          -m once 表示运行一次
+          -m loop 表示持续监控
+          -m manual https://xxx 主动触发某个视频的处理发布
+        required: false
+        type: string
+        # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
+        # 这种方式就像终端输入命令一样的
+        default: "-m once"
+
+  # 定时执行
+  schedule:
+    # 代表国际标准时间，实际北京时间需要 +8 小时
+    - cron: "30 13 * * *"
+
+jobs:
+  run:
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    with:
+      APP: youtu2douyin
+      # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
+      ARGS: ${{ inputs.ARGS }}
+      DEPENDENT_BINARY: "ffmpeg"
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

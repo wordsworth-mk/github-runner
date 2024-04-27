@@ -1,0 +1,40 @@
+name: Action Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      ARGS:
+        description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
+        required: false
+        type: string
+        default: ""
+  # # 定时执行
+  # schedule:
+  #   # 代表国际标准时间，实际北京时间需要 +8 小时
+  #   - cron: "* * * * *"
+
+jobs:
+  clone_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+
+      - name: test
+        run: |
+          ls -al .
+          echo '-------------------'
+          ls -al ./.github/workflows/
+  run:
+    # uses 关键字是用来引用动作（actions），而不是工作流文件。动作可以是公共的、位于同一仓库的或者位于其他仓库的，但它们必须包含 action.yml、action.yaml 或 Dockerfile。
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    with:
+      APP: test_app
+      ARGS: ${{ inputs.ARGS }}
+      SIMPLE_RUN: true
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

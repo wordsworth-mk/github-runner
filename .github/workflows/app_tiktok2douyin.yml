@@ -1,0 +1,22 @@
+name: 🟢 app_tiktok2douyin
+
+on:
+  workflow_dispatch:
+    inputs:
+      ARGS:
+        description: |
+          -u https://xxx
+        required: false
+        type: string
+        default: "-u "
+
+jobs:
+  run:
+    uses: M-Kepler/Python/.github/workflows/run.yml@master
+    with:
+      APP: tiktok2douyin
+      # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
+      ARGS: ${{ inputs.ARGS }}
+      DEPENDENT_BINARY: "ffmpeg"
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

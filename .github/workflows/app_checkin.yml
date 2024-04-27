@@ -1,0 +1,39 @@
+# 流水线的名称
+name: 🟢 app_checkin
+
+# 触发条件 通常是某些事件，例如：​​release​​​、​​push​​​、​​pull_request​​​等
+on:
+  workflow_dispatch:
+  # 使用 cron 定时执行
+  schedule:
+    # 代表国际标准时间 21 点 30 分，北京时间需要 +8 小时，代表北京时间上午 5 点 30 分点运行
+    - cron: "30 21 * * *"
+
+# workflow 文件的主体内容，表示要执行的一项或多项任务
+jobs:
+  # 定义一个任务
+  first_job:
+    # 在什么环境运行任务
+    runs-on: ubuntu-latest
+    steps:
+      # 使用别人预先设置好的 Actions，引用 actions/checkout 这个 action，与所在的github仓库同名
+      - uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+
+      # 步骤的名称（github action 是一步一步按顺序执行下去的）
+      - name: step1. setup python
+        uses: actions/setup-python@v3
+        # 指定某个 action 可能需要输入的参数
+        with:
+          python-version: "3.10"
+
+      - name: step2. run
+        run: |
+          cd mypy/apps/checkin
+          pip3 install -r requirements.txt > /dev/null 2>&1
+          python3 main.py

@@ -1,3 +1,4 @@
+# 和 M-Kepler/Python/.github/workflows/run.yml@master 一样
 name: 🚚 运行应用
 
 on:
@@ -8,15 +9,21 @@ on:
         description: "mypy/apps 下的应用名称"
         required: true
         type: string
+        default: "test_app"
       ARGS:
         description: "应用参数"
         type: string
         required: false
+      DEPENDENT_BINARY:
+        description: "依赖的二进制程序"
+        type: string
+        required: false
+        default: "ffmpeg unoconv libreoffice poppler-utils"
       SIMPLE_RUN:
-        description: "是否安装程序依赖和字体"
+        description: "是否简单运行（不安装程序依赖和字体）"
         type: boolean
         required: false
-        default: false
+        default: true
 
   # 流水线调用
   workflow_call:
@@ -34,6 +41,16 @@ on:
         type: boolean
         required: false
         default: false
+      DEPENDENT_BINARY:
+        description: "依赖的二进制程序"
+        type: string
+        required: false
+        default: "ffmpeg unoconv libreoffice poppler-utils"
+
+    # 外部调用的时候提供 token 用来拉取本私有仓库
+    secrets:
+      MYPY_ACCESS_TOKEN:
+        required: false
 
 # env 上下文只能在 run 步骤中使用
 env:
@@ -42,7 +59,6 @@ env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
   TIME_ZONE: "Asia/Singapore"
-  DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
 
 jobs:
   run:
@@ -52,6 +68,12 @@ jobs:
       - name: Checkout
         # uses 之后不能再用 run
         uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
 
       - name: 设置时区
         uses: szenius/set-timezone@v1.2
@@ -69,7 +91,7 @@ jobs:
         uses: ConorMacBride/install-package@v1.1.0
         if: ${{ ! inputs.SIMPLE_RUN }}
         with:
-          apt: ${{ env.DEPENDENT_BINARY }}
+          apt: ${{ inputs.DEPENDENT_BINARY }}
 
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}
@@ -83,7 +105,11 @@ jobs:
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
           cd ${{ env.APP_BASE_PATH }}/${{ inputs.APP }}
-          python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
+          if [ ! -z "${{ inputs.ARGS }}" ]; then
+              python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
+          else
+              python ${{ env.APP_ENTRY }}
+          fi
 
       - name: 保存运行过程修改的配置
         if: ${{ success() }} # 这一步只会在前一步成功时执行
@@ -93,9 +119,13 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "github_action"
+          git status
           git pull
           # 为了让 `**` 在Git命令中递归地工作，需要在你的Git配置中设置 core.globstar 为true
           git config --global core.globstar true
+          # 添加所有的配置文件改动
           git add **/*.ini
-          git diff --exit-code || git commit -am "[UPD][${{ inputs.APP }}]: commit githubaction change"
+          git add **/*.json
+          # 无改动不报错
+          git diff --cached --exit-code || git commit -m "[UPD][${{ inputs.APP }}]: commit githubaction change"
           git push origin master
