@@ -64,16 +64,25 @@ jobs:
         if: ${{ inputs.KEEY_ALIVE }}
         run: touch /tmp/keepalive
 
+      # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
+      - name: 安装 aliyunpan
+        run: |
+          sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
+
       - name: 设置 Bash
         run: |
+          cat << EOF >> ~/.bashrc
           set -o vi
+          bind -m vi-insert '\c-l':clear-screen
           alias ..="cd .."
           alias ll='ls -l'
           alias la='ls -A'
           alias g='git'
           alias cls='clear'
-          set show-all-if-ambiguous on
-          set completion-ignore-case on
+          export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
+          EOF
+
+          source ~/.bashrc
 
       # 会卡在这里等待链接
       - name: 创建 SSH 会话
