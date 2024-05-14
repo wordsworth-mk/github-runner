@@ -1,0 +1,62 @@
+# https://zhuanlan.zhihu.com/p/387389708?utm_id=0
+
+name: 🟢 SSH
+
+on:
+  workflow_dispatch:
+    inputs:
+      KEEY_ALIVE:
+        type: boolean
+        description: "是否保持长连接（否则 15 分钟断开连接）"
+        required: false
+        default: false
+
+env:
+  FONT_DIR: mypy/assets/font
+  ENV_INIT_SCRIPT: mypy/env_init.sh
+
+jobs:
+  SSH:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+
+      - name: 安装依赖程序
+        uses: ConorMacBride/install-package@v1.1.0
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        with:
+          apt: ${{ inputs.DEPENDENT_BINARY }}
+
+      - name: 安装字体
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        run: |
+          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 初始化运行环境
+        run: |
+          bash ${{ env.ENV_INIT_SCRIPT }}
+
+      - name: 保持 SSH 长连接
+        if: ${{ inputs.KEEY_ALIVE }}
+        run: touch /tmp/keepalive
+
+      # 会卡在这里等待链接
+      - name: 创建 SSH 会话
+        uses: csexton/debugger-action@master
