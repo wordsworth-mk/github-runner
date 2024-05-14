@@ -57,6 +57,24 @@ jobs:
         if: ${{ inputs.KEEY_ALIVE }}
         run: touch /tmp/keepalive
 
+      ##################################################
+      # 从这里开始是对服务器的配置
+      ##################################################
+      - name: 保持 SSH 长连接
+        if: ${{ inputs.KEEY_ALIVE }}
+        run: touch /tmp/keepalive
+
+      - name: 设置 Bash
+        run: |
+          set -o vi
+          alias ..="cd .."
+          alias ll='ls -l'
+          alias la='ls -A'
+          alias g='git'
+          alias cls='clear'
+          set show-all-if-ambiguous on
+          set completion-ignore-case on
+
       # 会卡在这里等待链接
       - name: 创建 SSH 会话
         uses: csexton/debugger-action@master
