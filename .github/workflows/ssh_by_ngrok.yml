@@ -2,7 +2,7 @@
 
 # XXX 输入 exit 退出终端会断开连接，改动也会丢失
 
-name: 🟢 SSH
+name: 🟢 ssh_by_ngrok
 
 on:
   workflow_dispatch:
