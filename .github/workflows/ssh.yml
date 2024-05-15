@@ -15,9 +15,9 @@ on:
 
       SIMPLE_RUN:
         type: boolean
-        description: "单纯起个 SSH"
+        description: "单纯起个 SSH（否则会安装依赖程序）"
         required: false
-        default: false
+        default: true
 
 env:
   FONT_DIR: mypy/assets/font
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
-        # 外部仓库拉取时才需要设置凭证
+        # XXX 外部仓库拉取时才需要设置凭证
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
@@ -50,6 +50,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: 安装依赖程序
+        if: ${{ ! inputs.SIMPLE_RUN }}
         uses: ConorMacBride/install-package@v1.1.0
         with:
           apt: ${{ env.DEPENDENT_BINARY }}
@@ -67,11 +68,12 @@ jobs:
       # 从这里开始是对服务器的配置
       ##################################################
       - name: 保持 SSH 长连接
-        if: ${{ inputs.KEEY_ALIVE }}
+        if: ${{ inputs.KEY_ALIVE }}
         run: touch /tmp/keepalive
 
       # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
       - name: 安装 aliyunpan
+        if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
           aliyunpan -v
