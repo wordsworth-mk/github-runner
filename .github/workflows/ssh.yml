@@ -68,7 +68,7 @@ jobs:
       # 从这里开始是对服务器的配置
       ##################################################
       - name: 保持 SSH 长连接
-        if: ${{ inputs.KEY_ALIVE }}
+        if: ${{ inputs.KEEP_ALIVE }}
         run: touch /tmp/keepalive
 
       # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
