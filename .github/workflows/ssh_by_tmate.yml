@@ -1,3 +1,5 @@
+# 相比 csexton/debugger-action@master 安全一点，只能 github 上有密钥的机器访问
+
 name: ssh_by_tmate
 
 on:
