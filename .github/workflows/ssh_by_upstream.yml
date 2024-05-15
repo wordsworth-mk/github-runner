@@ -1,6 +1,7 @@
-name: CI
+name: ssh_by_upstream
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   build:

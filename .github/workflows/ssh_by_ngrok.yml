@@ -1,0 +1,23 @@
+name: ssh_by_ngrok
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+      - name: Debug via SSH
+        uses: luchihoratiu/debug-via-ssh@v1.2
+        with:
+            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
+            SSH_PASS: ${{ secrets.USER_PASS }}
+
+      # - name: Don't kill instace
+      #   if: ${{ failure() }}
+      #   run: sleep 6h # Prevent to killing instance after failure

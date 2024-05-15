@@ -1,8 +1,10 @@
 # https://zhuanlan.zhihu.com/p/387389708?utm_id=0
+# https://github.com/marketplace/actions/debugging-with-tmate
+# https://github.com/marketplace/actions/debugging-with-ssh
 
 # XXX 输入 exit 退出终端会断开连接，改动也会丢失
 
-name: 🟢 SSH
+name: ssh_by_tmate
 
 on:
   workflow_dispatch:
