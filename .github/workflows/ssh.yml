@@ -1,13 +1,21 @@
 # https://zhuanlan.zhihu.com/p/387389708?utm_id=0
 
+# XXX 输入 exit 退出终端会断开连接，改动也会丢失
+
 name: 🟢 SSH
 
 on:
   workflow_dispatch:
     inputs:
-      KEEY_ALIVE:
+      KEEP_ALIVE:
         type: boolean
         description: "是否保持长连接（否则 15 分钟断开连接）"
+        required: false
+        default: false
+
+      SIMPLE_RUN:
+        type: boolean
+        description: "单纯起个 SSH"
         required: false
         default: false
 
@@ -15,6 +23,7 @@ env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
   DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+  PYTHON_VERSION: 3.9
 
 jobs:
   SSH:
@@ -22,6 +31,7 @@ jobs:
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
+        # 外部仓库拉取时才需要设置凭证
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
@@ -37,7 +47,7 @@ jobs:
       - name: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
@@ -53,10 +63,6 @@ jobs:
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
-      - name: 保持 SSH 长连接
-        if: ${{ inputs.KEEY_ALIVE }}
-        run: touch /tmp/keepalive
-
       ##################################################
       # 从这里开始是对服务器的配置
       ##################################################
@@ -68,6 +74,7 @@ jobs:
       - name: 安装 aliyunpan
         run: |
           sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
+          aliyunpan -v
 
       - name: 设置 Bash
         run: |
@@ -84,6 +91,7 @@ jobs:
 
           source ~/.bashrc
 
-      # 会卡在这里等待链接
+      # 会卡在这里等待链接，默认 15 分钟
+      # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
       - name: 创建 SSH 会话
         uses: csexton/debugger-action@master
