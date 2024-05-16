@@ -9,17 +9,11 @@ name: new_ssh_keep_connect
 on:
   workflow_dispatch:
     inputs:
-      KEEP_ALIVE:
-        type: boolean
-        description: "是否保持长连接（否则 15 分钟断开连接）"
-        required: false
-        default: false
-
       SIMPLE_RUN:
         type: boolean
         description: "单纯起个 SSH（否则会安装依赖程序）"
         required: false
-        default: true
+        default: false
 
 env:
   FONT_DIR: mypy/assets/font
@@ -69,10 +63,6 @@ jobs:
       ##################################################
       # 从这里开始是对服务器的配置
       ##################################################
-      - name: 保持 SSH 长连接
-        if: ${{ inputs.KEEP_ALIVE }}
-        run: touch /tmp/keepalive
-
       # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
       - name: 安装 aliyunpan
         if: ${{ ! inputs.SIMPLE_RUN }}
