@@ -28,7 +28,7 @@ env:
   PYTHON_VERSION: 3.9
 
 jobs:
-  SSH:
+  new_ssh_keep_connect:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取代码
@@ -94,6 +94,14 @@ jobs:
           EOF
 
           source ~/.bashrc
+
+      # https://github.com/orgs/community/discussions/64820
+      # 保存你的 deploy key 这样进入终端后才可以 clone 其他仓库的代码
+      - name: setup git
+        run: |
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa <<< ${{secrets.DEPLOY_SSH_PASS}}
+          git clone git@github.com:StanCodes/$reponame.git
 
       # 会卡在这里等待链接，默认 15 分钟
       # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
