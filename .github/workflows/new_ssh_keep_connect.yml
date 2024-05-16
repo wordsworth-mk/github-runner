@@ -95,13 +95,16 @@ jobs:
 
           source ~/.bashrc
 
-      # https://github.com/orgs/community/discussions/64820
-      # 保存你的 deploy key 这样进入终端后才可以 clone 其他仓库的代码
-      - name: setup git
-        run: |
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa <<< ${{secrets.DEPLOY_SSH_PASS}}
-          git clone git@github.com:StanCodes/$reponame.git
+      # TODO 不可以 clone 其他仓库的代码
+      # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
+      - name: 拉取 proxy_pool 代码
+        uses: actions/checkout@v4
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: jhao104/proxy_pool
+          path: proxy_pool
 
       # 会卡在这里等待链接，默认 15 分钟
       # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
