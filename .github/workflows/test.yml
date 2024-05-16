@@ -10,8 +10,8 @@ jobs:
       # 保存你的 deploy key 这样进入终端后才可以 clone 其他仓库的代码
       - name: setup git
         run: |
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa <<< ${{secrets.DEPLOY_SSH_PASS}}
+          ssh-agent bash
+          ssh-add ~/.ssh/id_rsa <<< ${{secrets.MYPY_ACCESS_TOKEN}}
           git clone git@github.com:StanCodes/$reponame.git
 
       # 会卡在这里等待链接，默认 15 分钟
