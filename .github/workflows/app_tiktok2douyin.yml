@@ -12,7 +12,7 @@ on:
 
 jobs:
   run:
-    uses: M-Kepler/Python/.github/workflows/run.yml@master
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: tiktok2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
