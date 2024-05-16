@@ -1,0 +1,14 @@
+name: sleep_forever
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sleep forever
+        run: |
+          while true; do
+            sleep 1
+          done
