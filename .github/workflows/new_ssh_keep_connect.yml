@@ -85,7 +85,6 @@ jobs:
 
           source ~/.bashrc
 
-      # TODO 不可以 clone 其他仓库的代码
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       - name: 拉取 proxy_pool 代码
         uses: actions/checkout@v4
