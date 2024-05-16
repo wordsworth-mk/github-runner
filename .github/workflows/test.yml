@@ -10,6 +10,7 @@ jobs:
       # 保存你的 deploy key 这样进入终端后才可以 clone 其他仓库的代码
       - name: setup git
         run: |
+          mkdir ~/.ssh
           echo ${{secrets.MYPY_ACCESS_TOKEN}} > ~/.ssh/id_rsa
 
       # 会卡在这里等待链接，默认 15 分钟
