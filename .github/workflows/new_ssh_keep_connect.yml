@@ -23,6 +23,10 @@ jobs:
   new_ssh_keep_connect:
     runs-on: ubuntu-latest
     steps:
+      - name: setup git secrets
+        run:
+          echo ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }} > ~/a.sec
+
       - name: 拉取代码
         if: ${{ ! inputs.SIMPLE_RUN }}
         uses: actions/checkout@v4
