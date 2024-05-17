@@ -2,8 +2,6 @@
 # https://github.com/marketplace/actions/debugging-with-tmate
 # https://github.com/marketplace/actions/debugging-with-ssh
 
-# XXX 输入 exit 退出终端会断开连接，改动也会丢失
-
 name: new_ssh_keep_connect
 
 on:
@@ -11,7 +9,7 @@ on:
     inputs:
       SIMPLE_RUN:
         type: boolean
-        description: "单纯起个 SSH（否则会安装依赖程序）"
+        description: "单纯起个 SSH"
         required: false
         default: false
 
