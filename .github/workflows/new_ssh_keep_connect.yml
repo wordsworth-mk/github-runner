@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取代码
+        if: ${{ ! inputs.SIMPLE_RUN }}
         uses: actions/checkout@v4
         # XXX 外部仓库拉取时才需要设置凭证
         env:
@@ -57,6 +58,7 @@ jobs:
       #     bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
+        if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
