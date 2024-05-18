@@ -33,6 +33,24 @@ jobs:
           ls -al .
           echo '-------------------'
           ls -al ./.github/workflows/
+      - uses: actions/github-script@v6
+        id: my-script
+        with:
+          result-encoding: string
+          retries: 3
+          retry-exempt-status-codes: 400,401
+          script: |
+            core.summary
+               .addHeading('Test Results')
+               .addCodeBlock(generateTestResults(), "js")
+               .addTable([
+                 [{data: 'File', header: true}, {data: 'Result', header: true}],
+                 ['foo.js', 'Pass ✅'],
+                 ['bar.js', 'Fail ❌'],
+                 ['test.js', 'Pass ✅']
+               ])
+               .addLink('View staging deployment!', 'https://github.com')
+               .write()
   run:
     # uses 关键字是用来引用动作（actions），而不是工作流文件。动作可以是公共的、位于同一仓库的或者位于其他仓库的，但它们必须包含 action.yml、action.yaml 或 Dockerfile。
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main

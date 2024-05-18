@@ -1,22 +1,18 @@
-name: 🟢 app_tiktok2douyin
+name: 🟢 app_youtu2douyin_playlist
 
 on:
-  workflow_dispatch:
-    inputs:
-      ARGS:
-        description: |
-          -u https://xxx
-        required: false
-        type: string
-        default: "-u "
+  # 定时执行
+  schedule:
+    # 代表国际标准时间，实际北京时间需要 +8 小时
+    - cron: "30 01 * * *"
 
 jobs:
   run:
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
-      APP: tiktok2douyin
+      APP: youtu2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
-      ARGS: ${{ inputs.ARGS }}
+      ARGS: -m loop -t playlist
       DEPENDENT_BINARY: "ffmpeg"
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

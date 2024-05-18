@@ -65,6 +65,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 输入参数
+        run: |
+          echo "::notice::运行模式:"
+          echo "- \`${{ github.event.inputs.ARGS }}\`"
+          echo ""
+
       - name: Checkout
         # uses 之后不能再用 run
         uses: actions/checkout@v4

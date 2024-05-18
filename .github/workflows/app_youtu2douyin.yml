@@ -5,14 +5,26 @@ on:
     inputs:
       ARGS:
         description: |
-          -m once 表示运行一次
-          -m loop 表示持续监控
-          -m manual https://xxx 主动触发某个视频的处理发布
+            -m {loop,once,manual}
+              运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
+
+            -t {channel,playlist}
+              视频合集类型(channel/playlist)
+
+            --publish
+              执行发布操作（默认发布）
+
+            --no-publish
+              不执行发布操作
+
+            -f
+              不管是否已经发布过，都强制发布该视频
+
         required: false
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
         # 这种方式就像终端输入命令一样的
-        default: "-m once"
+        default: "-m manual "
 
   # 定时执行
   schedule:

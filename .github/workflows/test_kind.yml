@@ -1,0 +1,15 @@
+name: Create Cluster
+
+on: workflow_dispatch
+
+jobs:
+  create-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1
+
+      - name: test
+        run: |
+          kubectl get nodes
+
