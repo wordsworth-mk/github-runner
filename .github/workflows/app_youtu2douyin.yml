@@ -5,9 +5,22 @@ on:
     inputs:
       ARGS:
         description: |
-          -m once 表示运行一次
-          -m loop 表示持续监控
-          -m manual https://xxx 主动触发某个视频的处理发布
+          usage: main.py [-h] [-m {loop,once,manual}] [-t {channel,playlist}] [--publish] [--no-publish] [-f] [url]
+
+          show example
+
+          positional arguments:
+            url                   视频地址
+
+          options:
+            -h, --help            show this help message and exit
+            -m {loop,once,manual}, --mode {loop,once,manual}
+                                  运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
+            -t {channel,playlist}, --type {channel,playlist}
+                                  视频合集类型(channel/playlist)
+            --publish             是否执行发布操作
+            --no-publish          不执行发布操作
+            -f, --force           强制处理该视频 URL
         required: false
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
