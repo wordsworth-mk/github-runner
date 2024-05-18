@@ -1,9 +1,5 @@
 name: Action Test
 
-branding:
-  icon: 'award'
-  color: 'green'
-
 on:
   workflow_dispatch:
     inputs:
@@ -33,6 +29,7 @@ jobs:
           ls -al .
           echo '-------------------'
           ls -al ./.github/workflows/
+
       - uses: actions/github-script@v6
         id: my-script
         with:
