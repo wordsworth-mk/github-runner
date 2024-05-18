@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ARGS:
-        description: |
+        description: |+
           usage: main.py [-h] [-m {loop,once,manual}] [-t {channel,playlist}] [--publish] [--no-publish] [-f] [url]
 
           show example
