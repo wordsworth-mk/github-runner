@@ -1,5 +1,9 @@
 name: Action Test
 
+branding:
+  icon: 'award'
+  color: 'green'
+
 on:
   workflow_dispatch:
     inputs:
