@@ -86,8 +86,43 @@ jobs:
           alias cls='clear'
           export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
           EOF
-
           source ~/.bashrc
+
+      - name: 设置 git
+        run: |
+          cat << EOF >> ~/.gitconfig
+          [user]
+                  name = huangjinjie
+                  email = 870131615@qq.com
+          [push]
+                  default = current
+          [pull]
+                  default = current
+          [log]
+                  follow = true
+                  date = format:%Y-%m-%d %H:%M:%S
+          [merge]
+                  renameLimit = 99999
+          [diff]
+                  renameLimit = 99999
+          [alias]
+                  logg = log --pretty=format:'%Cred%h%Creset - %Cgreen[%an]%Creset - %C(yellow)%cd (%ar)%Creset: %s' -15
+                  last = logg -1 HEAD
+                  graph = logg --color --graph --abbrev-commit
+                  branchh = for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)'
+          [core]
+                  quotepath = false
+                  ignorecase = false
+                  autocrlf = false
+                  editor = vim
+                  # 在 Git 中，如果你尝试在一个目录下运行 Git 命令，而该目录的所有者与当前用户不匹配时，Git 会出于安全考虑阻止你的操作
+                  # 这是因为 Git 2.35.2 版本之后引入了一个新的安全特性，用于防止不受信任的存储库执行恶意的 hooks
+                  checkSafeDirectory = false
+                  globstar = true
+          [i18n]
+                  commitencoding = utf-8
+                  logoutputencoding = utf-8
+          EOF
 
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       - name: 拉取 proxy_pool 代码
@@ -99,7 +134,7 @@ jobs:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: jhao104/proxy_pool
           # 只能下载到 $GITHUB_WORKSPACE 目录下
-          path: proxy_pool
+          path: _3party/proxy_pool
 
       # 会卡在这里等待链接，默认 15 分钟
       # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
