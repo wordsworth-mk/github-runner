@@ -7,7 +7,7 @@ on:
         description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
         required: false
         type: string
-        default: "-u "
+        default: ""
 
   # 定时执行
   schedule:
