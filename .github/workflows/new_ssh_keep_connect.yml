@@ -96,8 +96,6 @@ jobs:
           repository: M-Kepler/dotfiles
           # 只能下载到 $GITHUB_WORKSPACE 目录下
           path: _3party/dotfiles
-        run: |
-          cp -r _3party/dotfiles/. ~/
 
       # 会卡在这里等待链接，默认 15 分钟
       # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
