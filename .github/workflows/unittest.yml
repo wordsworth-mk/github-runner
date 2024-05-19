@@ -19,6 +19,9 @@ on:
     secrets:
       ACTIONS_DEPLOY_KEY:
         required: true
+      # 外部调用的时候提供 token 用来拉取本私有仓库
+      MYPY_ACCESS_TOKEN:
+        required: false
 
 env:
   ENV: test

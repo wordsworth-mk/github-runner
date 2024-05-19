@@ -1,7 +1,8 @@
 name: 🕢 timer_youtu2douyin_playlist
 
 on:
-  # 定时执行
+  workflow_dispatch:
+
   schedule:
     # 代表国际标准时间，实际北京时间需要 +8 小时
     - cron: "30 01 * * *"

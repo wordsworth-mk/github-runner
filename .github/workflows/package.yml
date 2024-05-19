@@ -15,6 +15,10 @@ on:
         description: "需要打包的 APP 路径列表"
         required: true
         type: string
+    # 外部调用的时候提供 token 用来拉取本私有仓库
+    secrets:
+      MYPY_ACCESS_TOKEN:
+        required: false
 
 env:
   ENV_INIT_SCRIPT: mypy/env_init.sh

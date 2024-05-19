@@ -7,6 +7,11 @@ on:
         required: true
         type: string
 
+    # 外部调用的时候提供 token 用来拉取本私有仓库
+    secrets:
+      MYPY_ACCESS_TOKEN:
+        required: false
+
 jobs:
   # 代码质量
   code_quality:
