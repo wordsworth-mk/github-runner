@@ -1,59 +1,67 @@
-name: Action Test
+name: 🟩 流水线功能测试
 
 on:
+  # 该事件可以通过 API 触发
+  repository_dispatch:
+    types:
+      - mypy_event_type.test_app
+
+  # 手动触发时输入参数
   workflow_dispatch:
     inputs:
+      logLevel:
+        description: "Log level"
+        required: true
+        default: "warning"
       ARGS:
         description: "排班参数用逗号分隔: 0 表示休息 1 表示上班 2 表示夜班 3 表示备班"
         required: false
         type: string
         default: ""
-  # # 定时执行
-  # schedule:
-  #   # 代表国际标准时间，实际北京时间需要 +8 小时
-  #   - cron: "* * * * *"
+      SIMPLE_RUN:
+        description: "是否简单运行（不安装程序依赖和字体）"
+        type: boolean
+        required: false
+        default: true
+
+env:
+  ENV: test
+  APP_BASE_PATH: mypy/apps
 
 jobs:
-  clone_repo:
-    runs-on: ubuntu-latest
+  # 单元测试
+  # unittest_and_coverage:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.MYPY_ACCESS_TOKEN }}
-          repository: M-Kepler/Python
+  #   steps:
+  #     - name: Check timezone
+  #       run: |
+  #         date
 
-      - name: test
-        run: |
-          ls -al .
-          echo '-------------------'
-          ls -al ./.github/workflows/
+  #     - name: Set timezone
+  #       uses: szenius/set-timezone@v1.2
+  #       with:
+  #         timezoneLinux: "Asia/Singapore"
+  #         timezoneMacos: "Asia/Singapore"
+  #         timezoneWindows: "Asia/Singapore"
 
-      - uses: actions/github-script@v6
-        id: my-script
-        with:
-          result-encoding: string
-          retries: 3
-          retry-exempt-status-codes: 400,401
-          script: |
-            core.summary
-               .addHeading('Test Results')
-               .addCodeBlock(generateTestResults(), "js")
-               .addTable([
-                 [{data: 'File', header: true}, {data: 'Result', header: true}],
-                 ['foo.js', 'Pass ✅'],
-                 ['bar.js', 'Fail ❌'],
-                 ['test.js', 'Pass ✅']
-               ])
-               .addLink('View staging deployment!', 'https://github.com')
-               .write()
+  #     - name: Check timezone after set-timezone
+  #       run: |
+  #         date
+
+  # 打包
+  # package:
+  #   needs:
+  #     - unittest_and_coverage
+  #   uses: M-Kepler/Python/.github/workflows/package.yml@master
+  #   with:
+  #     APPS_PATH: mypy/apps # ${{ env.APP_BASE_PATH }}
+
   run:
-    # uses 关键字是用来引用动作（actions），而不是工作流文件。动作可以是公共的、位于同一仓库的或者位于其他仓库的，但它们必须包含 action.yml、action.yaml 或 Dockerfile。
+    # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: test_app
-      ARGS: ${{ inputs.ARGS }}
-      SIMPLE_RUN: true
-    secrets:
-      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
+      ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
+      SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
+      COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE }}

@@ -1,4 +1,4 @@
-name: ssh_by_upstream
+name: 🚧 ssh_by_upstream
 
 on:
   workflow_dispatch:

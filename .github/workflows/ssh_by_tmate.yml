@@ -1,14 +1,103 @@
-# 相比 csexton/debugger-action@master 安全一点，只能 github 上有密钥的机器访问
+# https://zhuanlan.zhihu.com/p/387389708?utm_id=0
+# https://github.com/marketplace/actions/debugging-with-tmate
+# https://github.com/marketplace/actions/debugging-with-ssh
 
-name: test_ssh_by_tmate
+name: 🚧 ssh_by_tmate
 
 on:
-  - workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      KEEP_ALIVE:
+        type: boolean
+        description: "是否保持长连接（否则 15 分钟断开连接）"
+        required: false
+        default: false
+
+      SIMPLE_RUN:
+        type: boolean
+        description: "单纯起个 SSH（否则会安装依赖程序）"
+        required: false
+        default: true
+
+env:
+  FONT_DIR: mypy/assets/font
+  ENV_INIT_SCRIPT: mypy/env_init.sh
+  DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+  PYTHON_VERSION: 3.9
 
 jobs:
-  build:
+  SSH:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+      - name: 拉取代码
+        uses: actions/checkout@v4
+        # XXX 外部仓库拉取时才需要设置凭证
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: 安装依赖程序
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        uses: ConorMacBride/install-package@v1.1.0
+        with:
+          apt: ${{ env.DEPENDENT_BINARY }}
+
+      - name: 安装字体
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        run: |
+          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 初始化运行环境
+        run: |
+          bash ${{ env.ENV_INIT_SCRIPT }}
+
+      ##################################################
+      # 从这里开始是对服务器的配置
+      ##################################################
+      # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
+      - name: 安装 aliyunpan
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        run: |
+          sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
+          aliyunpan -v
+
+      - name: 设置 Bash
+        run: |
+          cat << EOF >> ~/.bashrc
+          set -o vi
+          bind -m vi-insert '\c-l':clear-screen
+          alias ..="cd .."
+          alias ll='ls -l'
+          alias la='ls -A'
+          alias g='git'
+          alias cls='clear'
+          export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
+          EOF
+          # 连接后再执行才有用
+          # source ~/.bashrc
+
+      - name: 保持 SSH 长连接
+        if: ${{ inputs.KEEP_ALIVE }}
+        run: touch /tmp/keepalive
+
+      # 会卡在这里等待链接，默认 15 分钟
+      # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
+      - name: 创建 SSH 会话
+        uses: csexton/debugger-action@master
+
+      # 相比 csexton/debugger-action@master 安全一点，只能 github 上有密钥的机器访问
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3

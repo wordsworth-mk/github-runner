@@ -1,4 +1,3 @@
-# 和 M-Kepler/Python/.github/workflows/run.yml@master 一样
 name: 🚚 运行应用
 
 on:
@@ -24,6 +23,11 @@ on:
         type: boolean
         required: false
         default: true
+      COMMIT_CHANGE:
+        description: "是否提交更改"
+        type: boolean
+        required: false
+        default: true
 
   # 流水线调用
   workflow_call:
@@ -46,6 +50,11 @@ on:
         type: string
         required: false
         default: "ffmpeg unoconv libreoffice poppler-utils"
+      FORCE_COMMIT:
+        description: "不管是否运行成功，都提交改动的信息"
+        type: boolean
+        required: false
+        default: false
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
@@ -58,7 +67,6 @@ env:
   APP_ENTRY: main.py
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
-  TIME_ZONE: "Asia/Singapore"
 
 jobs:
   run:
@@ -82,16 +90,15 @@ jobs:
           repository: M-Kepler/Python
 
       - name: 设置时区
-        uses: szenius/set-timezone@v1.2
+        uses: szenius/set-timezone@v2.0
         with:
-          timezoneLinux: ${{ env.TIME_ZONE }}
-          timezoneMacos: ${{ env.TIME_ZONE }}
-          timezoneWindows: ${{ env.TIME_ZONE }}
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
 
       - name: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
@@ -118,7 +125,7 @@ jobs:
           fi
 
       - name: 保存运行过程修改的配置
-        if: ${{ success() }} # 这一步只会在前一步成功时执行
+        if: ${{ (success() && inputs.COMMIT_CHANGE) || inputs.FORCE_COMMIT }} # 这一步只会在前一步成功时执行
         env:
           # 这个 token 不需要配置，默认自带的
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

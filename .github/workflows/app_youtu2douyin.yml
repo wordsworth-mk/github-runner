@@ -5,19 +5,19 @@ on:
     inputs:
       ARGS:
         description: |
-            -m {loop,once,manual}
+            -m {loop,once,manual}\n
               运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
 
-            -t {channel,playlist}
+            -t {channel,playlist}\n
               视频合集类型(channel/playlist)
 
-            --publish
+            --publish\n
               执行发布操作（默认发布）
 
-            --no-publish
+            --no-publish\n
               不执行发布操作
 
-            -f
+            -f\n
               不管是否已经发布过，都强制发布该视频
 
         required: false
@@ -39,5 +39,6 @@ jobs:
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: ${{ inputs.ARGS }}
       DEPENDENT_BINARY: "ffmpeg"
+      FORCE_COMMIT: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

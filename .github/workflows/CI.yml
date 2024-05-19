@@ -1,0 +1,98 @@
+name: 💯 CI
+
+on:
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      SKIP_CASE_MARK:
+        description: "需要跳过的用例标签 ('none' 表示不跳过)"
+        required: false
+        default: "none"
+      UNITTEST:
+        description: "是否进行单元测试"
+        type: boolean
+        required: false
+        default: true
+
+  schedule:
+    # 代表国际标准时间 21 点 30 分，北京时间需要 +8 小时，代表北京时间上午 5 点 30 分点运行
+    - cron: "30 21 * * 5"
+
+# NOTICE: env 上下文只能在 run 步骤中使用
+env:
+  BASE_PATH: mypy
+  APP_BASE_PATH: mypy/apps
+
+jobs:
+  ###########################################
+  # 语法检查
+  ###########################################
+  syntax_check:
+    name: 代码质量检查
+    uses: wordsworth-mk/github-runner/.github/workflows/syntax_check.yml@main
+    with:
+      APP_PATH: mypy
+
+  ###########################################
+  # 单元测试 和 代码覆盖率报告
+  ###########################################
+  unittest:
+    name: 单元测试
+    if: ${{ inputs.UNITTEST || true }}
+    needs:
+      - syntax_check
+
+    uses: wordsworth-mk/github-runner/.github/workflows/unittest.yml@main
+    # 要在 with 子句中传递环境变量，您应该使用 secrets 或 inputs
+    with:
+      CASE_PATH: mypy/tests
+      # 依赖的二进制文件
+      DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+      NOT_RUN_MARK: ${{ inputs.SKIP_CASE_MARK }}
+    secrets:
+      ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+
+  ###########################################
+  # 获取某个目录下的所有文件夹并将它们作为变量使用
+  # OK
+  ###########################################
+  get_apps:
+    name: 获取打包 APP 名称列表
+    runs-on: ubuntu-latest
+    # 设置输出，可在多个作业间传递参数
+    outputs:
+      apps: ${{ steps.set-matrix.outputs.apps }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: 获取打包 APP 路径列表
+        id: set-matrix
+        run: |
+          apps=$(bash ${{ env.BASE_PATH }}/build/get_apps.sh ${{ env.APP_BASE_PATH }})
+          echo "found apps: $apps"
+          # key=value 格式
+          echo "apps=[$apps]" >> $GITHUB_OUTPUT
+          echo "base_path=${{ env.BASE_PATH }}" >> $GITHUB_OUTPUT
+
+  ###########################################
+  # 打包
+  ###########################################
+  # 没必要一个个设置环境再打包
+  package:
+    name: 打包发布
+    needs:
+      - syntax_check
+      - get_apps
+      - unittest
+    uses: wordsworth-mk/github-runner/.github/workflows/package.yml@main
+
+    # 使用前面的 job 的输出
+    # #### 不用 matrix 多个任务，一个任务进行打包就可以了
+    # strategy:
+    #   matrix:
+    #     apps: ${{ fromJSON(needs.get_apps.outputs.apps) }}
+
+    with:
+      # APPS_PATH: ${{ fromJSON(needs.get_apps.outputs.apps) }}
+      APPS_PATH: mypy/apps
+      PKG_ZIP_PATH: mypy/build/_pkg.zip

@@ -1,0 +1,147 @@
+name: 📦 打包发布
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: "是否创建标签及发行版"
+        type: boolean
+        required: false
+        default: false
+
+  workflow_call:
+    inputs:
+      APPS_PATH:
+        description: "需要打包的 APP 路径列表"
+        required: true
+        type: string
+
+env:
+  ENV_INIT_SCRIPT: mypy/env_init.sh
+
+  # 打包后的 APP 可执行文件的存放路径
+  PKG_ZIP_PATH: mypy/build/_pkg.zip
+  BUILD_PKG_PATH: mypy/build/_pkg/
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        # DEBUG
+        python-version: ["3.9"]
+        # os: [ubuntu-latest]
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python ${{ matrix.python-version }} 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # - name: 安装依赖程序
+      #   uses: ConorMacBride/install-package@v1.1.0
+      #   with:
+      #     apt: ${{ inputs.DEPENDENT_BINARY }}
+      #     choco: ${{ inputs.DEPENDENT_BINARY }}
+
+      # - name: 安装字体
+      #   run: |
+      #     bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 初始化运行环境
+        run: |
+          bash ${{ env.ENV_INIT_SCRIPT }}
+        env:
+          LC_ALL: C.UTF-8
+          LANG: C.UTF-8
+        # windows 版支持用 gitbash 执行命令
+        shell: bash
+
+      - name: 打包
+        run: |
+          # type1: 传入的是单个 APP 路径
+          # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
+
+          # type2: 传入的是 APP 父目录
+          # echo ${{ inputs.APPS_PATH }}
+          # for app in $(ls ${{ inputs.APPS_PATH }}); do
+          #     if [ ! -f mypy/apps/$app/main.py ]; then
+          #         continue
+          #     fi
+          #     bash mypy/build/build.sh mypy/apps/$app
+          # done
+          # artifat_path=$curr_path/_pkg.zip
+          # zip -r $artifat_path $curr_path/_pkg/
+          # echo "================================================"
+          # echo "打包完成: $artifat_path"
+          # echo "================================================"
+
+          # type3: 执行外部脚本进行打包
+          bash mypy/build/batch_build.sh
+        env:
+          LC_ALL: C.UTF-8
+          LANG: C.UTF-8
+        shell: bash
+
+      - name: zip
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: ${{ env.BUILD_PKG_PATH }}
+          dest: mypy/build/_pkg.zip
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 获取当前日期
+        id: date
+        run: |
+          echo $(date +'%Y%m%d-%H%M%S')
+          echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+
+        shell: bash
+
+      - name: 更新 CHANGELLOG
+        id: update_changelog
+        if: ${{ inputs.create_release }}
+        uses: saadmk11/changelog-ci@v1.1.2
+
+      - name: 创建 Tag
+        id: create_release
+        if: ${{ inputs.create_release }}
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
+          name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
+          draft: false
+          prerelease: false
+
+      - name: 上传 Release
+        id: upload-release-asset
+        if: ${{ inputs.create_release }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
+          asset_name: pkg.zip
+          asset_content_type: application/zip
+
+      # Github actions Artifact 可以用来存储 action 生产出来的产物
+      # 当你上传成功后，后续的流程就可以下载这些文件来使用
+      - name: 上传打包产物
+        if: ${{ ! inputs.create_release }}
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ matrix.os }} Build
+          path: |
+            ${{ env.PKG_ZIP_PATH }}

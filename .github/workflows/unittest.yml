@@ -1,0 +1,133 @@
+name: 🚥 自动化测试
+
+on:
+  workflow_call:
+    inputs:
+      # 用例路径
+      CASE_PATH:
+        required: true
+        type: string
+      # 依赖的软件
+      DEPENDENT_BINARY:
+        required: true
+        type: string
+      # 调过的 pytest 用例标记
+      NOT_RUN_MARK:
+        required: true
+        type: string
+    # 可重用流水线不可以直接读入 secrets，需要由调用方传入 https://www.5axxw.com/questions/content/v8jtsq
+    secrets:
+      ACTIONS_DEPLOY_KEY:
+        required: true
+
+env:
+  ENV: test
+  ENV_INIT_SCRIPT: mypy/env_init.sh
+
+jobs:
+  unittest:
+    name: 单元测试
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+        # os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+    env:
+      FONT_DIR: mypy/assets/font
+      ALLURE_RESULT_DIR: ".report/allure/result"
+      ALLURE_REPORT_DIR: ".report/allure/report"
+      ALLURE_HISTORY: ".report/allure/history"
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 设置 Python ${{ matrix.python-version }} 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # - name: 安装依赖程序
+      #   uses: ConorMacBride/install-package@v1.1.0
+      #   with:
+      #     apt: ${{ inputs.DEPENDENT_BINARY }}
+      #     # choco: ${{ inputs.DEPENDENT_BINARY }}
+
+      - name: 安装依赖程序
+        run: |
+          echo "installing ${{ inputs.DEPENDENT_BINARY }}"
+          sudo apt-get install -y ${{ inputs.DEPENDENT_BINARY }} > /dev/null 2>&1
+
+      - name: 安装字体
+        run: |
+          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 初始化运行环境
+        run: |
+          bash ${{ env.ENV_INIT_SCRIPT }}
+
+      # --------------------------
+      # 以上步骤与 run 一致
+      # XXX 由于每个 workflow，每个 job 都是不同的环境
+      # 除非放到同一个 job 里，否则无法复用环境
+      # --------------------------
+
+      - name: 🟢 自动化测试
+        run: |
+          pip install -r ${{ inputs.CASE_PATH }}/requirements.txt > /dev/null 2>&1
+          bash pytest.sh -d ${{ inputs.CASE_PATH }} -g -s "${{ inputs.NOT_RUN_MARK }}"
+
+      - name: 保存运行过程修改的配置
+        if: ${{ success() }}
+        env:
+          # 这个 token 不需要配置，默认自带的
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "github_action"
+
+          # 为了让**在Git命令中递归地工作，需要在你的Git配置中设置core.globstar为true
+          git config --global core.globstar true
+          git checkout -b githubactions
+          git add **/*.ini
+          git diff --exit-code || git commit -am "[UPD]: commit ini change"
+          git push origin githubactions -f
+
+      ################################################################
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        with:
+          # NOTICE: 本仓库必须存在这个分支，这个分支用来存放 allure 报告
+          ref: allure-report
+          path: ${{ env.ALLURE_HISTORY }}
+
+      # 发布测试报告到 github page
+      - name: Generate allure report action
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: ${{ env.ALLURE_RESULT_DIR }}
+          allure_report: ${{ env.ALLURE_REPORT_DIR }}
+          allure_history: ${{ env.ALLURE_HISTORY }}
+          keep_reports: 10 # Specify the number of previous reports to keep
+
+      # 生成 pages 且推送到文件仓库
+      - name: Deploy allure report to gitHub pages action
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          # 把私钥放到本仓库的 secrets 里
+          # 把公钥放到对端仓库设置里的 deploy_key 里
+          # NOTICE: 必须检查一下这个 key 是否正常 https://github.com/M-Kepler/M-Kepler.github.io/settings/keys/96146402
+          # NOTICE: 必须先新建这个分支
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: M-Kepler/M-Kepler.github.io
+          publish_branch: gh-pages
+          publish_dir: ${{ env.ALLURE_REPORT_DIR }}
+          commit_message: "[githubactions]: Deploy allure report to github page"
