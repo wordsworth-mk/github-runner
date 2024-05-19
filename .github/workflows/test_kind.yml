@@ -1,4 +1,4 @@
-name: Create Cluster
+name: __test_create_cluster_by_kind
 
 on: workflow_dispatch
 
