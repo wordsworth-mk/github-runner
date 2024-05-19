@@ -5,19 +5,19 @@ on:
     inputs:
       ARGS:
         description: |
-            -m {loop,once,manual}\n
+            -m {loop,once,manual}
               运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
 
-            -t {channel,playlist}\n
+            -t {channel,playlist}
               视频合集类型(channel/playlist)
 
-            --publish\n
+            --publish
               执行发布操作（默认发布）
 
-            --no-publish\n
+            --no-publish
               不执行发布操作
 
-            -f\n
+            -f
               不管是否已经发布过，都强制发布该视频
 
         required: false
