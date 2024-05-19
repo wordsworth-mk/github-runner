@@ -10,7 +10,6 @@ on:
 jobs:
   # 代码质量
   code_quality:
-    name: 代码整理检查
     runs-on: ubuntu-latest
     steps:
       - name: 拉取代码
