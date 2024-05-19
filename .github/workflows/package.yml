@@ -144,7 +144,7 @@ jobs:
 
       # Github actions Artifact 可以用来存储 action 生产出来的产物
       # 当你上传成功后，后续的流程就可以下载这些文件来使用
-      - name: 上传打包产物
+      - name: 上传 Artifact
         if: ${{ ! inputs.create_release }}
         uses: actions/upload-artifact@master
         with:
