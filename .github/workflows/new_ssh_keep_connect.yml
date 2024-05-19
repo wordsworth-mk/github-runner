@@ -98,6 +98,7 @@ jobs:
         with:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: jhao104/proxy_pool
+          # 只能下载到 $GITHUB_WORKSPACE 目录下
           path: proxy_pool
 
       # 会卡在这里等待链接，默认 15 分钟
