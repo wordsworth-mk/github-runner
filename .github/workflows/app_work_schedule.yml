@@ -1,4 +1,4 @@
-name: 🟢 app_work_schedule
+name: 🕢 timer_app_work_schedule
 
 on:
   workflow_dispatch:
