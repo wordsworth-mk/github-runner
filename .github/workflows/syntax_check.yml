@@ -9,19 +9,25 @@ on:
 
 jobs:
   # 代码质量
-  python_code_quality_and_lint:
+  name: 代码整理检查:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 拉取代码
         uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
 
-      - name: Flake8 check
+      - name: Flake8 检查
         run: |
           pip install flake8 > /dev/null 2>&1
           flake8 --config .flake8 ${{ inputs.APP_PATH }}
           [ $? == 0 ] && echo "flake8 success"
 
-      - name: Pylint check
+      - name: Pylint 检查
         continue-on-error: true # 即使失败了也继续后续流程
         run: |
           pip install pylint > /dev/null 2>&1

@@ -65,6 +65,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        # 访问仓库用到的 Personal access token
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
+
       - name: 获取打包 APP 路径列表
         id: set-matrix
         run: |
