@@ -14,5 +14,6 @@ jobs:
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: -m loop -t playlist
       DEPENDENT_BINARY: "ffmpeg"
+      FORCE_COMMIT: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
