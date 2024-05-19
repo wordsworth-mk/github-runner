@@ -95,4 +95,3 @@ jobs:
     with:
       # APPS_PATH: ${{ fromJSON(needs.get_apps.outputs.apps) }}
       APPS_PATH: mypy/apps
-      PKG_ZIP_PATH: mypy/build/_pkg.zip
