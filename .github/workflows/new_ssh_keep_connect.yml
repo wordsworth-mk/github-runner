@@ -98,7 +98,7 @@ jobs:
         with:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: jhao104/proxy_pool
-          path: proxy_pool
+          path: ../proxy_pool
 
       # 会卡在这里等待链接，默认 15 分钟
       # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
