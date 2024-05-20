@@ -51,6 +51,7 @@ jobs:
       NOT_RUN_MARK: ${{ inputs.SKIP_CASE_MARK }}
     secrets:
       ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
 
   ###########################################
   # 获取某个目录下的所有文件夹并将它们作为变量使用
