@@ -24,6 +24,7 @@ jobs:
         with:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
+          ref: master
 
       - name: Flake8 检查
         run: |
