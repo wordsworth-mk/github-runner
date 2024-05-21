@@ -92,7 +92,20 @@ jobs:
           # echo "================================================"
 
           # type3: 执行外部脚本进行打包
-          bash mypy/build/batch_build.sh
+          # bash mypy/build/batch_build.sh
+
+          test_app="mypy/apps/test_app"
+          LOGO_PATH=$test_app/logo.ico
+          app_entry_file=$test_app/main.py
+          app_name=test_app
+          pkg_output_path="mypy/build/_pkg"
+          tmp_build_output_dir="mypy/build/_pkg/_build_output"
+          time pyinstaller -c -F -i $LOGO_PATH $app_entry_file \
+              -n $app_name \
+              --distpath=$pkg_output_path \
+              --workpath=$tmp_build_output_dir \
+              --clean
+
         env:
           LC_ALL: C.UTF-8
           LANG: C.UTF-8
