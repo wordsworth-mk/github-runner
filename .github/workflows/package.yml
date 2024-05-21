@@ -51,15 +51,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: 安装依赖程序
-        uses: ConorMacBride/install-package@v1.1.0
-        with:
-          apt: ${{ inputs.DEPENDENT_BINARY }}
-          choco: ${{ inputs.DEPENDENT_BINARY }}
+      # - name: 安装依赖程序
+      #   uses: ConorMacBride/install-package@v1.1.0
+      #   with:
+      #     apt: ${{ inputs.DEPENDENT_BINARY }}
+      #     choco: ${{ inputs.DEPENDENT_BINARY }}
 
-      - name: 安装字体
-        run: |
-          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+      # - name: 安装字体
+      #   run: |
+      #     bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
         run: |
