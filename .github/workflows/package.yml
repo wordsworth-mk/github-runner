@@ -75,6 +75,11 @@ jobs:
         with:
           path: mypy/apps/baidu2douyin
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-app
+          path: mypy/apps/baidu2douyin/dist/windows
+
       - name: 打包
         run: |
           # type1: 传入的是单个 APP 路径
