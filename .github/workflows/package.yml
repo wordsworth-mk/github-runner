@@ -71,17 +71,6 @@ jobs:
         # windows 版支持用 gitbash 执行命令
         shell: bash
 
-      - name: Package Application
-        uses: JackMcKew/pyinstaller-action-windows@main
-        with:
-          path: mypy/apps/baidu2douyin
-          requirements: mypy/requirements.txt
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: my-app
-          path: mypy/apps/baidu2douyin/dist/windows
-
       - name: 打包
         if: ${{ github.event_name == 'push' }}
         run: |
