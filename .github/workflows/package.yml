@@ -70,6 +70,11 @@ jobs:
         # windows 版支持用 gitbash 执行命令
         shell: bash
 
+      - name: Package Application
+        uses: JackMcKew/pyinstaller-action-windows@main
+        with:
+          path: mypy/apps/baidu2douyin
+
       - name: 打包
         run: |
           # type1: 传入的是单个 APP 路径
