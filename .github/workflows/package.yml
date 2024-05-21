@@ -72,7 +72,6 @@ jobs:
         shell: bash
 
       - name: 打包
-        if: ${{ github.event_name == 'push' }}
         run: |
           # type1: 传入的是单个 APP 路径
           # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
