@@ -62,6 +62,7 @@ jobs:
       #     bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
+        if: ${{ github.event_name == 'push' }}
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
         env:
@@ -73,7 +74,8 @@ jobs:
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
         with:
-          path: mypy/apps/baidu2douyin/main.py
+          path: mypy/apps/baidu2douyin
+          requirements: mypy/requirements.txt
 
       - uses: actions/upload-artifact@v2
         with:
@@ -81,6 +83,7 @@ jobs:
           path: mypy/apps/baidu2douyin/dist/windows
 
       - name: 打包
+        if: ${{ github.event_name == 'push' }}
         run: |
           # type1: 传入的是单个 APP 路径
           # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
