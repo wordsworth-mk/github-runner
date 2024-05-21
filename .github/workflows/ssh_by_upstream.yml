@@ -1,5 +1,7 @@
 name: 🚧 __test_ssh_by_upstream
 
+# XXX 40分钟左右会自动断开
+
 on:
   workflow_dispatch:
 
