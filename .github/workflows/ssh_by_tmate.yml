@@ -2,6 +2,8 @@
 # https://github.com/marketplace/actions/debugging-with-tmate
 # https://github.com/marketplace/actions/debugging-with-ssh
 
+# XXX 40分钟左右会自动断开
+
 name: 🚧 ssh_by_tmate
 
 on:

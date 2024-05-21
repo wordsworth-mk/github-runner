@@ -1,6 +1,6 @@
 # https://zhuanlan.zhihu.com/p/387389708?utm_id=0
 
-# XXX 输入 exit 退出终端会断开连接，改动也会丢失
+# XXX 40分钟左右会自动断开
 
 name: 🚧 ssh_by_ngrok
 
@@ -25,7 +25,6 @@ jobs:
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
-        # # XXX 外部仓库拉取时才需要设置凭证
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
