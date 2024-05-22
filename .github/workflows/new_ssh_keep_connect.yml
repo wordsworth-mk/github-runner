@@ -43,10 +43,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: 安装第三方服务
-        run: |
-          bash mypy/3party/init.sh
-
       - name: 安装依赖程序
         if: ${{ ! inputs.SIMPLE_RUN }}
         uses: ConorMacBride/install-package@v1.1.0
@@ -66,12 +62,11 @@ jobs:
       ##################################################
       # 从这里开始是对服务器的配置
       ##################################################
-      # [阿里云盘命令行客户端](https://github.com/tickstep/aliyunpan)
-      - name: 安装 aliyunpan
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        run: |
-          sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
-          aliyunpan -v
+      # - name: 安装 aliyunpan
+      #   if: ${{ ! inputs.SIMPLE_RUN }}
+      #   run: |
+      #     sudo curl -fsSL http://file.tickstep.com/apt/pgp | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg > /dev/null && echo "deb [signed-by=/etc/apt/trusted.gpg.d/tickstep-packages-archive-keyring.gpg arch=amd64,arm64] http://file.tickstep.com/apt aliyunpan main" | sudo tee /etc/apt/sources.list.d/tickstep-aliyunpan.list > /dev/null && sudo apt-get update && sudo apt-get install -y aliyunpan
+      #     aliyunpan -v
 
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
@@ -91,6 +86,11 @@ jobs:
         run: |
           git config --global user.name "actions-user"
           git config --global user.email "actions-user@github.com"
+          git config --global --list
+
+      - name: 安装第三方服务
+        run: |
+          bash mypy/3party/init.sh
 
       - uses: fawazahmed0/action-debug@main
         with:
