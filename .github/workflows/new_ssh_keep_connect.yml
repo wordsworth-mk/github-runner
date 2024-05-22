@@ -48,6 +48,10 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: 安装第三方服务
+        run: |
+          bash mypy/3party/init.sh
+
       - name: 安装依赖程序
         if: ${{ ! inputs.SIMPLE_RUN }}
         uses: ConorMacBride/install-package@v1.1.0
@@ -75,16 +79,16 @@ jobs:
           aliyunpan -v
 
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
-      - name: 拉取 proxy_pool 代码
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        uses: actions/checkout@v4
-        env:
-          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        with:
-          token: ${{ env.MYPY_ACCESS_TOKEN }}
-          repository: jhao104/proxy_pool
-          # 只能下载到 $GITHUB_WORKSPACE 目录下
-          path: _3party/proxy_pool
+      # - name: 拉取 proxy_pool 代码
+      #   if: ${{ ! inputs.SIMPLE_RUN }}
+      #   uses: actions/checkout@v4
+      #   env:
+      #     MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      #   with:
+      #     token: ${{ env.MYPY_ACCESS_TOKEN }}
+      #     repository: jhao104/proxy_pool
+      #     # 只能下载到 $GITHUB_WORKSPACE 目录下
+      #     path: _3party/proxy_pool
 
       - uses: fawazahmed0/action-debug@main
         with:

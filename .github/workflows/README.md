@@ -13,6 +13,8 @@
 # redis_pool
 ################################
 
+sudo apt install redis
+
 sudo systemctl restart redis
 
 redis-cli --raw ping
