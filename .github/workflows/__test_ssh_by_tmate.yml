@@ -1,0 +1,24 @@
+# https://zhuanlan.zhihu.com/p/387389708?utm_id=0
+# https://github.com/marketplace/actions/debugging-with-tmate
+# https://github.com/marketplace/actions/debugging-with-ssh
+
+# XXX 40分钟左右会自动断开
+
+name: 🚧 ssh_by_tmate
+
+on:
+  workflow_dispatch:
+
+jobs:
+  SSH:
+    runs-on: ubuntu-latest
+    steps:
+      # 保持 SSH 长连接 touch /tmp/keepalive
+      # 会卡在这里等待链接，默认 15 分钟
+      # 可以在连接后通过 `touch /tmp/keepalive` 保持连接
+      - name: 创建 SSH 会话
+        uses: csexton/debugger-action@master
+
+      # 相比 csexton/debugger-action@master 安全一点，只能 github 上有密钥的机器访问
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
