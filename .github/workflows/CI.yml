@@ -105,3 +105,5 @@ jobs:
     with:
       # APPS_PATH: ${{ fromJSON(needs.get_apps.outputs.apps) }}
       APPS_PATH: mypy/apps
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
