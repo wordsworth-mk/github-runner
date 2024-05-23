@@ -1,0 +1,33 @@
+name: kind
+
+on: workflow_dispatch
+
+env:
+  KIND_BASE_PATH: ./00.kind
+
+jobs:
+  create-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/docker-compose
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1
+        with:
+          config: ${{env.KIND_BASE_PATH}}/kind-3nodes.yaml
+          cluster_name: test
+
+      - name: deploy simpleweb
+        run: |
+          bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
+
+      - name: test
+        run: |
+          kubectl get ns
+
+
