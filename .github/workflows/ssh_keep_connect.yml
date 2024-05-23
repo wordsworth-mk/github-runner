@@ -61,6 +61,7 @@ jobs:
 
       - name: 安装第三方服务
         if: ${{ ! inputs.SIMPLE_RUN }}
+        continue-on-error: true # 即使失败了也继续后续流程
         run: |
           bash mypy/3party/init.sh
 
