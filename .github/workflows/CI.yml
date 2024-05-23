@@ -31,7 +31,9 @@ jobs:
     name: 代码质量检查
     uses: wordsworth-mk/github-runner/.github/workflows/syntax_check.yml@main
     with:
-      APP_PATH: mypy
+      BASE_PATH: mypy
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
 
   ###########################################
   # 单元测试 和 代码覆盖率报告
