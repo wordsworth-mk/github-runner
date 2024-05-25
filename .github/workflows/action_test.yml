@@ -20,6 +20,7 @@ on:
         required: false
         default: true
       DOUYIN_ACCOUNT:
+        type: choice
         description: '选择抖音账号'
         required: true
         default: '大号'
