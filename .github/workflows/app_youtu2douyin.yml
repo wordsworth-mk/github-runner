@@ -2,7 +2,15 @@ name: 🟢 app_youtu2douyin
 
 on:
   workflow_dispatch:
+    # TODO 支持选择发布账号
     inputs:
+      DOUYIN_ACCOUNT:
+        type: choice
+        description: '选择抖音账号'
+        required: true
+        default: '大号'
+        options: ['大号', '中号']
+
       ARGS:
         description: |
             -m {loop,once,manual}

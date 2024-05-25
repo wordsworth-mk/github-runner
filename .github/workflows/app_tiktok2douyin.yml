@@ -10,6 +10,14 @@ on:
         type: string
         default: "-u "
 
+      DOUYIN_ACCOUNT:
+        type: choice
+        description: '选择抖音账号'
+        required: true
+        default: '大号'
+        options: ['大号', '中号']
+
+
 jobs:
   run:
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
