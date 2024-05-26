@@ -1,4 +1,4 @@
-name: 🟩 流水线功能测试
+name: 🟢 流水线功能测试
 
 on:
   # 该事件可以通过 API 触发
@@ -21,10 +21,10 @@ on:
         default: true
       DOUYIN_ACCOUNT:
         type: choice
-        description: '选择抖音账号'
+        description: "选择抖音账号"
         required: true
-        default: '大号'
-        options: ['大号', '中号']
+        default: "大号"
+        options: ["大号", "中号"]
 
 env:
   ENV: test

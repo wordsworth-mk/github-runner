@@ -1,4 +1,4 @@
-name: kind
+name: 🟢 kind
 
 on: workflow_dispatch
 
@@ -29,5 +29,3 @@ jobs:
       - name: test
         run: |
           kubectl get ns
-
-
