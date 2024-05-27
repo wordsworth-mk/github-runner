@@ -14,8 +14,6 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          config: ${{ secrets.CONFIG }} # ssh_config; optional
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
       - uses: actions/checkout@v4
