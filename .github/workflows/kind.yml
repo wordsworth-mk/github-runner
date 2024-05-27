@@ -20,6 +20,7 @@ jobs:
       - name: test
         run: |
           git clone git@github.com:M-Kepler/docker-compose
+          git clone git@github.com:M-Kepler/dotfiles
           ls -al
 
       - name: Create k8s Kind Cluster
