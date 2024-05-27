@@ -38,9 +38,20 @@ jobs:
           timezoneLinux: "Asia/Shanghai"
           timezoneWindows: "China Standard Time"
 
-      - name: 设置运行环境配置
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 拉取代码
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+
+      - name: 设置运行环境配置
+        run: |
           cd ~/dotfiles
           export MSYSTEM=1
           bash run.sh
@@ -96,15 +107,6 @@ jobs:
           git config --global user.name "actions-user"
           git config --global user.email "actions-user@github.com"
           git config --global --list
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          name: id_rsa
-          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-
 
       # - name: 设置 Bash
       #   run: |
