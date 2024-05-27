@@ -101,7 +101,7 @@ jobs:
         run: |
           git clone git@github.com:M-Kepler/dotfiles
           export MSYSTEM=1
-          cd doefiles
+          cd dotfiles
           bash run.sh
 
       # - name: 设置 Bash
