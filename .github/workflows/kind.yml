@@ -32,6 +32,7 @@ jobs:
 
       - name: deploy simpleweb
         run: |
+          kubectl create ns simpleweb-ns
           bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: test

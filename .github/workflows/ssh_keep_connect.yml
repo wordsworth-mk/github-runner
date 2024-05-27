@@ -83,37 +83,41 @@ jobs:
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
       # 而通过以下方式这不需要账密认证
 
-      # - name: 拉取 proxy_pool 代码
-      #   if: ${{ ! inputs.SIMPLE_RUN }}
-      #   uses: actions/checkout@v4
-      #   env:
-      #     MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-      #   with:
-      #     token: ${{ env.MYPY_ACCESS_TOKEN }}
-      #     repository: jhao104/proxy_pool
-      #     # 只能下载到 $GITHUB_WORKSPACE 目录下
-      #     path: _3party/proxy_pool
-
       - name: 配置 git 账号
         run: |
           git config --global user.name "actions-user"
           git config --global user.email "actions-user@github.com"
           git config --global --list
 
-      - name: 设置 Bash
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 设置运行环境配置
         run: |
-          cat << EOF >> ~/.bashrc
-          set -o vi
-          bind -m vi-insert '\c-l':clear-screen
-          alias ..="cd .."
-          alias ll='ls -l'
-          alias la='ls -A'
-          alias g='git'
-          alias cls='clear'
-          export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
-          EOF
-          # 连接后再执行才有用
-          source ~/.bashrc
+          git clone git@github.com:M-Kepler/dotfiles
+          export MSYSTEM=1
+          cd doefiles
+          bash run.sh
+
+      # - name: 设置 Bash
+      #   run: |
+      #     cat << EOF >> ~/.bashrc
+      #     set -o vi
+      #     bind -m vi-insert '\c-l':clear-screen
+      #     alias ..="cd .."
+      #     alias ll='ls -l'
+      #     alias la='ls -A'
+      #     alias g='git'
+      #     alias cls='clear'
+      #     export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
+      #     EOF
+      #     # 连接后再执行才有用
+      #     source ~/.bashrc
 
       - uses: fawazahmed0/action-debug@main
         with:
