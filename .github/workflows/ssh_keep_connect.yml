@@ -78,16 +78,27 @@ jobs:
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
-      # 删掉一些预装的软件，
-      - name: 清理磁盘
+      - name: before
         run: |
-          docker rmi `docker images -q`
-          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php
-          sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true
-          sudo -E apt-get -qq update
-          sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204)
-          sudo -E apt-get -qq autoremove --purge
-          sudo -E apt-get -qq clean
+          df -h
+
+      # 删掉一些预装的软件，
+      - name: Maximize build disk space
+        uses: easimon/maximize-build-space@v10
+
+      - name: after
+        run: |
+          df -h
+
+      # - name: 清理磁盘
+      #   run: |
+      #     docker rmi `docker images -q`
+      #     sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php
+      #     sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true
+      #     sudo -E apt-get -qq update
+      #     sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204)
+      #     sudo -E apt-get -qq autoremove --purge
+      #     sudo -E apt-get -qq clean
 
       - name: 安装第三方服务
         if: ${{ ! inputs.SIMPLE_RUN }}
