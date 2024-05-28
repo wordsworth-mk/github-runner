@@ -23,7 +23,7 @@ jobs:
   new_ssh_keep_connect:
     runs-on: ubuntu-latest
     steps:
-      - name: 拉取代码
+      - name: Checkout
         if: ${{ ! inputs.SIMPLE_RUN }}
         uses: actions/checkout@v4
         env:
@@ -46,7 +46,13 @@ jobs:
           known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
-      - name: 拉取代码
+      - name: 配置 git 账号
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions-user@github.com"
+          git config --global --list
+
+      - name: 拉取其他仓库
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
 
@@ -121,11 +127,6 @@ jobs:
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
       # 而通过以下方式这不需要账密认证
 
-      - name: 配置 git 账号
-        run: |
-          git config --global user.name "actions-user"
-          git config --global user.email "actions-user@github.com"
-          git config --global --list
 
       # - name: 设置 Bash
       #   run: |
