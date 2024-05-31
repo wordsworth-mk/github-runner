@@ -55,6 +55,11 @@ on:
         type: boolean
         required: false
         default: false
+      COMMIT_CHANGE:
+        description: "是否提交更改"
+        type: boolean
+        required: false
+        default: true
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
