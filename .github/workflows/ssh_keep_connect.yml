@@ -30,16 +30,16 @@ jobs:
           df -h
           echo "================================="
 
-          docker rmi `docker images -q`
-          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php
-          sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true
-          sudo -E apt-get -qq update
-          sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204)
-          sudo -E apt-get -qq autoremove --purge
-          sudo -E apt-get -qq clean
-          find . -maxdepth 1 -type d ! -name "Python" -exec rm -rf {} +
-          sudo -rf /usr/local/.ghcup
-          sudo rm -rf /usr/share/swift
+          docker rmi `docker images -q` > /dev/null 2>&1
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php > /dev/null 2>&1
+          sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true > /dev/null 2>&1
+          sudo -E apt-get -qq update > /dev/null 2>&1
+          sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204) > /dev/null 2>&1
+          sudo -E apt-get -qq autoremove --purge > /dev/null 2>&1
+          sudo -E apt-get -qq clean > /dev/null 2>&1
+          find . -maxdepth 1 -type d ! -name "Python" -exec rm -rf {} + > /dev/null 2>&1
+          sudo -rf /usr/local/.ghcup > /dev/null 2>&1
+          sudo rm -rf /usr/share/swift > /dev/null 2>&1
 
           echo "================================="
           echo "-----> 磁盘清理后 <-----"
