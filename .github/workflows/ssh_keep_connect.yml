@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 清理磁盘
+        if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           echo "================================="
           echo "-----> 磁盘清理前 <-----"
