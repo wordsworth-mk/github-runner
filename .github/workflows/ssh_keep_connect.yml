@@ -84,24 +84,13 @@ jobs:
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
-      - name: before
-        run: |
-          df -h
-
-      # # 删掉一些预装的软件，
-      # - name: Maximize build disk space
-      #   uses: easimon/maximize-build-space@v10
-      #   with:
-      #     root-reserve-mb: 512
-      #     swap-size-mb: 1024
-      #     remove-dotnet: 'true'
-      #     remove-codeql: 'true'
-      #     remove-android: 'true'
-      #     remove-haskell: 'true'
-      #     remove-docker-images: 'true'
-
       - name: 清理磁盘
         run: |
+          echo "================================="
+          echo "-----> 磁盘清理前 <-----"
+          df -h
+          echo "================================="
+
           docker rmi `docker images -q`
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php
           sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true
@@ -109,10 +98,12 @@ jobs:
           sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204)
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
+          sudo -rf /opt/hostedtoolcache/*
 
-      - name: after
-        run: |
+          echo "================================="
+          echo "-----> 磁盘清理后 <-----"
           df -h
+          echo "================================="
 
       - name: Checkout
         # uses 之后不能再用 run
@@ -137,7 +128,6 @@ jobs:
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
       # 而通过以下方式这不需要账密认证
 
-
       # - name: 设置 Bash
       #   run: |
       #     cat << EOF >> ~/.bashrc
@@ -155,4 +145,4 @@ jobs:
 
       - uses: fawazahmed0/action-debug@main
         with:
-            credentials: "user:password"
+          credentials: "user:password"
