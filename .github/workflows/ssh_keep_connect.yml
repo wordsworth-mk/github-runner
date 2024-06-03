@@ -32,7 +32,7 @@ jobs:
 
           docker rmi `docker images -q` > /dev/null 2>&1
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php > /dev/null 2>&1
-          sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true > /dev/null 2>&1
+          sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* > /dev/null 2>&1 || true
           sudo -E apt-get -qq update > /dev/null 2>&1
           # sudo -E apt-get -qq install libfuse-dev $(curl -fsSL git.io/depends-ubuntu-2204) > /dev/null 2>&1
           sudo -E apt-get -qq autoremove --purge > /dev/null 2>&1
