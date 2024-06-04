@@ -105,11 +105,6 @@ jobs:
         with:
           apt: ${{ env.DEPENDENT_BINARY }}
 
-      - name: 安装字体
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        run: |
-          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
-
       - name: 拉取 M-Kepler/Python
         if: ${{ ! inputs.SIMPLE_RUN }}
         uses: actions/checkout@v4
@@ -118,6 +113,11 @@ jobs:
         with:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
+
+      - name: 安装字体
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        run: |
+          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
         if: ${{ ! inputs.SIMPLE_RUN }}
