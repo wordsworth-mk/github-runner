@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Free Disk Space (Ubuntu)
+        if: ${{ ! inputs.SIMPLE_RUN }}
         uses: jlumbroso/free-disk-space@main
         with:
           # this might remove tools that are actually needed,
@@ -43,7 +44,6 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         continue-on-error: true
         run: |
-          set -x
           echo "================================="
           echo "-----> 磁盘清理前 <-----"
           df -h
@@ -58,21 +58,13 @@ jobs:
 
           # sudo find /opt/hostedtoolcache/* -maxdepth 1 -type d ! -name "Python" -exec rm -rf {} \; > /dev/null 2>&1
           # sudo -rf /usr/local/.ghcup > /dev/null 2>&1
+          sudo rm -rf /opt/hostedtoolcache/GraphQL/* > /dev/null 2>&1
           sudo rm -rf /usr/share/swift > /dev/null 2>&1
 
           echo "================================="
           echo "-----> 磁盘清理后 <-----"
           df -h
           echo "================================="
-
-      - name: Checkout
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        uses: actions/checkout@v4
-        env:
-          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        with:
-          token: ${{ env.MYPY_ACCESS_TOKEN }}
-          repository: M-Kepler/Python
 
       - name: 设置时区
         uses: szenius/set-timezone@v2.0
@@ -94,12 +86,9 @@ jobs:
           git config --global user.email "actions-user@github.com"
           git config --global --list
 
-      - name: 拉取其他仓库
-        run: |
-          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
-
       - name: 设置运行环境配置
         run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
           export MSYSTEM=1
           bash run.sh
@@ -120,6 +109,15 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 拉取 M-Kepler/Python
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        uses: actions/checkout@v4
+        env:
+          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ env.MYPY_ACCESS_TOKEN }}
+          repository: M-Kepler/Python
 
       - name: 初始化运行环境
         if: ${{ ! inputs.SIMPLE_RUN }}
