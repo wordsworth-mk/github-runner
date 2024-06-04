@@ -29,7 +29,7 @@ jobs:
           # this might remove tools that are actually needed,
           # if set to "true" but frees about 6 GB
           tool-cache: false
-        
+
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
           android: true
@@ -43,6 +43,7 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         continue-on-error: true
         run: |
+          set -x
           echo "================================="
           echo "-----> 磁盘清理前 <-----"
           df -h
@@ -55,9 +56,9 @@ jobs:
           sudo -E apt-get -qq autoremove --purge > /dev/null 2>&1
           sudo -E apt-get -qq clean > /dev/null 2>&1
 
-          # find /opt/hostedtoolcache/ -maxdepth 1 -type d ! -name "Python" -exec rm -rf {}\; > /dev/null 2>&1
-          # sudo -rf /usr/local/.ghcup > /dev/null 2>&1
-          # sudo rm -rf /usr/share/swift > /dev/null 2>&1
+          sudo find /opt/hostedtoolcache/* -maxdepth 1 -type d ! -name "Python" -exec rm -rf {} \; > /dev/null 2>&1
+          sudo -rf /usr/local/.ghcup > /dev/null 2>&1
+          sudo rm -rf /usr/share/swift > /dev/null 2>&1
 
           echo "================================="
           echo "-----> 磁盘清理后 <-----"
