@@ -23,6 +23,22 @@ jobs:
   new_ssh_keep_connect:
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
+        
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: 清理磁盘
         if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
@@ -118,21 +134,6 @@ jobs:
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
       # 而通过以下方式这不需要账密认证
-
-      - name: 设置 Bash
-        run: |
-          cat << EOF >> ~/.bashrc
-          set -o vi
-          bind -m vi-insert '\c-l':clear-screen
-          alias ..="cd .."
-          alias ll='ls -l'
-          alias la='ls -A'
-          alias g='git'
-          alias cls='clear'
-          export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ "
-          EOF
-          # 连接后再执行才有用
-          source ~/.bashrc
 
       - uses: fawazahmed0/action-debug@main
         with:
