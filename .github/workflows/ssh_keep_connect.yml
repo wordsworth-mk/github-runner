@@ -41,6 +41,7 @@ jobs:
 
       - name: 清理磁盘
         if: ${{ ! inputs.SIMPLE_RUN }}
+        continue-on-error: true
         run: |
           echo "================================="
           echo "-----> 磁盘清理前 <-----"
