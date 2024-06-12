@@ -34,14 +34,9 @@ jobs:
           config: ${{env.KIND_BASE_PATH}}/kind-3nodes.yaml
           cluster_name: test
 
-      # - name: deploy simpleweb
-      #   run: |
-      #     kubectl create ns simpleweb-ns
-      #     bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
-
-      - name: test
+      - name: 部署 simpleweb
         run: |
-          kubectl get ns
+          bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: debug
         uses: fawazahmed0/action-debug@main
