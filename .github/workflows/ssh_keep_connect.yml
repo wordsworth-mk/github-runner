@@ -13,11 +13,11 @@ on:
         required: false
         default: false
 
-  # 定时执行
-  schedule:
-    # 代表国际标准时间，实际北京时间需要 +8 小时
-    - cron: "30 01 * * *"
-    - cron: "30 07 * * *"
+  # # 定时执行
+  # schedule:
+  #   # 代表国际标准时间，实际北京时间需要 +8 小时
+  #   - cron: "30 01 * * *"
+  #   - cron: "30 07 * * *"
 
 env:
   FONT_DIR: mypy/assets/font
