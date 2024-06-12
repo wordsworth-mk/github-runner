@@ -17,12 +17,16 @@ jobs:
           known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
-      - name: test
+      - name: 设置运行环境配置
+        run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          cd ~/dotfiles
+          bash run.sh
+
+      - name: 拉取代码
         run: |
           git clone git@github.com:M-Kepler/docker-compose
-          git clone git@github.com:M-Kepler/dotfiles
           ls -al ./docker-compose/
-          ls -al ./dotfiles
 
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1
