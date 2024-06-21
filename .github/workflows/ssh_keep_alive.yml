@@ -12,6 +12,11 @@ on:
         description: "单纯起个 SSH"
         required: false
         default: false
+      FREE_DISK:
+        type: boolean
+        description: "释放磁盘空间"
+        required: false
+        default: false
 
   # # 定时执行
   # schedule:
@@ -35,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Free Disk Space (Ubuntu)
-        if: ${{ ! inputs.SIMPLE_RUN }}
+        if: ${{ ! inputs.SIMPLE_RUN || inputs.FREE_DISK }}
         uses: jlumbroso/free-disk-space@main
         with:
           # this might remove tools that are actually needed,
@@ -52,7 +57,7 @@ jobs:
           swap-storage: true
 
       - name: 清理磁盘
-        if: ${{ ! inputs.SIMPLE_RUN }}
+        if: ${{ ! inputs.SIMPLE_RUN || inputs.FREE_DISK }}
         continue-on-error: true
         run: |
           echo "================================="

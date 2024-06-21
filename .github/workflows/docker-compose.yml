@@ -1,0 +1,35 @@
+name: 🟢 docker-compose
+
+on: workflow_dispatch
+
+env:
+  BASE_PATH: ./docker-compose/
+
+jobs:
+  create-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 设置运行环境配置
+        run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          cd ~/dotfiles
+          bash run.sh
+
+      - name: 拉取代码
+        run: |
+          git clone git@github.com:M-Kepler/docker-compose
+          ls -al ./docker-compose/
+
+      - name: debug
+        uses: fawazahmed0/action-debug@main
+        with:
+            credentials: "user:password"
+
