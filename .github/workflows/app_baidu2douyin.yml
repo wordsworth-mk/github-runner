@@ -6,7 +6,7 @@ on:
       ARGS:
         description: |
           -m auto 表示自动模式，不需要确认 AI 生成的主题
-          -n 2 表示生成 PPT 数量 -d 表示 debug 模式，mypy/tools 下的配置运行
+          -n 2 表示生成 PPT 数量 -d 表示 debug 模式, 使用 mypy/tools 下的配置运行
         required: false
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
@@ -20,3 +20,5 @@ jobs:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}
       DEPENDENT_BINARY: "ffmpeg"
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
