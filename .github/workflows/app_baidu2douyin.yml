@@ -19,6 +19,5 @@ jobs:
     with:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}
-      DEPENDENT_BINARY: "ffmpeg"
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
