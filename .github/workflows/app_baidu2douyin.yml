@@ -22,7 +22,6 @@ on:
     # 每个月 1 号和 15 号执行
     - cron: "30 13 1,15 * *"
 
-
 jobs:
   run:
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
@@ -30,5 +29,7 @@ jobs:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}
       WITH_3PARTY: true
+    env:
+      IN_GITHUBACTION: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
