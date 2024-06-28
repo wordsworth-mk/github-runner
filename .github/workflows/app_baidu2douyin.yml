@@ -9,7 +9,7 @@ on:
              运行模式, -m auto 表示自动运行; -m manural 表示交互模式
 
           -n NUM, --num NUM
-             生成 PPT 数量
+             发布 N 天的视频
 
           -d, --debug
              调试，会拷贝 mypy/tools 下的配置过来
