@@ -68,10 +68,16 @@ jobs:
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
           # choco: ${{ inputs.DEPENDENT_BINARY }}
-      
+
       - name: 安装字体
         run: |
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+
+      - name: 安装第三方服务
+        if: ${{ inputs.WITH_3PARTY }}
+        continue-on-error: true
+        run: |
+          bash mypy/3party/init.sh
 
       - name: 初始化运行环境
         run: |
