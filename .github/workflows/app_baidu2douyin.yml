@@ -5,13 +5,19 @@ on:
     inputs:
       ARGS:
         description: |
-          -m auto 表示自动模式，不需要确认 AI 生成的主题
-          -n 2 表示生成 PPT 数量 -d 表示 debug 模式, 使用 mypy/tools 下的配置运行
+          -m {auto,manual}, --mode {auto,manual}
+             运行模式, -m auto 表示自动运行; -m manural 表示交互模式
+
+          -n NUM, --num NUM
+             生成 PPT 数量
+
+          -d, --debug
+             调试，会拷贝 mypy/tools 下的配置过来
         required: false
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
         # 这种方式就像终端输入命令一样的
-        default: "-m auto -n 2"
+        default: "-m auto -n 2 -d"
 
 jobs:
   run:
@@ -19,5 +25,6 @@ jobs:
     with:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}
+      WITH_3PARTY: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

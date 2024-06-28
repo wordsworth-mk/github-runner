@@ -14,10 +14,10 @@ on:
       ARGS:
         description: |
             -m {loop,once,manual}
-              运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
+               运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
 
             -t {channel,playlist}
-              视频合集类型(channel/playlist)
+               视频合集类型(channel/playlist)
 
             --publish
               执行发布操作（默认发布）

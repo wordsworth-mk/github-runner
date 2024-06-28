@@ -28,6 +28,11 @@ on:
         type: boolean
         required: false
         default: true
+      WITH_3PARTY:
+        description: "是否安装 3party 下的服务"
+        type: boolean
+        required: false
+        default: false
 
   # 流水线调用
   workflow_call:
@@ -60,6 +65,11 @@ on:
         type: boolean
         required: false
         default: true
+      WITH_3PARTY:
+        description: "是否安装 3party 下的服务"
+        type: boolean
+        required: false
+        default: false
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
@@ -104,6 +114,12 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
+
+      - name: 安装第三方服务
+        if: ${{ inputs.WITH_3PARTY }}
+        continue-on-error: true # 即使失败了也继续后续流程
+        run: |
+          bash mypy/3party/init.sh
 
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}
