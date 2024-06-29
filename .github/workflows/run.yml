@@ -125,12 +125,6 @@ jobs:
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
 
-      - name: 安装第三方服务
-        if: ${{ inputs.WITH_3PARTY }}
-        continue-on-error: true
-        run: |
-          bash mypy/3party/init.sh
-
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
@@ -139,6 +133,12 @@ jobs:
       - name: 初始化运行环境
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
+
+      - name: 安装第三方服务
+        if: ${{ inputs.WITH_3PARTY }}
+        continue-on-error: true
+        run: |
+          bash mypy/3party/init.sh
 
       - name: 调试
         if: ${{ inputs.DEBUG }}
