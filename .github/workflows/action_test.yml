@@ -25,6 +25,11 @@ on:
         required: true
         default: "大号"
         options: ["大号", "中号"]
+      DEBUG:
+        description: "是否 detach 到虚拟机"
+        type: boolean
+        required: false
+        default: false
 
 env:
   ENV: test
@@ -68,6 +73,6 @@ jobs:
       SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
       # COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE || false }}
       COMMIT_CHANGE: false
-      DEBUG: true
+      DEBUG: ${{ inputs.DEBUG }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
