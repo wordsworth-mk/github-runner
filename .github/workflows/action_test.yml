@@ -67,3 +67,12 @@ jobs:
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
       SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
       COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE }}
+
+    - name: sleep
+      run: |
+        sleep 10000
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      with:
+        detached: true
