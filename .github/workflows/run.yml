@@ -33,7 +33,7 @@ on:
         type: boolean
         required: false
         default: false
-      DEUBG:
+      DEBUG:
         description: "支持连接到虚拟机"
         type: boolean
         required: false
@@ -75,7 +75,7 @@ on:
         type: boolean
         required: false
         default: false
-      DEUBG:
+      DEBUG:
         description: "支持连接到虚拟机"
         type: boolean
         required: false
