@@ -17,7 +17,7 @@ on:
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
         # 这种方式就像终端输入命令一样的
-        default: "-m auto -n 2 -d"
+        default: "-n 2 -d"
   schedule:
     # 每个月 1 号和 15 号执行
     - cron: "30 13 1,15 * *"
