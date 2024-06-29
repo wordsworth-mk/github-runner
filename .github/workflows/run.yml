@@ -33,6 +33,11 @@ on:
         type: boolean
         required: false
         default: false
+      DEUBG:
+        description: "支持连接到虚拟机"
+        type: boolean
+        required: false
+        default: false
 
   # 流水线调用
   workflow_call:
@@ -67,6 +72,11 @@ on:
         default: true
       WITH_3PARTY:
         description: "是否安装 3party 下的服务"
+        type: boolean
+        required: false
+        default: false
+      DEUBG:
+        description: "支持连接到虚拟机"
         type: boolean
         required: false
         default: false
@@ -129,6 +139,12 @@ jobs:
       - name: 初始化运行环境
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
+
+      - name: 调试
+        if: ${{ inputs.DEBUG }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
 
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
