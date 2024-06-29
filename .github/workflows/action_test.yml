@@ -61,12 +61,12 @@ jobs:
 
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
-    with:
-      APP: test_app
-      ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
-      SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
-      COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE }}
+    - uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+      with:
+        APP: test_app
+        ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
+        SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
+        COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE }}
 
     - name: sleep
       run: |
