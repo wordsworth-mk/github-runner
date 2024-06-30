@@ -31,6 +31,5 @@ jobs:
     with:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}
-      WITH_3PARTY: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

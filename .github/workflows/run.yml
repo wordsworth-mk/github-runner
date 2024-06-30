@@ -74,7 +74,7 @@ on:
         description: "是否安装 3party 下的服务"
         type: boolean
         required: false
-        default: false
+        default: true
       DEBUG:
         description: "支持连接到虚拟机"
         type: boolean
