@@ -92,6 +92,7 @@ env:
   APP_ENTRY: main.py
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
+  IN_GITHUBACTION: true
 
 jobs:
   run:

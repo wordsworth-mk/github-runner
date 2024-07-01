@@ -22,19 +22,26 @@ on:
     # 每个月 1 号和 15 号执行
     - cron: "30 13 1,15 * *"
 
+env:
+  IN_GITHUBACTION: true
+
 jobs:
-  run:
+
+  set_run_env:
     runs-on: ubuntu-latest
+    outputs:
+      env_var: ${{ env.IN_GITHUBACTION }}
     steps:
-      - name: set_env
+      - name: Set Env
         env:
           IN_GITHUBACTION: true
-        run: |
-          echo $IN_GITHUBACTION
-      - name: run_app
-        uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
-        with:
-          APP: baidu2douyin
-          ARGS: ${{ inputs.ARGS }}
-        secrets:
-          MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
+        run: echo "::set-output name=env_var::$IN_GITHUBACTION"
+
+  run_app:
+    needs: [set_run_env]
+    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    with:
+      APP: baidu2douyin
+      ARGS: ${{ inputs.ARGS }}
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
