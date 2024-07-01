@@ -24,15 +24,17 @@ on:
 
 jobs:
   run:
-    - name: set_env
-      env:
-        IN_GITHUBACTION: true
-      run: |
-        echo $IN_GITHUBACTION
-    - name: run
-      uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
-      with:
-        APP: baidu2douyin
-        ARGS: ${{ inputs.ARGS }}
-      secrets:
-        MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
+    runs-on: ubuntu-latest
+      steps:
+        - name: set_env
+          env:
+            IN_GITHUBACTION: true
+          run: |
+            echo $IN_GITHUBACTION
+        - name: run
+          uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+          with:
+            APP: baidu2douyin
+            ARGS: ${{ inputs.ARGS }}
+          secrets:
+            MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
