@@ -22,21 +22,7 @@ on:
     # 每个月 1 号和 15 号执行
     - cron: "30 13 1,15 * *"
 
-env:
-  IN_GITHUBACTION: true
-
 jobs:
-
-  set_run_env:
-    runs-on: ubuntu-latest
-    outputs:
-      env_var: ${{ env.IN_GITHUBACTION }}
-    steps:
-      - name: Set Env
-        env:
-          IN_GITHUBACTION: true
-        run: echo "::set-output name=env_var::$IN_GITHUBACTION"
-
   run_app:
     needs: [set_run_env]
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
