@@ -143,11 +143,11 @@ jobs:
 
       # 在流水线执行脚本创建的文件夹都是 root 权限，而通过 action-debug 进入环境时 docker:runner 权限
       # 会导致无法操作这些文件或目录
-      # - name: 安装第三方服务
-      #   if: ${{ ! inputs.SIMPLE_RUN }}
-      #   continue-on-error: true # 即使失败了也继续后续流程
-      #   run: |
-      #     bash mypy/3party/init.sh
+      - name: 安装第三方服务
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        continue-on-error: true # 即使失败了也继续后续流程
+        run: |
+          bash mypy/3party/init.sh
 
       ##################################################
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
