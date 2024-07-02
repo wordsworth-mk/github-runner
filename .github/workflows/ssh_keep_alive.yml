@@ -149,6 +149,12 @@ jobs:
         run: |
           bash mypy/3party/init.sh
 
+      - name: 创建软链
+        continue-on-error: true # 即使失败了也继续后续流程
+        run: |
+          ln -s $GITHUB_WORKSPACE ./my
+
+
       ##################################################
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
