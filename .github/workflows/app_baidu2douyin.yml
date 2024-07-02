@@ -24,7 +24,6 @@ on:
 
 jobs:
   run_app:
-    needs: [set_run_env]
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
       APP: baidu2douyin
