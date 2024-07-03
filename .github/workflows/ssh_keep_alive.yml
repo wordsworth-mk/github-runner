@@ -152,7 +152,7 @@ jobs:
       - name: 创建软链
         continue-on-error: true # 即使失败了也继续后续流程
         run: |
-          ln -s $GITHUB_WORKSPACE ./my
+          ln -s $GITHUB_WORKSPACE ~/my
 
 
       ##################################################
