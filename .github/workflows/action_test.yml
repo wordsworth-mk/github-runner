@@ -50,13 +50,16 @@ env:
   ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.PUBLISH_PLATFORMS || 'douyin' }}
 
 jobs:
-  echo-env:
-    - name: set_env
-      env:
-        IN_GITHUBACTION: true
-      run: |
-        echo $ENV_PUBLISH_PLATFORMS
-        echo $IN_GITHUBACTION
+  job-1:
+    name: set_env
+    runs-on: ubuntu-latest
+    steps:
+      - name: set_env
+        env:
+          IN_GITHUBACTION: true
+        run: |
+          echo $ENV_PUBLISH_PLATFORMS
+          echo $IN_GITHUBACTION
 
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
