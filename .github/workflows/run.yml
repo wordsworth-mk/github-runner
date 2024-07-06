@@ -96,8 +96,8 @@ env:
 
 jobs:
   run:
+    name: 🔴🟡🟢 运行 🟢🟡🔴
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         # uses 之后不能再用 run
