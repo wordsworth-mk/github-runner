@@ -32,7 +32,7 @@ on:
         description: "选择发布时间模式"
         required: false
         default: "timing"
-        potions:
+        options:
           - "now"
           - "timing"
 
