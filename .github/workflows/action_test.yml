@@ -14,17 +14,27 @@ on:
         required: false
         type: string
         default: ""
+
       SIMPLE_RUN:
         description: "是否简单运行（不安装程序依赖和字体）"
         type: boolean
         required: false
         default: true
+
+      PUBLISH_PLATFORMS:
+        type: multi-choice
+        description: "选择发布平台"
+        required: true
+        default: "douyin"
+        options: ["大号", "中号", "测试账号"]
+
       DOUYIN_ACCOUNT:
         type: choice
         description: "选择抖音账号"
         required: true
         default: "大号"
-        options: ["大号", "中号"]
+        options: ["大号", "中号", "测试账号"]
+
       DEBUG:
         description: "是否 detach 到虚拟机"
         type: boolean
