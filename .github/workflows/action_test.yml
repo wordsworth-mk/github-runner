@@ -26,7 +26,10 @@ on:
         description: "选择发布平台"
         required: true
         default: "douyin"
-        options: ["大号", "中号", "测试账号"]
+        options:
+          - "大号"
+          - "中号"
+          - "测试账号"
 
       DOUYIN_ACCOUNT:
         type: choice
