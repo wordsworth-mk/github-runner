@@ -47,35 +47,13 @@ on:
 env:
   ENV: test
   APP_BASE_PATH: mypy/apps
+  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.PUBLISH_PLATFORMS || 'douyin' }}
 
 jobs:
-  # 单元测试
-  # unittest_and_coverage:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Check timezone
-  #       run: |
-  #         date
-
-  #     - name: Set timezone
-  #       uses: szenius/set-timezone@v1.2
-  #       with:
-  #         timezoneLinux: "Asia/Singapore"
-  #         timezoneMacos: "Asia/Singapore"
-  #         timezoneWindows: "Asia/Singapore"
-
-  #     - name: Check timezone after set-timezone
-  #       run: |
-  #         date
-
-  # 打包
-  # package:
-  #   needs:
-  #     - unittest_and_coverage
-  #   uses: M-Kepler/Python/.github/workflows/package.yml@master
-  #   with:
-  #     APPS_PATH: mypy/apps # ${{ env.APP_BASE_PATH }}
+  echo-env:
+    name: 🟢 输出环境变量
+    run: |
+      echo $ENV_PUBLISH_PLATFORMS
 
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
