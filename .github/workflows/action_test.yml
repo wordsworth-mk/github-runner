@@ -51,9 +51,12 @@ env:
 
 jobs:
   echo-env:
-    name: 🟢 输出环境变量
-    run: |
-      echo $ENV_PUBLISH_PLATFORMS
+    - name: set_env
+      env:
+        IN_GITHUBACTION: true
+      run: |
+        echo $ENV_PUBLISH_PLATFORMS
+        echo $IN_GITHUBACTION
 
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
