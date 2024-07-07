@@ -30,7 +30,7 @@ on:
         type: choice
         description: "选择抖音账号"
         required: false
-        default: "large"
+        default: "test"
         options:
           - "large" # 大号
           - "middle" # 中号
