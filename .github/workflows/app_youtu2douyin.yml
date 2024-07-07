@@ -1,15 +1,13 @@
 name: 🟢 app_youtu2douyin
 
 on:
+  # 定时执行
+  schedule:
+    # 代表国际标准时间，实际北京时间需要 +8 小时
+    - cron: "30 13 * * *"
+
   workflow_dispatch:
     inputs:
-      DOUYIN_ACCOUNT:
-        type: choice
-        description: "选择抖音账号"
-        required: true
-        default: "大号"
-        options: ["大号", "中号"]
-
       ARGS:
         description: |
           -m {loop,once,manual}
@@ -33,10 +31,37 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-m manual "
 
-  # 定时执行
-  schedule:
-    # 代表国际标准时间，实际北京时间需要 +8 小时
-    - cron: "30 13 * * *"
+      # github action 还不支持复选框
+      ENV_PUBLISH_PLATFORMS:
+        type: string
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        required: false
+        default: "douyin,wechat"
+
+      ENV_PUBLISH_MOD:
+        type: choice
+        description: "选择发布时间模式"
+        required: false
+        default: "timing"
+        options:
+          - "now"
+          - "timing"
+
+      ENV_DOUYIN_PUBLISH_ACCOUNT:
+        type: choice
+        description: "选择抖音账号"
+        required: false
+        default: "large"
+        options:
+          - "large" # 大号
+          - "middle" # 中号
+          - "test" # 测试账号
+
+env:
+  # 把 github action 的 input 设置到环境变量中
+  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
+  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
 
 jobs:
   run:

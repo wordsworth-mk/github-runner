@@ -1,6 +1,10 @@
 name: 🟢 app_baidu2douyin
 
 on:
+  schedule:
+    # 每个月 1 号和 15 号的 21 点 30 分执行
+    - cron: "30 13 1,15 * *"
+
   workflow_dispatch:
     inputs:
       ARGS:
@@ -44,10 +48,6 @@ on:
           - "large" # 大号
           - "middle" # 中号
           - "test" # 测试账号
-
-  schedule:
-    # 每个月 1 号和 15 号的 21 点 30 分执行
-    - cron: "30 13 1,15 * *"
 
 env:
   # 把 github action 的 input 设置到环境变量中
