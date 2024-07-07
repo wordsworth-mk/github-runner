@@ -21,7 +21,7 @@ on:
         required: false
         default: true
 
-      ENV_TO_PLATFORMS:
+      ENV_PUBLISH_PLATFORMS:
         type: string
         description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
         required: false
@@ -57,12 +57,12 @@ env:
   APP_BASE_PATH: mypy/apps
   # 把 github action 的 input 设置到环境变量中
   ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
-  ENV_TO_PLATFORMS: ${{ github.event.inputs.ENV_TO_PLATFORMS }}
+  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
   ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
 
 jobs:
   job-1:
-    name: set_env
+    name: echo_env
     runs-on: ubuntu-latest
     steps:
       - name: set_env
