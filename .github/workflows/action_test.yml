@@ -56,16 +56,15 @@ env:
   ENV_RUN_ENVIRONMENT: pytest
   APP_BASE_PATH: mypy/apps
   # 把 github action 的 input 设置到环境变量中
+  # ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+  # ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
 
 jobs:
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
-      env:
-        ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
-        ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-        ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
+      ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       APP: test_app
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
       SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
