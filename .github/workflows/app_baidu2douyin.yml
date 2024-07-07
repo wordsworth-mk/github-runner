@@ -19,6 +19,7 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-n 2 -d"
 
+      # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
         type: string
         description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
@@ -34,15 +35,15 @@ on:
           - "now"
           - "timing"
 
-      ENV_DOUYIN_ACCOUNT:
+      ENV_DOUYIN_PUBLISH_ACCOUNT:
         type: choice
         description: "选择抖音账号"
         required: false
-        default: "大号"
+        default: "large"
         options:
-          - "大号"
-          - "中号"
-          - "测试账号"
+          - "large" # 大号
+          - "middle" # 中号
+          - "test" # 测试账号
 
   schedule:
     # 每个月 1 号和 15 号的 21 点 30 分执行
@@ -52,7 +53,7 @@ env:
   # 把 github action 的 input 设置到环境变量中
   ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
   ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-  ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
+  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
 
 jobs:
   run_app:

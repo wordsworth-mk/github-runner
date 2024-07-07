@@ -79,11 +79,11 @@ on:
         required: false
         default: "timing"
 
-      ENV_DOUYIN_ACCOUNT:
+      ENV_DOUYIN_PUBLISH_ACCOUNT:
         type: string
-        description: "选择抖音账号"
+        description: "选择抖音账号（可选: large 大号, middle 中号, test 测试账号）"
         required: false
-        default: "大号"
+        default: "large"
 
       ARGS:
         description: "应用参数"
@@ -148,7 +148,7 @@ env:
   ENV_IN_GITHUBACTION: true
   ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
   ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-  ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
+  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
 
 jobs:
   run:
