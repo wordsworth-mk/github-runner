@@ -126,13 +126,6 @@ on:
         required: false
         default: false
 
-      # WARNNING: 调用方设置的环境变量无法传递到被调用方
-      # 只能通过输入或外部环境变量（仓库）来传递
-      ENV_STR:
-        description: "环境变量"
-        type: string
-        required: false
-
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
       MYPY_ACCESS_TOKEN:
