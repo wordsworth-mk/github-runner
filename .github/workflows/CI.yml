@@ -45,7 +45,7 @@ jobs:
       - syntax_check
 
     uses: wordsworth-mk/github-runner/.github/workflows/unittest.yml@main
-    # 要在 with 子句中传递环境变量，您应该使用 secrets 或 inputs
+    # NOTICE 要在 with 子句中传递环境变量，您应该使用 secrets 或 inputs
     with:
       CASE_PATH: mypy/tests
       # 依赖的二进制文件

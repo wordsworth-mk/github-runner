@@ -1,6 +1,6 @@
 name: 📦 打包发布
 
-# FIXME windows 环境下打出来的包都很小，跑不起来
+# FIXME windows 环境下打出来的包跑不起来
 
 on:
   workflow_dispatch:

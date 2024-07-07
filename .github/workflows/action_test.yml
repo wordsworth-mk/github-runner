@@ -53,7 +53,7 @@ on:
         default: false
 
 env:
-  ENV: test
+  ENV_RUN_ENVIRONMENT: pytest
   APP_BASE_PATH: mypy/apps
   # 把 github action 的 input 设置到环境变量中
   ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
@@ -65,7 +65,7 @@ jobs:
     name: echo_env
     runs-on: ubuntu-latest
     steps:
-      - name: set_env
+      - name: echo_env
         env:
           IN_GITHUBACTION: true
         run: |
