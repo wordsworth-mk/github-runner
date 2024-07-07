@@ -1,3 +1,7 @@
+##########################################
+# 也可以直接用这个流水线运行 app
+##########################################
+
 name: 🚚 运行应用
 
 on:
@@ -9,30 +13,36 @@ on:
         required: true
         type: string
         default: "test_app"
+
       ARGS:
         description: "应用参数"
         type: string
         required: false
+
       DEPENDENT_BINARY:
         description: "依赖的二进制程序"
         type: string
         required: false
         default: "ffmpeg unoconv libreoffice poppler-utils"
+
       SIMPLE_RUN:
         description: "是否简单运行（不安装程序依赖和字体）"
         type: boolean
         required: false
         default: true
+
       COMMIT_CHANGE:
         description: "是否提交更改"
         type: boolean
         required: false
         default: true
+
       WITH_3PARTY:
         description: "是否安装 3party 下的服务"
         type: boolean
         required: false
         default: false
+
       DEBUG:
         description: "支持连接到虚拟机"
         type: boolean
@@ -46,40 +56,54 @@ on:
         description: "mypy/apps 下的应用名称"
         required: true
         type: string
+
       ARGS:
         description: "应用参数"
         type: string
         required: false
+
       SIMPLE_RUN:
         description: "是否安装程序依赖和字体"
         type: boolean
         required: false
         default: false
+
       DEPENDENT_BINARY:
         description: "依赖的二进制程序"
         type: string
         required: false
         default: "ffmpeg unoconv libreoffice poppler-utils"
+
       FORCE_COMMIT:
         description: "不管是否运行成功，都提交改动的信息"
         type: boolean
         required: false
         default: false
+
       COMMIT_CHANGE:
         description: "是否提交更改"
         type: boolean
         required: false
         default: true
+
       WITH_3PARTY:
         description: "是否安装 3party 下的服务"
         type: boolean
         required: false
         default: true
+
       DEBUG:
         description: "支持连接到虚拟机"
         type: boolean
         required: false
         default: false
+
+      # WARNNING: 调用方设置的环境变量无法传递到被调用方
+      # 只能通过输入或外部环境变量（仓库）来传递
+      ENV:
+        description: "环境变量"
+        type: environment
+        required: false
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:

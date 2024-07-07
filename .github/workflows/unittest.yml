@@ -7,14 +7,17 @@ on:
       CASE_PATH:
         required: true
         type: string
+
       # 依赖的软件
       DEPENDENT_BINARY:
         required: true
         type: string
-      # 调过的 pytest 用例标记
+
+      # 跳过的 pytest 用例标记
       NOT_RUN_MARK:
         required: true
         type: string
+
     # 可重用流水线不可以直接读入 secrets，需要由调用方传入 https://www.5axxw.com/questions/content/v8jtsq
     secrets:
       ACTIONS_DEPLOY_KEY:
