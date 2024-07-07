@@ -74,23 +74,14 @@ on:
         default: "douyin,wechat"
 
       ENV_PUBLISH_MOD:
-        type: choice
         description: "选择发布时间模式"
         required: false
         default: "timing"
-        options:
-          - "now"
-          - "timing"
 
       ENV_DOUYIN_ACCOUNT:
-        type: choice
         description: "选择抖音账号"
         required: false
         default: "大号"
-        options:
-          - "大号"
-          - "中号"
-          - "测试账号"
 
       ARGS:
         description: "应用参数"
