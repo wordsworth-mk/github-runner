@@ -66,6 +66,32 @@ on:
         required: true
         type: string
 
+      # 设置到环境变量
+      ENV_PUBLISH_PLATFORMS:
+        type: string
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        required: false
+        default: "douyin,wechat"
+
+      ENV_PUBLISH_MOD:
+        type: choice
+        description: "选择发布时间模式"
+        required: false
+        default: "timing"
+        options:
+          - "now"
+          - "timing"
+
+      ENV_DOUYIN_ACCOUNT:
+        type: choice
+        description: "选择抖音账号"
+        required: false
+        default: "大号"
+        options:
+          - "大号"
+          - "中号"
+          - "测试账号"
+
       ARGS:
         description: "应用参数"
         type: string
@@ -109,9 +135,9 @@ on:
 
       # WARNNING: 调用方设置的环境变量无法传递到被调用方
       # 只能通过输入或外部环境变量（仓库）来传递
-      ENV_OBJ:
+      ENV_STR:
         description: "环境变量"
-        type: array
+        type: string
         required: false
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
@@ -124,8 +150,12 @@ env:
   APP_BASE_PATH: mypy/apps
   APP_ENTRY: main.py
   FONT_DIR: mypy/assets/font
+  # 环境变量
   ENV_INIT_SCRIPT: mypy/env_init.sh
   ENV_IN_GITHUBACTION: true
+  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
+  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+  ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
 
 jobs:
   run:
@@ -134,18 +164,6 @@ jobs:
     steps:
       - name: 设置输入的环境变量
         run: |
-          sudo apt install yq
-          sudo apt install jq
-          # 使用yq工具将YAML对象转换为JSON
-          # 需要先安装yq工具，可以使用apt-get install yq或预先安装的镜像
-          json_obj=$(echo "${{ inputs.ENV_OBJ }}" | yq e '.' -)
-
-          # 解析JSON对象并设置环境变量
-          for key in $(echo "${json_obj}" | jq -r 'keys[]'); do
-            value=$(echo "${json_obj}" | jq -r --arg key "$key" '.[$key]')
-            echo "Setting $key=$value"
-            echo "$key=$value" >> $GITHUB_ENV
-          done
 
       - name: Checkout
         # uses 之后不能再用 run
