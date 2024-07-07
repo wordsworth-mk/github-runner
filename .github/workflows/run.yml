@@ -6,8 +6,16 @@ name: 🚚 运行应用
 
 on:
   # 手动触发
+  # workflow_dispatch 才支持 environment 类型的变量
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputsinput_idtype
   workflow_dispatch:
     inputs:
+      ENV_PUBLISH_PLATFORMS:
+        type: environment
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        required: false
+        default: "douyin,wechat"
+
       APP:
         description: "mypy/apps 下的应用名称"
         required: true
