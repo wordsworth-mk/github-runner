@@ -74,11 +74,13 @@ on:
         default: "douyin,wechat"
 
       ENV_PUBLISH_MOD:
+        type: string
         description: "选择发布时间模式"
         required: false
         default: "timing"
 
       ENV_DOUYIN_ACCOUNT:
+        type: string
         description: "选择抖音账号"
         required: false
         default: "大号"
