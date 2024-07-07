@@ -100,9 +100,9 @@ on:
 
       # WARNNING: 调用方设置的环境变量无法传递到被调用方
       # 只能通过输入或外部环境变量（仓库）来传递
-      ENV:
+      ENV_OBJ:
         description: "环境变量"
-        type: environment
+        type: object
         required: false
 
     # 外部调用的时候提供 token 用来拉取本私有仓库
@@ -123,6 +123,21 @@ jobs:
     name: 🔴🟡🟢 运行 🟢🟡🔴
     runs-on: ubuntu-latest
     steps:
+      - name: 设置输入的环境变量
+        run: |
+          sudo apt install yq
+          sudo apt install jq
+          # 使用yq工具将YAML对象转换为JSON
+          # 需要先安装yq工具，可以使用apt-get install yq或预先安装的镜像
+          json_obj=$(echo "${{ inputs.ENV_OBJ }}" | yq e '.' -)
+
+          # 解析JSON对象并设置环境变量
+          for key in $(echo "${json_obj}" | jq -r 'keys[]'); do
+            value=$(echo "${json_obj}" | jq -r --arg key "$key" '.[$key]')
+            echo "Setting $key=$value"
+            echo "$key=$value" >> $GITHUB_ENV
+          done
+
       - name: Checkout
         # uses 之后不能再用 run
         uses: actions/checkout@v4
