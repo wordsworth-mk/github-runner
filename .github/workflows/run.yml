@@ -6,8 +6,8 @@ name: 🚚 运行应用
 
 on:
   # 手动触发
+  # [支持的变量类型](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputsinput_idtype)
   # workflow_dispatch 才支持 environment 类型的变量
-  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputsinput_idtype
   workflow_dispatch:
     inputs:
       ENV_PUBLISH_PLATFORMS:
@@ -58,6 +58,7 @@ on:
         default: false
 
   # 流水线调用
+  # [支持的变量类型](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputsinput_idtype)
   workflow_call:
     inputs:
       APP:
