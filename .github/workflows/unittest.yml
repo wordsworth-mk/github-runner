@@ -24,7 +24,7 @@ on:
         required: false
 
 env:
-  ENV: test
+  ENV_RUN_ENVIRONMENT: pytest
   ENV_INIT_SCRIPT: mypy/env_init.sh
 
 jobs:

@@ -2,31 +2,30 @@ name: 🟢 app_youtu2douyin
 
 on:
   workflow_dispatch:
-    # TODO 支持选择发布账号
     inputs:
       DOUYIN_ACCOUNT:
         type: choice
-        description: '选择抖音账号'
+        description: "选择抖音账号"
         required: true
-        default: '大号'
-        options: ['大号', '中号']
+        default: "大号"
+        options: ["大号", "中号"]
 
       ARGS:
         description: |
-            -m {loop,once,manual}
-               运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
+          -m {loop,once,manual}
+             运行模式, -m loop 表示持续监控; -m once 表示运行一次; -m manual 表示手动触发
 
-            -t {channel,playlist}
-               视频合集类型(channel/playlist)
+          -t {channel,playlist}
+             视频合集类型(channel/playlist)
 
-            --publish
-              执行发布操作（默认发布）
+          --publish
+            执行发布操作（默认发布）
 
-            --no-publish
-              不执行发布操作
+          --no-publish
+            不执行发布操作
 
-            -f
-              不管是否已经发布过，都强制发布该视频
+          -f
+            不管是否已经发布过，都强制发布该视频
 
         required: false
         type: string
