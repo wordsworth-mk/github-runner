@@ -74,10 +74,10 @@ jobs:
 
       - name: 打包
         run: |
-          # type1: 传入的是单个 APP 路径
+          # 方式1: 传入的是单个 APP 路径
           # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
 
-          # type2: 传入的是 APP 父目录
+          # 方式2: 传入的是 APP 父目录
           # echo ${{ inputs.APPS_PATH }}
           # for app in $(ls ${{ inputs.APPS_PATH }}); do
           #     if [ ! -f mypy/apps/$app/main.py ]; then
@@ -91,7 +91,7 @@ jobs:
           # echo "打包完成: $artifat_path"
           # echo "================================================"
 
-          # type3: 执行外部脚本进行打包
+          # 方式3: 执行外部脚本进行打包
           # bash mypy/build/batch_build.sh
 
           test_app="mypy/apps/test_app"
