@@ -16,7 +16,7 @@ on:
         type: string
         description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
         required: false
-        default: "douyin,wechat"
+        default: "douyin"
 
       APP:
         description: "mypy/apps 下的应用名称"
@@ -73,7 +73,7 @@ on:
         type: string
         description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
         required: false
-        default: "douyin,wechat"
+        default: "douyin"
 
       ENV_PUBLISH_MOD:
         type: string
