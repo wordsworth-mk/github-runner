@@ -2,7 +2,7 @@
 
 # XXX 40分钟左右会自动断开
 
-name: 🚧 ssh_by_ngrok
+name: 90. 🚧 ssh_by_ngrok
 
 on:
   workflow_dispatch:

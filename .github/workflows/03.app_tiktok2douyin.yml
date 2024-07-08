@@ -1,27 +1,14 @@
-name: 🟢 app_baidu2douyin
+name: 03. 🟢 app_tiktok2douyin
 
 on:
-  schedule:
-    # 每个月 1 号和 15 号的 21 点 30 分执行
-    - cron: "30 13 1,15 * *"
-
   workflow_dispatch:
     inputs:
       ARGS:
         description: |
-          -m {auto,manual}, --mode {auto,manual}
-             运行模式, -m auto 表示自动运行; -m manural 表示交互模式
-
-          -n NUM, --num NUM
-             发布 N 天的视频
-
-          -d, --debug
-             调试，会拷贝 mypy/tools 下的配置过来
+          -u https://xxx
         required: false
         type: string
-        # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
-        # 这种方式就像终端输入命令一样的
-        default: "-d -n 1"
+        default: "-u "
 
       # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
@@ -43,7 +30,7 @@ on:
         type: choice
         description: "选择抖音账号"
         required: false
-        default: "middle"
+        default: "test"
         options:
           - "large" # 大号
           - "middle" # 中号
@@ -56,10 +43,12 @@ env:
   ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
 
 jobs:
-  run_app:
+  run:
     uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
     with:
-      APP: baidu2douyin
+      APP: tiktok2douyin
+      # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: ${{ inputs.ARGS }}
+      DEPENDENT_BINARY: "ffmpeg"
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

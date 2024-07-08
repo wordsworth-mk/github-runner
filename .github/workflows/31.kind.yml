@@ -1,9 +1,9 @@
-name: 🟢 docker-compose
+name: 31. 🟢 kind
 
 on: workflow_dispatch
 
 env:
-  BASE_PATH: ./docker-compose/
+  KIND_BASE_PATH: ./docker-compose/00.kind
 
 jobs:
   create-cluster:
@@ -27,6 +27,16 @@ jobs:
         run: |
           git clone git@github.com:M-Kepler/docker-compose
           ls -al ./docker-compose/
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1
+        with:
+          config: ${{env.KIND_BASE_PATH}}/kind-3nodes.yaml
+          cluster_name: test
+
+      - name: 部署 simpleweb
+        run: |
+          bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: debug
         uses: fawazahmed0/action-debug@main
