@@ -2,7 +2,7 @@
 # 也可以直接用这个流水线运行 app
 ##########################################
 
-name: 09. 🚚 运行应用
+name: 24. 🚚 运行应用
 
 on:
   # 手动触发
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       ENV_PUBLISH_PLATFORMS:
-        type: environment
+        type: string
         description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
         required: false
         default: "douyin,wechat"
