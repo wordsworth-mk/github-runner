@@ -29,7 +29,7 @@ env:
   APP_BASE_PATH: mypy/apps
   PACKAGE_AND_RELEASE_YML: wordsworth-mk/github-runner/.github/workflows/22.package.yml@main
   UNITTEST_YML: wordsworth-mk/github-runner/.github/workflows/23.unittest.yml@main
-  SYNCTAX_CHECK_YML: wordsworth-mk/github-runner/.github/workflows/24.syntax_check.yml@main
+  SYNCTAX_CHECK_YML: "wordsworth-mk/github-runner/.github/workflows/24.syntax_check.yml@main"
 
 jobs:
   ###########################################
