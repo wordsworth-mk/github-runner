@@ -84,7 +84,7 @@ jobs:
 
       - name: 打包
         run: |
-          if [ -z "${{ inputs.APP_DIR }}" ]; then
+          if [ ! -z "${{ inputs.APP_DIR }}" ]; then
             bash ${{ env.BUILD_TOOL }} mypy/${{ inputs.APP_DIR }}
           else
             for app in ${{ env.APP_BASE_PATH }}; do
