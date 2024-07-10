@@ -87,7 +87,7 @@ jobs:
           if [ ! -z "${{ inputs.APP_DIR }}" ]; then
             bash ${{ env.BUILD_TOOL }} mypy/${{ inputs.APP_DIR }}
           else
-            for app in ${{ env.APP_BASE_PATH }}; do
+            for app in $(ls ${{ env.APP_BASE_PATH }}); do
               bash ${{ env.BUILD_TOOL }} $app
             done
           fi
