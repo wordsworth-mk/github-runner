@@ -1,4 +1,4 @@
-name: 23. 📦 打包发布
+name: 22. 📦 打包发布
 
 on:
   workflow_dispatch:

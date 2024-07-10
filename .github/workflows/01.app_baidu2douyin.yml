@@ -58,7 +58,7 @@ env:
 
 jobs:
   run_app:
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: baidu2douyin
       ARGS: ${{ inputs.ARGS }}

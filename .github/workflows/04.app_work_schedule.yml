@@ -16,7 +16,7 @@ on:
 
 jobs:
   run:
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: qlx_work_schedules
       ARGS: ${{ inputs.ARGS }}

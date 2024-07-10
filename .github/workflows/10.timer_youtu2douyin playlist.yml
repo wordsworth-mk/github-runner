@@ -1,16 +1,17 @@
-name: 11. 🕢 timer_youtu2douyin_playlist
+# github action 定时任务不支持设置参数，只能单独用一个流水线了
+
+name: 10. 🕢 timer_youtu2douyin_playlist
 
 on:
   workflow_dispatch:
 
-  # FIXME 合集里的视频不是按时间排序的，需要遍历全部视频的发布时间，会非常慢
   # schedule:
   #   # 代表国际标准时间，实际北京时间需要 +8 小时
   #   - cron: "30 01 * * *"
 
 jobs:
   run:
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: youtu2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了

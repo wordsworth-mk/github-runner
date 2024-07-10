@@ -59,7 +59,7 @@ env:
 jobs:
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       # 环境变量
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}

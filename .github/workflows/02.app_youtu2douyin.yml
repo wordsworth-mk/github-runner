@@ -65,7 +65,7 @@ env:
 
 jobs:
   run:
-    uses: wordsworth-mk/github-runner/.github/workflows/run.yml@main
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: youtu2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
