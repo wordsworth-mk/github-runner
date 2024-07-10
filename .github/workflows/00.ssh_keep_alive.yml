@@ -50,7 +50,7 @@ jobs:
     runs-on: ${{ inputs.SYSTEM }}
     steps:
       - name: 释放磁盘空间
-        if: ${{ inputs.FREE_DISK && runner.os == "Linux" }}
+        if: ${{ inputs.FREE_DISK && runner.os == 'Linux' }}
         uses: jlumbroso/free-disk-space@main
         with:
           # this might remove tools that are actually needed,
@@ -67,7 +67,7 @@ jobs:
           swap-storage: true
 
       - name: 清理磁盘
-        if: ${{ inputs.FREE_DISK && runner.os == "Linux" }}
+        if: ${{ inputs.FREE_DISK && runner.os == 'Linux' }}
         continue-on-error: true # 即使失败了也继续后续流程
         run: |
           echo "================================="
@@ -144,7 +144,7 @@ jobs:
           repository: M-Kepler/Python
 
       - name: 安装字体
-        if: ${{ ! inputs.SIMPLE_RUN && runner.os == "Linux" }}
+        if: ${{ ! inputs.SIMPLE_RUN && runner.os == 'Linux' }}
         run: |
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
@@ -158,7 +158,7 @@ jobs:
       # 在流水线执行脚本创建的文件夹都是 root 权限，而通过 action-debug 进入环境时 docker:runner 权限
       # 会导致无法操作这些文件或目录
       - name: 安装第三方服务
-        if: ${{ ! inputs.SIMPLE_RUN && runner.os == "Linux" }}
+        if: ${{ ! inputs.SIMPLE_RUN && runner.os == 'Linux' }}
         continue-on-error: true
         run: |
           bash mypy/3party/init.sh
