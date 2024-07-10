@@ -14,7 +14,7 @@ on:
         required: false
         default: true
       DO_RELEASE:
-        description: "是否进行发布"
+        description: "是否进行打包并创建发行版"
         type: boolean
         required: false
         default: false
