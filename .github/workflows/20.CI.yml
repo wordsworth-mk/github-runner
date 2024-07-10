@@ -27,9 +27,6 @@ on:
 env:
   BASE_PATH: mypy
   APP_BASE_PATH: mypy/apps
-  PACKAGE_AND_RELEASE_YML: wordsworth-mk/github-runner/.github/workflows/22.package.yml@main
-  UNITTEST_YML: wordsworth-mk/github-runner/.github/workflows/23.unittest.yml@main
-  SYNCTAX_CHECK_YML: wordsworth-mk/github-runner/.github/workflows/24.syntax_check.yml
 
 jobs:
   ###########################################
@@ -37,7 +34,8 @@ jobs:
   ###########################################
   syntax_check:
     name: 代码质量检查
-    uses: ${{ env.SYNCTAX_CHECK_YML }}@main
+    # 这个 uses 不能用环境变量
+    uses: wordsworth-mk/github-runner/.github/workflows/24.syntax_check.yml
     with:
       BASE_PATH: mypy
     secrets:
@@ -52,7 +50,7 @@ jobs:
     needs:
       - syntax_check
 
-    uses: ${{ env.UNITTEST_YML }}
+    uses: wordsworth-mk/github-runner/.github/workflows/23.unittest.yml@main
     # NOTICE 要在 with 子句中传递环境变量，您应该使用 secrets 或 inputs
     with:
       CASE_PATH: mypy/tests
@@ -103,7 +101,7 @@ jobs:
       - syntax_check
       - get_apps
       - unittest
-    uses: ${{ env.PACKAGE_AND_RELEASE_YML }}
+    uses: wordsworth-mk/github-runner/.github/workflows/22.package.yml@main
 
     # 使用前面的 job 的输出
     # #### 不用 matrix 多个任务，一个任务进行打包就可以了
