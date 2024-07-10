@@ -4,7 +4,7 @@ on:
   # 手动触发
   workflow_dispatch:
     inputs:
-      SKIP_CASE_MARK:
+      CASE_SKIP_MARK:
         description: "需要跳过的用例标签 ('none' 表示不跳过)"
         required: false
         default: "none"
@@ -13,6 +13,11 @@ on:
         type: boolean
         required: false
         default: true
+      DO_RELEASE:
+        description: "是否进行发布"
+        type: boolean
+        required: false
+        default: false
 
   schedule:
     # 代表国际标准时间 21 点 30 分，（北京时间需要 +8 小时）
@@ -50,7 +55,7 @@ jobs:
       CASE_PATH: mypy/tests
       # 依赖的二进制文件
       DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
-      NOT_RUN_MARK: ${{ inputs.SKIP_CASE_MARK }}
+      NOT_RUN_MARK: ${{ inputs.CASE_SKIP_MARK }}
     secrets:
       ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
@@ -85,11 +90,12 @@ jobs:
           echo "base_path=${{ env.BASE_PATH }}" >> $GITHUB_OUTPUT
 
   ###########################################
-  # 打包
+  # 打包发布
   ###########################################
   # 没必要一个个设置环境再打包
   package:
     name: 打包发布
+    if: ${{ inputs.DO_RELEASE }}
     needs:
       - syntax_check
       - get_apps
@@ -104,6 +110,6 @@ jobs:
 
     with:
       # APPS_PATH: ${{ fromJSON(needs.get_apps.outputs.apps) }}
-      APPS_PATH: mypy/apps
+      DO_RELEASE: ${{ inputs.DO_RELEASE }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

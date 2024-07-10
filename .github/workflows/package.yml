@@ -3,32 +3,37 @@ name: 23. 📦 打包发布
 on:
   workflow_dispatch:
     inputs:
-      create_release:
+      DO_RELEASE:
         description: "是否创建标签及发行版"
         type: boolean
         required: false
         default: false
 
-      app_name:
-        description: "打包的 app"
+      APP_DIR:
+        description: "打包的 app 名称"
         type: choice
         required: false
-        default: "baidu2douyin"
+        default: "apps/baidu2douyin"
         options:
-          - "baidu2douyin"
+          - "apps/baidu2douyin"
+          - "tools/get_cookies.py"
+          - "tools/launch_browser.py"
 
   workflow_call:
     inputs:
-      APPS_PATH:
-        description: "需要打包的 APP 路径列表"
-        required: true
-        type: string
-    # 外部调用的时候提供 token 用来拉取本私有仓库
+      DO_RELEASE:
+        description: "是否创建标签及发行版"
+        type: boolean
+        required: false
+        default: false
+
     secrets:
       MYPY_ACCESS_TOKEN:
         required: false
 
 env:
+  APP_BASE_PATH: mypy/apps
+  BUILD_TOOL: mypy/build/build.sh
   ENV_INIT_SCRIPT: mypy/env_init.sh
   # 打包后的 APP 可执行文件的存放路径
   PKG_ZIP_PATH: mypy/build/_pkg.zip
@@ -39,7 +44,6 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9"]
-        # os: [ubuntu-latest]
         os: [windows-latest]
     runs-on: ${{ matrix.os }}
 
@@ -80,24 +84,13 @@ jobs:
 
       - name: 打包
         run: |
-          # 方式1: 传入的是单个 APP 路径
-          # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
-
-          # 方式3: 执行外部脚本进行打包
-          # bash mypy/build/batch_build.sh
-
-          # 打包测试
-          # test_app="mypy/apps/test_app"
-          # LOGO_PATH=$test_app/logo.ico
-          # app_entry_file=$test_app/main.py
-          # app_name=test_app
-          # pkg_output_path="mypy/build/_pkg"
-          # tmp_build_output_dir="mypy/build/_pkg/_build_output"
-          # time pyinstaller -c -F -i $LOGO_PATH $app_entry_file \
-          #     -n $app_name \
-          #     --distpath=$pkg_output_path \
-          #     --workpath=$tmp_build_output_dir \
-          #     --clean
+          if [ -z "${{ inputs.APPS_DIR }}" ]; then
+            bash ${{ env.BUILD_TOOL }} mypy/${{ inputs.APPS_DIR }}
+          else
+            for app in ${{ env.APP_BASE_PATH }}; do
+              bash ${{ env.BUILD_TOOL }} $app
+            done
+          fi
 
         env:
           LC_ALL: C.UTF-8
@@ -121,16 +114,15 @@ jobs:
         run: |
           echo $(date +'%Y%m%d-%H%M%S')
           echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
-
         shell: bash
 
       - name: 更新 CHANGELLOG
-        if: ${{ inputs.create_release }}
+        if: ${{ inputs.DO_RELEASE }}
         uses: saadmk11/changelog-ci@v1.1.2
 
       - name: 创建 github Tag
         id: create_release
-        if: ${{ inputs.create_release }}
+        if: ${{ inputs.DO_RELEASE }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -142,7 +134,7 @@ jobs:
 
       - name: 上传 Release
         id: upload-release-asset
-        if: ${{ inputs.create_release }}
+        if: ${{ inputs.DO_RELEASE }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -155,7 +147,7 @@ jobs:
       # Github actions Artifact 可以用来存储 action 生产出来的产物
       # 当你上传成功后，后续的流程就可以下载这些文件来使用
       - name: 上传 Artifact
-        if: ${{ inputs.create_release }}
+        if: ${{ inputs.DO_RELEASE }}
         uses: actions/upload-artifact@master
         with:
           name: ${{ matrix.os }} Build

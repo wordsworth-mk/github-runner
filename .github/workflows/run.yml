@@ -205,11 +205,7 @@ jobs:
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
           cd ${{ env.APP_BASE_PATH }}/${{ inputs.APP }}
-          if [ ! -z "${{ inputs.ARGS }}" ]; then
-              python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
-          else
-              python ${{ env.APP_ENTRY }}
-          fi
+          python ${{ env.APP_ENTRY }} ${{ inputs.ARGS }}
 
       - name: 保存运行过程修改的配置
         if: ${{ (success() && inputs.COMMIT_CHANGE) || inputs.FORCE_COMMIT }} # 这一步只会在前一步成功时执行
