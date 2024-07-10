@@ -40,11 +40,11 @@ on:
         type: choice
         description: "选择抖音账号"
         required: false
-        default: "大号"
+        default: "large"
         options:
-          - "大号"
-          - "中号"
-          - "测试账号"
+          - "large"
+          - "middle"
+          - "test"
 
       DEBUG:
         description: "是否 detach 到虚拟机"

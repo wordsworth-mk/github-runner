@@ -105,10 +105,11 @@ jobs:
       - name: 设置运行环境配置
         continue-on-error: true
         run: |
+          # pip 换了源反而更慢了
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
-          cd ~/dotfiles
+          # cd ~/dotfiles
           # export MSYSTEM=1
-          bash run.sh
+          # bash run.sh
           # sed -i '1i export MSYSTEM=1' ~/.bashrc
 
       - name: 设置 Python 环境
