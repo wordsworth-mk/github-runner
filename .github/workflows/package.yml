@@ -9,6 +9,14 @@ on:
         required: false
         default: false
 
+      app_name:
+        description: "打包的 app"
+        type: choice
+        required: false
+        default: "baidu2douyin"
+        options:
+          - "baidu2douyin"
+
   workflow_call:
     inputs:
       APPS_PATH:
@@ -22,7 +30,6 @@ on:
 
 env:
   ENV_INIT_SCRIPT: mypy/env_init.sh
-
   # 打包后的 APP 可执行文件的存放路径
   PKG_ZIP_PATH: mypy/build/_pkg.zip
   BUILD_PKG_PATH: mypy/build/_pkg/
@@ -51,11 +58,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # - name: 安装依赖程序
-      #   uses: ConorMacBride/install-package@v1.1.0
-      #   with:
-      #     apt: ${{ inputs.DEPENDENT_BINARY }}
-      #     choco: ${{ inputs.DEPENDENT_BINARY }}
+      - name: 安装依赖程序
+        continue-on-error: true
+        uses: ConorMacBride/install-package@v1.1.0
+        with:
+          apt: ${{ inputs.DEPENDENT_BINARY }}
+          choco: ${{ inputs.DEPENDENT_BINARY }}
 
       # - name: 安装字体
       #   run: |
@@ -75,45 +83,32 @@ jobs:
           # 方式1: 传入的是单个 APP 路径
           # bash mypy/build/build.sh ${{ inputs.APP_PATH }}
 
-          # 方式2: 传入的是 APP 父目录
-          # echo ${{ inputs.APPS_PATH }}
-          # for app in $(ls ${{ inputs.APPS_PATH }}); do
-          #     if [ ! -f mypy/apps/$app/main.py ]; then
-          #         continue
-          #     fi
-          #     bash mypy/build/build.sh mypy/apps/$app
-          # done
-          # artifat_path=$curr_path/_pkg.zip
-          # zip -r $artifat_path $curr_path/_pkg/
-          # echo "================================================"
-          # echo "打包完成: $artifat_path"
-          # echo "================================================"
-
           # 方式3: 执行外部脚本进行打包
           # bash mypy/build/batch_build.sh
 
-          test_app="mypy/apps/test_app"
-          LOGO_PATH=$test_app/logo.ico
-          app_entry_file=$test_app/main.py
-          app_name=test_app
-          pkg_output_path="mypy/build/_pkg"
-          tmp_build_output_dir="mypy/build/_pkg/_build_output"
-          time pyinstaller -c -F -i $LOGO_PATH $app_entry_file \
-              -n $app_name \
-              --distpath=$pkg_output_path \
-              --workpath=$tmp_build_output_dir \
-              --clean
+          # 打包测试
+          # test_app="mypy/apps/test_app"
+          # LOGO_PATH=$test_app/logo.ico
+          # app_entry_file=$test_app/main.py
+          # app_name=test_app
+          # pkg_output_path="mypy/build/_pkg"
+          # tmp_build_output_dir="mypy/build/_pkg/_build_output"
+          # time pyinstaller -c -F -i $LOGO_PATH $app_entry_file \
+          #     -n $app_name \
+          #     --distpath=$pkg_output_path \
+          #     --workpath=$tmp_build_output_dir \
+          #     --clean
 
         env:
           LC_ALL: C.UTF-8
           LANG: C.UTF-8
         shell: bash
 
-      - name: zip
+      - name: zip 打包产物
         uses: vimtor/action-zip@v1.2
         with:
           files: ${{ env.BUILD_PKG_PATH }}
-          dest: mypy/build/_pkg.zip
+          dest: ${{ env.PKG_ZIP_PATH }}
 
       - name: 设置时区
         uses: szenius/set-timezone@v2.0
@@ -130,11 +125,10 @@ jobs:
         shell: bash
 
       - name: 更新 CHANGELLOG
-        id: update_changelog
         if: ${{ inputs.create_release }}
         uses: saadmk11/changelog-ci@v1.1.2
 
-      - name: 创建 Tag
+      - name: 创建 github Tag
         id: create_release
         if: ${{ inputs.create_release }}
         uses: softprops/action-gh-release@v1
