@@ -50,6 +50,7 @@ jobs:
     runs-on: ${{ inputs.SYSTEM }}
     steps:
       - name: 释放磁盘空间
+        # runner.os == 'Linux' / 'Windows' 要用单引号
         if: ${{ inputs.FREE_DISK && runner.os == 'Linux' }}
         uses: jlumbroso/free-disk-space@main
         with:
