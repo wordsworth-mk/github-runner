@@ -42,7 +42,7 @@ on:
 env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
-  DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+  DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils unoconv"
   PYTHON_VERSION: 3.9
 
 jobs:
@@ -130,6 +130,7 @@ jobs:
 
       - name: 安装依赖程序
         if: ${{ ! inputs.SIMPLE_RUN }}
+        continue-on-error: true
         uses: ConorMacBride/install-package@v1.1.0
         with:
           apt: ${{ env.DEPENDENT_BINARY }}
