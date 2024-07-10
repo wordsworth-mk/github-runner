@@ -16,12 +16,6 @@ on:
           - windows-latest
           - ubuntu-latest
 
-      SIMPLE_RUN:
-        type: boolean
-        description: "单纯起个 SSH"
-        required: false
-        default: false
-
       FREE_DISK:
         type: boolean
         description: "释放磁盘空间"
@@ -116,8 +110,8 @@ jobs:
       - name: 设置运行环境配置
         continue-on-error: true
         run: |
-          # pip 换了源反而更慢了
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          # pip 换了源反而更慢了
           # cd ~/dotfiles
           # export MSYSTEM=1
           # bash run.sh
@@ -129,7 +123,6 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: 安装依赖程序
-        if: ${{ ! inputs.SIMPLE_RUN }}
         continue-on-error: true
         uses: ConorMacBride/install-package@v1.1.0
         with:
@@ -137,7 +130,6 @@ jobs:
           choco: ${{ env.DEPENDENT_BINARY }}
 
       - name: 拉取 M-Kepler/Python
-        if: ${{ ! inputs.SIMPLE_RUN }}
         uses: actions/checkout@v4
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -146,12 +138,11 @@ jobs:
           repository: M-Kepler/Python
 
       - name: 安装字体
-        if: ${{ ! inputs.SIMPLE_RUN && runner.os == 'Linux' }}
+        if: ${{ runner.os == 'Linux' }}
         run: |
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
-        if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
         # windows 版支持用 gitbash 执行命令
@@ -160,7 +151,7 @@ jobs:
       # 在流水线执行脚本创建的文件夹都是 root 权限，而通过 action-debug 进入环境时 docker:runner 权限
       # 会导致无法操作这些文件或目录
       - name: 安装第三方服务
-        if: ${{ ! inputs.SIMPLE_RUN && runner.os == 'Linux' }}
+        if: ${{ runner.os == 'Linux' }}
         continue-on-error: true
         run: |
           bash mypy/3party/init.sh
