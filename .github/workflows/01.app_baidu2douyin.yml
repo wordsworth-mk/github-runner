@@ -3,7 +3,7 @@ name: 01. 🟢 app_baidu2douyin
 on:
   # 当按计划（或按推/拉）触发具有输入的工作流时，所有输入值均为空，需要自己设置好默认值
   schedule:
-    # 每个月 1 号和 15 号的 21 点 30 分执行
+    # 每天 21 点 30 分执行
     - cron: "30 13 * * *"
 
   workflow_dispatch:
@@ -52,9 +52,9 @@ on:
 
 env:
   # 把 github action 的 input 设置到环境变量中
-  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD || "timing" }}
-  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS | "douyin" }}
-  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT | "middle" }}
+  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD || 'timin' }}
+  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS | 'douyin' }}
+  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT | 'middle' }}
 
 jobs:
   run_app:
