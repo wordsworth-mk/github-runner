@@ -36,7 +36,7 @@ on:
           - "now"
           - "timing"
 
-      ENV_DOUYIN_ACCOUNT:
+      ENV_DOUYIN_PUBLISH_ACCOUNT:
         type: choice
         description: "选择抖音账号"
         required: false
@@ -64,7 +64,7 @@ jobs:
       # 环境变量
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-      ENV_DOUYIN_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_ACCOUNT }}
+      ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
 
       APP: test_app
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
