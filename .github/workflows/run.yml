@@ -179,6 +179,7 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
+          # choco: ${{ inputs.DEPENDENT_BINARY }}
 
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}

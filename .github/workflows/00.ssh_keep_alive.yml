@@ -7,11 +7,21 @@ name: 00. 🍉 ssh_keep_alive
 on:
   workflow_dispatch:
     inputs:
+      SYSTEM:
+        type: choice
+        description: "系统"
+        required: false
+        default: ubuntu-latest
+        options:
+          - windows-latest
+          - ubuntu-latest
+
       SIMPLE_RUN:
         type: boolean
         description: "单纯起个 SSH"
         required: false
         default: false
+
       FREE_DISK:
         type: boolean
         description: "释放磁盘空间"
@@ -37,10 +47,10 @@ env:
 
 jobs:
   new_ssh_keep_connect:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.SYSTEM }}
     steps:
       - name: 释放磁盘空间
-        if: ${{ inputs.FREE_DISK }}
+        if: ${{ inputs.FREE_DISK && runner.os == "ubuntu-latest" }}
         uses: jlumbroso/free-disk-space@main
         with:
           # this might remove tools that are actually needed,
@@ -57,8 +67,8 @@ jobs:
           swap-storage: true
 
       - name: 清理磁盘
-        if: ${{ inputs.FREE_DISK }}
-        continue-on-error: true
+        if: ${{ inputs.FREE_DISK && runner.os == "ubuntu-latest" }}
+        continue-on-error: true # 即使失败了也继续后续流程
         run: |
           echo "================================="
           echo "-----> 磁盘清理前 <-----"
@@ -122,6 +132,7 @@ jobs:
         uses: ConorMacBride/install-package@v1.1.0
         with:
           apt: ${{ env.DEPENDENT_BINARY }}
+          choco: ${{ env.DEPENDENT_BINARY }}
 
       - name: 拉取 M-Kepler/Python
         if: ${{ ! inputs.SIMPLE_RUN }}
@@ -133,7 +144,7 @@ jobs:
           repository: M-Kepler/Python
 
       - name: 安装字体
-        if: ${{ ! inputs.SIMPLE_RUN }}
+        if: ${{ ! inputs.SIMPLE_RUN && runner.os == "ubuntu-latest" }}
         run: |
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
@@ -141,20 +152,21 @@ jobs:
         if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
+        # windows 版支持用 gitbash 执行命令
+        shell: bash
 
       # 在流水线执行脚本创建的文件夹都是 root 权限，而通过 action-debug 进入环境时 docker:runner 权限
       # 会导致无法操作这些文件或目录
       - name: 安装第三方服务
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        continue-on-error: true # 即使失败了也继续后续流程
+        if: ${{ ! inputs.SIMPLE_RUN && runner.os == "ubuntu-latest" }}
+        continue-on-error: true
         run: |
           bash mypy/3party/init.sh
 
       - name: 创建软链
-        continue-on-error: true # 即使失败了也继续后续流程
+        continue-on-error: true
         run: |
           ln -s $GITHUB_WORKSPACE ~/my
-
 
       ##################################################
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
