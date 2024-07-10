@@ -1,4 +1,4 @@
-name: 04. 🕢 app_work_schedule
+name: 04. 🟢 app_work_schedule
 
 on:
   workflow_dispatch:
