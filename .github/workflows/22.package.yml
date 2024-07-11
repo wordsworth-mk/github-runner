@@ -122,7 +122,7 @@ jobs:
         if: ${{ inputs.DO_RELEASE }}
         uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
           name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
@@ -136,7 +136,7 @@ jobs:
         # uses: actions/upload-release-asset@v1
         uses: softprops/action-gh-release@v2.0.6
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
@@ -180,7 +180,7 @@ jobs:
         uses: saadmk11/changelog-ci@v1.1.2
         with:
           release_version: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
-          github_token: ${{ env.MYPY_ACCESS_TOKEN }}
+          github_token: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: 获取 Changelog 输出
         continue-on-error: true
