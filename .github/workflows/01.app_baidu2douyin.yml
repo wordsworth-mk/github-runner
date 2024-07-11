@@ -10,9 +10,6 @@ on:
     inputs:
       ARGS:
         description: |
-          -m {auto,manual}, --mode {auto,manual}
-             运行模式, -m auto 表示自动运行; -m manural 表示交互模式
-
           -n NUM, --num NUM
              发布 N 天的视频
 
@@ -52,7 +49,7 @@ on:
 
 env:
   # 把 github action 的 input 设置到环境变量中
-  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD || 'timin' }}
+  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD || 'timing' }}
   ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS || 'douyin' }}
   ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT || 'middle' }}
 
@@ -61,6 +58,7 @@ jobs:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: baidu2douyin
-      ARGS: ${{ inputs.ARGS }}
+      # 定时任务没办法给参数，只能在这里配置默认值了
+      ARGS: ${{ inputs.ARGS || '-d -n 1' }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
