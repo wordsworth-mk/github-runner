@@ -128,11 +128,13 @@ jobs:
           name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
           draft: false
           prerelease: false
+          repository: M-Kepler/Python
 
       - name: 上传 Release
         id: upload-release-asset
         if: ${{ inputs.DO_RELEASE }}
-        uses: actions/upload-release-asset@v1
+        # uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v2.0.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -140,19 +142,20 @@ jobs:
           asset_path: ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
           asset_name: pkg.zip
           asset_content_type: application/zip
+          repository: M-Kepler/Python
 
-      # Github actions Artifact 可以用来存储 action 生产出来的产物
       # 当你上传成功后，后续的流程就可以下载这些文件来使用
-      - name: 上传 Artifact
-        if: ${{ inputs.DO_RELEASE }}
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ matrix.os }} Build
-          path: |
-            ${{ env.PKG_ZIP_PATH }}
+      # Github actions Artifact 可以用来存储 action 产物
+      # - name: 上传 Artifact
+      #   if: ${{ inputs.DO_RELEASE }}
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: ${{ matrix.os }} Build
+      #     path: |
+      #       ${{ env.PKG_ZIP_PATH }}
 
   update_changelog:
-    name: 更新 CHANGELLOG.md
+    name: 更新 CHANGELOG.md
     runs-on: ubuntu-latest
     if: ${{ inputs.DO_RELEASE }}
     steps:
