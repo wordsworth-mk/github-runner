@@ -9,6 +9,10 @@ on:
         required: false
         default: false
 
+      RELEASE_VERSION:
+        description: '设置发行版版本'
+        required: false
+
       APP_DIR:
         description: "打包的 app 名称"
         type: choice
@@ -154,6 +158,7 @@ jobs:
   update_changelog:
     name: 更新 CHANGELLOG.md
     runs-on: ubuntu-latest
+    if: ${{ inputs.DO_RELEASE }}
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
@@ -168,6 +173,9 @@ jobs:
         continue-on-error: true
         if: ${{ inputs.DO_RELEASE }}
         uses: saadmk11/changelog-ci@v1.1.2
+        with:
+          release_version: ${{ input.RELEASE_VERSION }}
+          github_token: ${{ env.MYPY_ACCESS_TOKEN }}
 
       - name: 获取 Changelog 输出
         continue-on-error: true
