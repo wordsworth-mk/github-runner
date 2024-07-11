@@ -32,6 +32,7 @@ on:
         required: false
 
 env:
+  PYTHON_VERSION: 3.9
   APP_BASE_PATH: mypy/apps
   BUILD_TOOL: mypy/build/build.sh
   ENV_INIT_SCRIPT: mypy/env_init.sh
@@ -40,12 +41,9 @@ env:
   BUILD_PKG_PATH: mypy/build/_pkg/
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        python-version: ["3.9"]
-        os: [windows-latest]
-    runs-on: ${{ matrix.os }}
+  package:
+    name: 打包
+    runs-on: windows-latest
 
     steps:
       - name: 拉取代码
@@ -57,17 +55,17 @@ jobs:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
 
-      - name: 设置 Python ${{ matrix.python-version }} 环境
+      - name: 设置 Python ${{ env.PYTHON_VERSION }} 环境
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: 安装依赖程序
-        continue-on-error: true
-        uses: ConorMacBride/install-package@v1.1.0
-        with:
-          apt: ${{ inputs.DEPENDENT_BINARY }}
-          choco: ${{ inputs.DEPENDENT_BINARY }}
+      # - name: 安装依赖程序
+      #   continue-on-error: true
+      #   uses: ConorMacBride/install-package@v1.1.0
+      #   with:
+      #     apt: ${{ inputs.DEPENDENT_BINARY }}
+      #     choco: ${{ inputs.DEPENDENT_BINARY }}
 
       # - name: 安装字体
       #   run: |
@@ -97,7 +95,7 @@ jobs:
           LANG: C.UTF-8
         shell: bash
 
-      - name: zip 打包产物
+      - name: 压缩打包产物
         uses: vimtor/action-zip@v1.2
         with:
           files: ${{ env.BUILD_PKG_PATH }}
@@ -115,10 +113,6 @@ jobs:
           echo $(date +'%Y%m%d-%H%M%S')
           echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
         shell: bash
-
-      - name: 更新 CHANGELLOG
-        if: ${{ inputs.DO_RELEASE }}
-        uses: saadmk11/changelog-ci@v1.1.2
 
       - name: 创建 github Tag
         id: create_release
@@ -153,3 +147,18 @@ jobs:
           name: ${{ matrix.os }} Build
           path: |
             ${{ env.PKG_ZIP_PATH }}
+
+  update_changelog:
+    name: 更新 CHANGELLOG.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: 更新 CHANGELLOG
+        continue-on-error: true
+        if: ${{ inputs.DO_RELEASE }}
+        uses: saadmk11/changelog-ci@v1.1.2
+
+      - name: 获取 Changelog 输出
+        continue-on-error: true
+        run: |
+          echo "${{ steps.changelog-ci.outputs.changelog }}"
+          echo "${{ steps.changelog-ci.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
