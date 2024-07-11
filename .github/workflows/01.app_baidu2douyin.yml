@@ -3,8 +3,8 @@ name: 01. 🟢 app_baidu2douyin
 on:
   # 当按计划（或按推/拉）触发具有输入的工作流时，所有输入值均为空，需要自己设置好默认值
   schedule:
-    # 每天 21 点 30 分执行
-    - cron: "30 13 * * *"
+    # 每天 08 点 30 分执行（时间 +8 就是北京时间）
+    - cron: "30 00 * * *"
 
   workflow_dispatch:
     inputs:
