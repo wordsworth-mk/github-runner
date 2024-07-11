@@ -9,10 +9,6 @@ on:
         required: false
         default: false
 
-      RELEASE_VERSION:
-        description: '设置发行版版本'
-        required: false
-
       APP_DIR:
         description: "打包的 app 名称"
         type: choice
@@ -169,12 +165,18 @@ jobs:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
 
+      - name: 获取当前日期
+        id: date
+        run: |
+          echo $(date +'%Y%m%d-%H%M%S')
+          echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+
       - name: 更新 CHANGELLOG
         continue-on-error: true
         if: ${{ inputs.DO_RELEASE }}
         uses: saadmk11/changelog-ci@v1.1.2
         with:
-          release_version: ${{ input.RELEASE_VERSION }}
+          release_version: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
           github_token: ${{ env.MYPY_ACCESS_TOKEN }}
 
       - name: 获取 Changelog 输出
