@@ -31,18 +31,11 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-m manual "
 
-      # github action 还不支持复选框
-      ENV_PUBLISH_PLATFORMS:
-        type: string
-        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
-        required: false
-        default: "douyin"
-
       ENV_PUBLISH_MOD:
         type: choice
         description: "选择发布时间模式"
         required: false
-        default: "timing"
+        default: "now"
         options:
           - "now"
           - "timing"
@@ -56,6 +49,13 @@ on:
           - "large" # 大号
           - "middle" # 中号
           - "test" # 测试账号
+
+      # github action 还不支持复选框
+      ENV_PUBLISH_PLATFORMS:
+        type: string
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        required: false
+        default: "douyin"
 
 env:
   # 把 github action 的 input 设置到环境变量中
