@@ -41,6 +41,7 @@ env:
 
 jobs:
   new_ssh_keep_connect:
+    # NOTICE: 注意这里要用单引号
     runs-on: ${{ inputs.SYSTEM || 'ubuntu-latest' }}
     steps:
       - name: 释放磁盘空间
