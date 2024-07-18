@@ -38,10 +38,11 @@ env:
   ENV_INIT_SCRIPT: mypy/env_init.sh
   DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils unoconv"
   PYTHON_VERSION: 3.9
+  DEFAULT_OS: ubuntu-latest
 
 jobs:
   new_ssh_keep_connect:
-    runs-on: ${{ inputs.SYSTEM || "ubuntu-latest" }}
+    runs-on: ${{ inputs.SYSTEM || env.DEFAULT_OS }}
     steps:
       - name: 释放磁盘空间
         # runner.os == 'Linux' / 'Windows' 要用单引号
