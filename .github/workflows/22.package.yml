@@ -118,19 +118,6 @@ jobs:
           echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: 创建 github Tag
-        id: create_release
-        if: ${{ inputs.DO_RELEASE }}
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
-          name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
-          draft: false
-          prerelease: false
-          repository: M-Kepler/Python
-
       # 这个版本不支持给外部仓库创建发行版
       # - name: 上传 Release
       #   id: upload-release-asset
@@ -144,20 +131,21 @@ jobs:
       #     asset_name: pkg.zip
       #     asset_content_type: application/zip
 
-      - name: 上传 Release
-        id: upload-release-asset
+      # https://github.com/softprops/action-gh-release
+      - name: 创建 Github 发行版
+        id: create_release
         if: ${{ inputs.DO_RELEASE }}
         uses: softprops/action-gh-release@v2.0.6
         env:
           GITHUB_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          # GITHUB_REPOSITORY: M-Kepler/Python 也可以通过环境变量来传递这个参数
         with:
-          # upload_url: ${{ steps.create_release.outputs.upload_url }}
-          name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
+          tag_name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
+          name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
           files: |
             - ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
+          draft: false
+          prerelease: false
           repository: M-Kepler/Python
-          # token: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
       # 当你上传成功后，后续的流程就可以下载这些文件来使用
       # Github actions Artifact 可以用来存储 action 产物
