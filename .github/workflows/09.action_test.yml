@@ -15,6 +15,14 @@ on:
         type: string
         default: ""
 
+      REF:
+        description: "分支或标签、提交ID"
+        type: choice
+        required: false
+        options:
+          - "master"
+          - "release"
+
       SIMPLE_RUN:
         description: "是否简单运行（不安装程序依赖和字体）"
         type: boolean

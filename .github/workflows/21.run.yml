@@ -59,6 +59,14 @@ on:
         required: false
         default: false
 
+      REF:
+        description: "分支或标签、提交ID"
+        type: choice
+        required: false
+        options:
+          - "master"
+          - "release"
+
   # 流水线调用
   # [支持的变量类型](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputsinput_idtype)
   workflow_call:
@@ -128,6 +136,12 @@ on:
         required: false
         default: false
 
+      REF:
+        description: "分支或标签、提交ID"
+        type: string
+        required: false
+        default: master
+
     # 外部调用的时候提供 token 用来拉取本私有仓库
     secrets:
       MYPY_ACCESS_TOKEN:
@@ -162,6 +176,7 @@ jobs:
         with:
           token: ${{ env.MYPY_ACCESS_TOKEN }}
           repository: M-Kepler/Python
+          ref: ${{ inputs.REF || 'master' }}
 
       - name: 设置时区
         uses: szenius/set-timezone@v2.0
