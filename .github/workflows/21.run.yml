@@ -206,7 +206,8 @@ jobs:
           bash ${{ env.ENV_INIT_SCRIPT }}
 
       - name: 安装第三方服务
-        if: ${{ inputs.WITH_3PARTY || ! inputs.SIMPLE_RUN }}
+        # if: ${{ inputs.WITH_3PARTY || ! inputs.SIMPLE_RUN }}
+        if: ${{ ! inputs.SIMPLE_RUN }}
         continue-on-error: true
         run: |
           bash mypy/3party/init.sh
