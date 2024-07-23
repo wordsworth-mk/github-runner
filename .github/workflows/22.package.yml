@@ -153,7 +153,7 @@ jobs:
         if: ${{ ! inputs.DO_RELEASE }}
         uses: actions/upload-artifact@master
         with:
-          name: ${{ inputs.APP_DIR }} Build
+          name: ${{ steps.date.outputs.date }}-Build
           # compression-level: 9 # maximum compression
           path: |
             ${{ env.PKG_ZIP_PATH }}
