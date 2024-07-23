@@ -147,15 +147,16 @@ jobs:
           prerelease: false
           repository: M-Kepler/Python
 
-      # 当你上传成功后，后续的流程就可以下载这些文件来使用
+      # 当你上传成功后，后续的流程就可以下载这些文件来使用（可以在流水线下载）
       # Github actions Artifact 可以用来存储 action 产物
-      # - name: 上传 Artifact
-      #   if: ${{ inputs.DO_RELEASE }}
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: ${{ matrix.os }} Build
-      #     path: |
-      #       ${{ env.PKG_ZIP_PATH }}
+      - name: 上传 Artifact
+        if: ${{ ! inputs.DO_RELEASE }}
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ inputs.APP_DIR }} Build
+          # compression-level: 9 # maximum compression
+          path: |
+            ${{ env.PKG_ZIP_PATH }}
 
   update_changelog:
     name: 更新 CHANGELOG.md
