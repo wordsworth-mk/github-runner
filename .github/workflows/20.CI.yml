@@ -55,7 +55,7 @@ jobs:
     with:
       CASE_PATH: mypy/tests
       # 依赖的二进制文件
-      DEPENDENT_BINARY: "ffmpeg unoconv libreoffice poppler-utils"
+      DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils"
       NOT_RUN_MARK: ${{ inputs.CASE_SKIP_MARK }}
     secrets:
       ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}

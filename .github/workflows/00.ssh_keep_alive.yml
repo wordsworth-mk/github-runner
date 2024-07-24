@@ -36,7 +36,7 @@ on:
 env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
-  DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils unoconv"
+  DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils"
   PYTHON_VERSION: 3.9
 
 jobs:
