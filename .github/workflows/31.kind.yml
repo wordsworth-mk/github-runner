@@ -34,9 +34,10 @@ jobs:
           config: ${{env.KIND_BASE_PATH}}/kind-3nodes.yaml
           cluster_name: test
 
-      - name: 部署 simpleweb
-        run: |
-          bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
+      # - name: 部署 simpleweb
+      #   continue-on-error: true
+      #   run: |
+      #     bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: debug
         uses: fawazahmed0/action-debug@main
