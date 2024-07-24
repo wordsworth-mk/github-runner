@@ -162,11 +162,14 @@ jobs:
         run: |
           ln -s $GITHUB_WORKSPACE ~/my
 
+          # 创建个脚本，继续执行后续流水线
+          echo "touch $GITHUB_WORKSPACE/continue" > ~/quit
+          chmod a+x ~/quit
+
       ##################################################
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
       # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
       # 而通过以下方式这不需要账密认证
-      # touch $GITHUB_WORKSPACE/continue # 继续后续流水线
 
       - uses: fawazahmed0/action-debug@main
         with:
