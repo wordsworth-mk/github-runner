@@ -54,7 +54,7 @@ on:
         default: false
 
       DEBUG:
-        description: "支持连接到虚拟机"
+        description: "支持连接到虚拟机进行调试"
         type: boolean
         required: false
         default: false
@@ -131,7 +131,7 @@ on:
         default: true
 
       DEBUG:
-        description: "是否开启 SSH 连接到虚拟机"
+        description: "支持连接到虚拟机进行调试"
         type: boolean
         required: false
         default: false
@@ -214,7 +214,8 @@ jobs:
 
       - name: 调试
         if: ${{ inputs.DEBUG }}
-        uses: fawazahmed0/action-debug@main
+        # uses: fawazahmed0/action-debug@main
+        uses: wordsworth-mk/action-debug@main
         with:
           credentials: "user:password"
 

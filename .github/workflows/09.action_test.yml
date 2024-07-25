@@ -55,7 +55,7 @@ on:
           - "test"
 
       DEBUG:
-        description: "是否 detach 到虚拟机"
+        description: "是否开启 SSH 连接到虚拟机"
         type: boolean
         required: false
         default: false
@@ -65,24 +65,6 @@ env:
   # 把 github action 的 input 设置到环境变量中
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 创建测试文件
-        shell: bash
-        run: |
-          echo "xxxxxx" > ../mylog.txt
-
-      - name: 输出到页面上
-        shell: bash
-        run: |
-          cat ../mylog.txt > $GITHUB_STEP_SUMMARY
-
-      - name: 调试
-        uses: wordsworth-mk/action-debug@main
-        with:
-          credentials: "user:password"
-
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
