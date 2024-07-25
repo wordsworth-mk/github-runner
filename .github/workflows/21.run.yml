@@ -214,9 +214,9 @@ jobs:
 
       - name: 调试
         if: ${{ inputs.DEBUG }}
-        uses: mxschmitt/action-tmate@v3
+        uses: fawazahmed0/action-debug@main
         with:
-          detached: true
+          credentials: "user:password"
 
       - name: 🔴🟡🟢 运行 🟢🟡🔴
         run: |
