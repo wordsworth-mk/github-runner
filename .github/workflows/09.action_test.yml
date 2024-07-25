@@ -79,7 +79,7 @@ jobs:
           cat ../mylog.txt > $GITHUB_STEP_SUMMARY
 
       - name: 调试
-        uses: https://github.com/wordsworth-mk/action-debug/action.yaml
+        uses: wordsworth-mk/action-debug@main
         with:
           credentials: "user:password"
 
