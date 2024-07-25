@@ -78,6 +78,11 @@ jobs:
         run: |
           cat ../mylog.txt > $GITHUB_STEP_SUMMARY
 
+      - name: 调试
+        uses: https://github.com/wordsworth-mk/action-debug/action.yaml
+        with:
+          credentials: "user:password"
+
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
