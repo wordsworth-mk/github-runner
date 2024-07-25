@@ -190,4 +190,5 @@ jobs:
         continue-on-error: true
         run: |
           echo "${{ steps.changelog-ci.outputs.changelog }}"
+          # $GITHUB_STEP_SUMMARY 只有等这个 job 执行完了才会输出出来
           echo "${{ steps.changelog-ci.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
