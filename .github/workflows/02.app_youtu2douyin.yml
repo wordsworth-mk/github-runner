@@ -65,16 +65,15 @@ on:
         required: false
         default: "douyin"
 
-env:
-  # 把 github action 的 input 设置到环境变量中
-  ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
-  ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-  ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
-
 jobs:
   run:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
+      # 环境变量
+      ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
+      ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+      ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
+
       APP: youtu2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: ${{ inputs.ARGS }}
