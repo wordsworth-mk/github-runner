@@ -41,6 +41,7 @@ env:
   # 打包后的 APP 可执行文件的存放路径
   PKG_ZIP_PATH: mypy/build/_pkg.zip
   BUILD_PKG_PATH: mypy/build/_pkg/
+  CHANGEL_LOG_PATH: mypy/CHANGELOG.md
 
 jobs:
   package:
@@ -141,8 +142,9 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}-${{ steps.date.outputs.date }}
           name: release-${{ github.ref_name }}-${{ steps.date.outputs.date }}
+          body_path: ${{ env.CHANGEL_LOG_PATH }}
           files: |
-            - ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
+            ${{ github.workspace }}/${{ env.PKG_ZIP_PATH }}
           draft: false
           prerelease: false
           repository: M-Kepler/Python
