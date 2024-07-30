@@ -163,8 +163,8 @@ jobs:
           ln -s $GITHUB_WORKSPACE ~/my
 
           # 创建个脚本，继续执行后续流水线
-          echo "touch $GITHUB_WORKSPACE/continue" > ~/quit
-          chmod a+x ~/quit
+          echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
+          chmod a+x ~/quit_ssh
 
       ##################################################
       # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
