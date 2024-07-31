@@ -29,7 +29,7 @@ jobs:
           ls -al ./docker-compose/
 
       - name: debug
-        uses: fawazahmed0/action-debug@main
+        uses: wordsworth-mk/action-debug@main
         with:
             credentials: "user:password"
 

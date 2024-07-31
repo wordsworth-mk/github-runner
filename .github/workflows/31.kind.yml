@@ -40,7 +40,7 @@ jobs:
       #     bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: debug
-        uses: fawazahmed0/action-debug@main
+        uses: wordsworth-mk/action-debug@main
         with:
             credentials: "user:password"
 

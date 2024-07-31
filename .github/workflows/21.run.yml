@@ -214,7 +214,6 @@ jobs:
 
       - name: 调试
         if: ${{ inputs.DEBUG }}
-        # uses: fawazahmed0/action-debug@main
         uses: wordsworth-mk/action-debug@main
         with:
           credentials: "user:password"
