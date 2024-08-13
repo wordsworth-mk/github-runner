@@ -22,6 +22,14 @@ on:
         required: false
         default: false
 
+      PYTHON_VERSION:
+        type: choice
+        description: "python 版本"
+        default: "3.9"
+        options:
+          - "3.9"
+          - "3.10"
+
   # # 定时执行
   # schedule:
   #   # 代表国际标准时间，实际北京时间需要 +8 小时
@@ -37,7 +45,6 @@ env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
   DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils"
-  PYTHON_VERSION: 3.9
 
 jobs:
   new_ssh_keep_connect:
@@ -121,7 +128,7 @@ jobs:
       - name: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: ${{ inputs.PYTHON_VERSION }}
 
       - name: 安装依赖程序
         continue-on-error: true
