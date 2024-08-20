@@ -21,6 +21,17 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-d -n 1"
 
+      ENV_DOUYIN_PUBLISH_ACCOUNT:
+        type: choice
+        description: "选择抖音账号"
+        required: false
+        default: "middle"
+        # 与 constants.py/Account 一一对应
+        options:
+          - "large" # 大号
+          - "middle" # 中号
+          - "test" # 测试账号
+
       ENV_AIGC_TYPE:
         type: choice
         # 定义在 const.py/FILE_TYPE_PPT
@@ -65,16 +76,6 @@ on:
           - "now"
           - "timing"
 
-      ENV_DOUYIN_PUBLISH_ACCOUNT:
-        type: choice
-        description: "选择抖音账号"
-        required: false
-        default: "middle"
-        # 与 constants.py/Account 一一对应
-        options:
-          - "large" # 大号
-          - "middle" # 中号
-          - "test" # 测试账号
 
 jobs:
   run_app:
