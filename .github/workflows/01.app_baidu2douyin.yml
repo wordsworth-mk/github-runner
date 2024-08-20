@@ -21,6 +21,26 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-d -n 1"
 
+      ENV_AIGC_TYPE:
+        type: choice
+        # 定义在 const.py/FILE_TYPE_PPT
+        description: "AI 生成内容类型"
+        required: false
+        default: "PPT"
+        options:
+          - "PPT"
+          - "DOCX"
+
+      ENV_PUBLISH_MEDIA_TYPE:
+        type: choice
+        # 定义在 const.py/MEDIA_TYPE_IMG_ARTICLE
+        description: "发布媒体类型"
+        required: false
+        default: "video"
+        options:
+          - "video" # 视频
+          - "image_article" # 图文
+
       REF:
         description: "分支或标签、提交ID"
         type: choice
@@ -50,6 +70,7 @@ on:
         description: "选择抖音账号"
         required: false
         default: "middle"
+        # 与 constants.py/Account 一一对应
         options:
           - "large" # 大号
           - "middle" # 中号
@@ -62,7 +83,9 @@ jobs:
       # 环境变量
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+      ENV_PUBLISH_MEDIA_TYPE: ${{ github.event.inputs.ENV_PUBLISH_MEDIA_TYPE }}
       ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
+      ENV_AIGC_TYPE: ${{ github.event.inputs.ENV_AIGC_TYPE }}
 
       APP: baidu2douyin
       # 定时任务没办法给参数，只能在这里配置默认值了
