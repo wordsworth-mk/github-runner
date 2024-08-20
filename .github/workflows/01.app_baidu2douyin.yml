@@ -80,7 +80,8 @@ jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
-      # 环境变量
+      # 无法通过调用方定义环境变量，只能通过 with 传递 input 参数进去了
+      # 注意，新增变量的话，需要在 run.yaml 中进行定义
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
       ENV_PUBLISH_MEDIA_TYPE: ${{ github.event.inputs.ENV_PUBLISH_MEDIA_TYPE }}
