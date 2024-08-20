@@ -26,10 +26,10 @@ on:
         # 定义在 const.py/FILE_TYPE_PPT
         description: "AI 生成内容类型"
         required: false
-        default: "PPT"
+        default: "ppt"
         options:
-          - "PPT"
-          - "DOCX"
+          - "ppt"
+          - "doc"
 
       ENV_PUBLISH_MEDIA_TYPE:
         type: choice
