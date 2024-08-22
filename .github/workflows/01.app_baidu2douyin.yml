@@ -21,9 +21,9 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-d -n 1"
 
-      ENV_DOUYIN_PUBLISH_ACCOUNT:
+      ENV_PUBLISH_ACCOUNT:
         type: choice
-        description: "选择抖音账号"
+        description: "选择账号"
         required: false
         default: "middle"
         # 与 constants.py/Account 一一对应
@@ -85,7 +85,7 @@ jobs:
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
       ENV_PUBLISH_MEDIA_TYPE: ${{ github.event.inputs.ENV_PUBLISH_MEDIA_TYPE }}
-      ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
+      ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
       ENV_AIGC_TYPE: ${{ github.event.inputs.ENV_AIGC_TYPE }}
 
       APP: baidu2douyin

@@ -48,9 +48,9 @@ on:
           - "now"
           - "timing"
 
-      ENV_DOUYIN_PUBLISH_ACCOUNT:
+      ENV_PUBLISH_ACCOUNT:
         type: choice
-        description: "选择抖音账号"
+        description: "选择账号"
         required: false
         default: "middle"
         options:
@@ -72,7 +72,7 @@ jobs:
       # 环境变量
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
-      ENV_DOUYIN_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_DOUYIN_PUBLISH_ACCOUNT }}
+      ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
 
       APP: youtu2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
