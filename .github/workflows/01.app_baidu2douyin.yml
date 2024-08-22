@@ -52,14 +52,6 @@ on:
           - "video" # 视频
           - "image_article" # 图文
 
-      REF:
-        description: "分支或标签、提交ID"
-        type: choice
-        required: false
-        options:
-          - "master"
-          - "release"
-
       # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
         type: string
@@ -76,6 +68,13 @@ on:
           - "now"
           - "timing"
 
+      REF:
+        description: "分支或标签、提交ID"
+        type: choice
+        required: false
+        options:
+          - "master"
+          - "release"
 
 jobs:
   run_app:
