@@ -41,6 +41,7 @@ on:
         options:
           - "ppt"
           - "doc"
+          - "random"
 
       ENV_PUBLISH_MEDIA_TYPE:
         type: choice
@@ -51,6 +52,7 @@ on:
         options:
           - "video" # 视频
           - "image_article" # 图文
+          - "random"
 
       # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
