@@ -22,6 +22,9 @@ jobs:
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
           bash run.sh
+          # 创建个脚本，继续执行后续流水线
+          echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
+          chmod a+x ~/quit_ssh
 
       - name: 拉取代码
         run: |
@@ -33,11 +36,6 @@ jobs:
         with:
           config: ${{env.KIND_BASE_PATH}}/kind-3nodes.yaml
           cluster_name: test
-
-      # - name: 部署 simpleweb
-      #   continue-on-error: true
-      #   run: |
-      #     bash ${{env.KIND_BASE_PATH}}/demo/simpleweb/tools/deploy_with_kubectl.sh
 
       - name: debug
         uses: wordsworth-mk/action-debug@main
