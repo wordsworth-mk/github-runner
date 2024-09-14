@@ -1,0 +1,69 @@
+name: 06. 🟢 app_web2douyin
+
+on:
+  # # 定时执行
+  # schedule:
+  #   # 代表国际标准时间，实际北京时间需要 +8 小时
+  #   - cron: "30 13 * * *"
+
+  workflow_dispatch:
+    inputs:
+      ARGS:
+        description: |
+          -u 网页地址
+
+        required: false
+        type: string
+        # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
+        # 这种方式就像终端输入命令一样的
+        default: "-u "
+
+      REF:
+        description: "分支或标签、提交ID"
+        type: choice
+        required: false
+        options:
+          - "master"
+          - "release"
+
+      ENV_PUBLISH_MOD:
+        type: choice
+        description: "选择发布时间模式"
+        required: false
+        default: "now"
+        options:
+          - "now"
+          - "timing"
+
+      ENV_PUBLISH_ACCOUNT:
+        type: choice
+        description: "选择账号"
+        required: false
+        default: "middle"
+        options:
+          - "large" # 大号
+          - "middle" # 中号
+          - "test" # 测试账号
+
+      # github action 还不支持复选框
+      ENV_PUBLISH_PLATFORMS:
+        type: string
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        required: false
+        default: "douyin"
+
+jobs:
+  run:
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
+    with:
+      # 环境变量
+      ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
+      ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
+      ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
+
+      APP: web2douyin
+      # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
+      ARGS: ${{ inputs.ARGS }}
+      REF: ${{ inputs.REF }}
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
