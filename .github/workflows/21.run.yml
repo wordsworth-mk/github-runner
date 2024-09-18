@@ -76,11 +76,17 @@ on:
         required: true
         type: string
 
-      ENV_AIGC_TYPE:
+      ENV_BAIDU_AIGC_TYPE:
         type: string
         description: "AI 生成内容类型"
         required: false
         default: "PPT"
+
+      ENV_BAIDU_AIGC_TOPIC:
+        type: string
+        description: "发布内容的主题"
+        required: false
+        default: ""
 
       ENV_PUBLISH_MEDIA_TYPE:
         type: string
@@ -172,7 +178,8 @@ env:
   ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
   ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
   ENV_PUBLISH_MEDIA_TYPE: ${{ github.event.inputs.ENV_PUBLISH_MEDIA_TYPE }}
-  ENV_AIGC_TYPE: ${{ github.event.inputs.ENV_AIGC_TYPE }}
+  ENV_BAIDU_AIGC_TYPE: ${{ github.event.inputs.ENV_BAIDU_AIGC_TYPE }}
+  ENV_BAIDU_AIGC_TOPIC: ${{ github.event.inputs.ENV_BAIDU_AIGC_TOPIC }}
 
 jobs:
   run:

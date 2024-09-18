@@ -32,12 +32,12 @@ on:
         # 这种方式就像终端输入命令一样的
         default: "-d -n 1"
 
-      ENV_AIGC_TYPE:
+      ENV_BAIDU_AIGC_TYPE:
         type: choice
         # NOTICE: 定义在 const.py/FILE_TYPE_PPT
         description: "AI 生成内容类型"
         required: false
-        default: "random"
+        default: "doc"
         options:
           - "ppt"
           - "doc"
@@ -48,11 +48,17 @@ on:
         # NOTICE: 定义在 const.py/MEDIA_TYPE_IMG_ARTICLE
         description: "发布媒体类型"
         required: false
-        default: "random"
+        default: "image_article"
         options:
           - "video" # 视频
           - "image_article" # 图文
           - "random"
+
+      ENV_BAIDU_AIGC_TOPIC:
+        type: string
+        description: "发布内容的主题"
+        required: false
+        default: ""
 
       # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
@@ -88,7 +94,8 @@ jobs:
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
       ENV_PUBLISH_MEDIA_TYPE: ${{ github.event.inputs.ENV_PUBLISH_MEDIA_TYPE }}
       ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
-      ENV_AIGC_TYPE: ${{ github.event.inputs.ENV_AIGC_TYPE }}
+      ENV_BAIDU_AIGC_TYPE: ${{ github.event.inputs.ENV_BAIDU_AIGC_TYPE }}
+      ENV_BAIDU_AIGC_TOPIC: ${{ github.event.inputs.ENV_BAIDU_AIGC_TOPIC }}
 
       APP: baidu2douyin
       # 定时任务没办法给参数，只能在这里配置默认值了
