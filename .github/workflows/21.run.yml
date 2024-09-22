@@ -14,7 +14,7 @@ on:
     inputs:
       ENV_PUBLISH_PLATFORMS:
         type: string
-        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,weixin,xiaohongshu）"
         required: false
         default: "douyin"
 
@@ -98,7 +98,7 @@ on:
       # 设置到环境变量
       ENV_PUBLISH_PLATFORMS:
         type: string
-        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,wechat,xiaohongshu）"
+        description: "选择发布平台，用 ',' 分割（不带空格，可选项: douyin,weixin,xiaohongshu）"
         required: false
         default: "douyin"
 
