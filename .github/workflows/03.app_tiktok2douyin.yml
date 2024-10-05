@@ -10,14 +10,6 @@ on:
         type: string
         default: "-u "
 
-      REF:
-        description: "分支或标签、提交ID"
-        type: choice
-        required: false
-        options:
-          - "master"
-          - "release"
-
       # github action 还不支持复选框
       ENV_PUBLISH_PLATFORMS:
         type: string
@@ -57,6 +49,5 @@ jobs:
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: ${{ inputs.ARGS }}
       DEPENDENT_BINARY: "ffmpeg"
-      REF: ${{ inputs.REF }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

@@ -30,14 +30,6 @@ on:
         required: false
         default: "douyin"
 
-      REF:
-        description: "分支或标签、提交ID"
-        type: choice
-        required: false
-        options:
-          - "master"
-          - "release"
-
       ENV_PUBLISH_MOD:
         type: choice
         description: "选择发布时间模式"
@@ -59,7 +51,6 @@ jobs:
       APP: web2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
       ARGS: ${{ inputs.ARGS }}
-      REF: ${{ inputs.REF }}
       WITH_3PARTY: false
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

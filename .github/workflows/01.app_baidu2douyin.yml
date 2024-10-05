@@ -76,14 +76,6 @@ on:
           - "now"
           - "timing"
 
-      REF:
-        description: "分支或标签、提交ID"
-        type: choice
-        required: false
-        options:
-          - "master"
-          - "release"
-
 jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
@@ -100,7 +92,6 @@ jobs:
       APP: baidu2douyin
       # 定时任务没办法给参数，只能在这里配置默认值了
       ARGS: ${{ inputs.ARGS || '-d -n 1' }}
-      REF: ${{ inputs.REF }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
