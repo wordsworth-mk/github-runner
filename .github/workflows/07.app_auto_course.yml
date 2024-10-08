@@ -10,13 +10,18 @@ on:
         type: string
         default: "-u "
 
+  # 该事件可以通过 API 触发
+  repository_dispatch:
+    types:
+      - app_auto_course
+
 jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: auto_course
       WITH_3PARTY: false
-      ARGS: ${{ inputs.ARGS || '-u ' }}
+      ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
