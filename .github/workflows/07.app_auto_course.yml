@@ -28,7 +28,7 @@ jobs:
       APP: auto_course
       WITH_3PARTY: false
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
-      DEBUG: ${{ inputs.DEBUG }}
+      DEBUG: ${{ inputs.DEBUG || false }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
