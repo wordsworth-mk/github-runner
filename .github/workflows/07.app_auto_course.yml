@@ -10,6 +10,12 @@ on:
         type: string
         default: "-u "
 
+      DEBUG:
+        description: "支持连接到虚拟机进行调试"
+        type: boolean
+        required: false
+        default: false
+
   # 该事件可以通过 API 触发
   repository_dispatch:
     types:
@@ -22,6 +28,7 @@ jobs:
       APP: auto_course
       WITH_3PARTY: false
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
+      DEBUG: ${{ inputs.DEBUG }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
