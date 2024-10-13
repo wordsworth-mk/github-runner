@@ -23,6 +23,7 @@ on:
         options:
           - "master"
           - "release"
+          - "dev"
 
   # 该事件可以通过 API 触发
   repository_dispatch:
