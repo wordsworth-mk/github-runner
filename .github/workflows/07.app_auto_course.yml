@@ -10,12 +10,6 @@ on:
         type: string
         default: "-u "
 
-      DEBUG:
-        description: "支持连接到虚拟机进行调试"
-        type: boolean
-        required: false
-        default: false
-
       REF:
         description: "分支或标签、提交ID"
         type: choice
