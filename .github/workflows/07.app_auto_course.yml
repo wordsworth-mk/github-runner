@@ -3,21 +3,29 @@ name: 07. 🟢 app_auto_course
 on:
   workflow_dispatch:
     inputs:
-      ARGS:
-        description: |
-          -u, --url 课程地址
-        required: false
+      COURSE_URL:
+        description: "课程地址"
+        required: true
         type: string
-        default: "-u "
 
-      REF:
-        description: "分支或标签、提交ID"
+      LOGIN_TYPE:
+        description: "登录账号类型"
         type: choice
-        required: false
+        required: true
         options:
-          - "master"
-          - "release"
-          - "dev"
+          - "1"  # 用户名
+          - "3"  # 邮箱
+          - "4"  # 身份证
+
+      LOGIN_NAME:
+        description: "登录账号"
+        required: true
+        type: string
+
+      LOGIN_PWD:
+        description: "登录密码"
+        required: true
+        type: string
 
   # 该事件可以通过 API 触发
   repository_dispatch:
@@ -30,9 +38,12 @@ jobs:
     with:
       APP: auto_course
       WITH_3PARTY: false
-      ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
+      ARGS: >-
+        -u ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }} \
+        -t ${{ inputs.LOGIN_TYPE || github.event.client_payload.LOGIN_TYPE }} \
+        -a ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }} \
+        -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
       DEBUG: ${{ inputs.DEBUG || false }}
-      REF: ${{ inputs.REF || 'master' }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
