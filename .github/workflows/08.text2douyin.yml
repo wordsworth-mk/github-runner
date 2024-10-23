@@ -8,14 +8,26 @@ on:
         required: true
         type: string
 
+      ENV_PUBLISH_ACCOUNT:
+        type: choice
+        description: "选择账号"
+        required: false
+        default: "middle"
+        # NOTICE: 与 const.py/Account 一一对应
+        options:
+          - "large" # 大号
+          - "middle" # 中号
+          - "test" # 测试账号
+
 jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: text2douyin
-      ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
       WITH_3PARTY: false
       DEPENDENT_BINARY: imagemagick
+      ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
+      ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
