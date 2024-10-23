@@ -25,7 +25,6 @@ jobs:
     with:
       APP: text2douyin
       WITH_3PARTY: false
-      DEPENDENT_BINARY: imagemagick
       ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
       ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
 
