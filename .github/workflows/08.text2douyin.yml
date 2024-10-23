@@ -1,0 +1,20 @@
+name: 08. 🟢 app_text2douyin
+
+on:
+  workflow_dispatch:
+    inputs:
+      VIDEO_SUBJECT:
+        description: "视频主题"
+        required: true
+        type: string
+
+jobs:
+  run_app:
+    uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
+    with:
+      APP: auto_course
+      WITH_3PARTY: false
+      ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
+
+    secrets:
+      MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

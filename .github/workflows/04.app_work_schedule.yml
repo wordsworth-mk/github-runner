@@ -5,9 +5,8 @@ on:
     inputs:
       ARGS:
         description: "排班参数用逗号分隔: 0 表示休息, 1 表示上班, 2 表示夜班, 3 表示备班, 4 表示备班二"
-        required: false
+        required: true
         type: string
-        default: "-u "
 
   # 定时执行
   schedule:
@@ -19,7 +18,7 @@ jobs:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: qlx_work_schedules
-      ARGS: ${{ inputs.ARGS }}
+      ARGS: -u ${{ inputs.ARGS }}
       SIMPLE_RUN: true
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
