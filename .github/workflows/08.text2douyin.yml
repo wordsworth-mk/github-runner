@@ -14,6 +14,7 @@ jobs:
     with:
       APP: text2douyin
       ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
+      WITH_3PARTY: false
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
