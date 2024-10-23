@@ -13,7 +13,6 @@ jobs:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: text2douyin
-      WITH_3PARTY: false
       ARGS: -s ${{ inputs.VIDEO_SUBJECT }}
 
     secrets:
