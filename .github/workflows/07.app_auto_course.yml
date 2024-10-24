@@ -3,6 +3,15 @@ name: 07. 🟢 app_auto_course
 on:
   workflow_dispatch:
     inputs:
+      PLATFORM:
+        description: "学习平台"
+        required: true
+        default: "huayi"
+        type: choice
+        options:
+          - "huayi"
+          - "haoyisheng"
+
       COURSE_URL:
         description: "课程地址"
         required: true
