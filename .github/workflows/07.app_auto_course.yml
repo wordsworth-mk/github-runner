@@ -17,6 +17,16 @@ on:
           - "3"  # 邮箱
           - "4"  # 身份证
 
+      MISSION_BATCH_MODE:
+        description: "课件学习模式"
+        type: choice
+        # 在 mypy/apps/auto_course/main.py 下定义
+        default: "one_by_one"
+        required: true
+        options:
+          - "one_by_one"
+          - "multi"
+
       LOGIN_NAME:
         description: "登录账号"
         required: true
@@ -43,6 +53,7 @@ jobs:
         -t ${{ inputs.LOGIN_TYPE || github.event.client_payload.LOGIN_TYPE }}
         -a ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}
         -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
+        -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.LOGIN_PWD || "multi" }}
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
