@@ -72,7 +72,7 @@ jobs:
         -t ${{ inputs.LOGIN_TYPE || github.event.client_payload.LOGIN_TYPE }}
         -a ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}
         -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
-        -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.LOGIN_PWD }}
+        -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
 
     secrets:
