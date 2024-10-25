@@ -3,6 +3,21 @@ name: 07. 🟢 app_auto_course
 on:
   workflow_dispatch:
     inputs:
+      COURSE_URL:
+        description: "课程地址"
+        required: true
+        type: string
+
+      LOGIN_NAME:
+        description: "登录账号"
+        required: true
+        type: string
+
+      LOGIN_PWD:
+        description: "登录密码"
+        required: true
+        type: string
+
       PLATFORM:
         description: "学习平台"
         required: true
@@ -11,11 +26,6 @@ on:
         options:
           - "huayi"
           - "haoyisheng"
-
-      COURSE_URL:
-        description: "课程地址"
-        required: true
-        type: string
 
       MISSION_BATCH_MODE:
         description: "课件学习模式"
@@ -30,21 +40,12 @@ on:
       LOGIN_TYPE:
         description: "登录账号类型"
         type: choice
+        default: "1"
         required: true
         options:
           - "1" # 用户名
           - "3" # 邮箱
           - "4" # 身份证
-
-      LOGIN_NAME:
-        description: "登录账号"
-        required: true
-        type: string
-
-      LOGIN_PWD:
-        description: "登录密码"
-        required: true
-        type: string
 
   # 该事件可以通过 API 触发
   repository_dispatch:
