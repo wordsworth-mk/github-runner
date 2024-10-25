@@ -16,7 +16,7 @@ on:
         default: ""
 
       REF:
-        description: "分支或标签、提交ID"
+        description: "Python 仓库分支或标签、提交ID"
         type: choice
         required: false
         options:

@@ -60,7 +60,7 @@ on:
         default: false
 
       REF:
-        description: "分支或标签、提交ID"
+        description: "Python 仓库分支或标签、提交ID"
         type: choice
         required: false
         options:
@@ -156,7 +156,7 @@ on:
         default: false
 
       REF:
-        description: "分支或标签、提交ID"
+        description: "Python 仓库分支或标签、提交ID"
         type: string
         required: false
         default: master
