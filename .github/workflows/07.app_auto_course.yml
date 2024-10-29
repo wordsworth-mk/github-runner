@@ -75,6 +75,7 @@ jobs:
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
         -f ${{ inputs.PLATFORM || github.event.client_payload.PLATFORM || 'huayi' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
+      COMMIT_CHANGE: false
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
