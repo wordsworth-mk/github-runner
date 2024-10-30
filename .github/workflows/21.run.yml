@@ -61,11 +61,9 @@ on:
 
       REF:
         description: "Python 仓库分支或标签、提交ID"
-        type: choice
+        type: string
         required: false
-        options:
-          - "master"
-          - "release"
+        default: master
 
   # 流水线调用
   # [支持的变量类型](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputsinput_idtype)
