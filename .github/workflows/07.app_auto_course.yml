@@ -49,12 +49,9 @@ on:
 
       REF:
         description: "Python 仓库分支或标签、提交ID"
-        type: choice
+        type: string
         required: false
-        options:
-          - "master"
-          - "release"
-          - "dev"
+        default: "master"
 
   # 该事件可以通过 API 触发
   repository_dispatch:
