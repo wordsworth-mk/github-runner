@@ -27,6 +27,15 @@ on:
           - "huayi"
           - "haoyisheng"
 
+      DO_EXAM:
+        description: "是否自动考试"
+        required: false
+        default: "yes"
+        type: choice
+        options:
+          - "yes"
+          - "no"
+
       MISSION_BATCH_MODE:
         description: "课件学习模式"
         type: choice
@@ -71,6 +80,7 @@ jobs:
         -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
         -f ${{ inputs.PLATFORM || github.event.client_payload.PLATFORM || 'huayi' }}
+        -e ${{ inputs.DO_EXAM || github.event.client_payload.DO_EXAM || 'yes' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
       COMMIT_CHANGE: false
 
