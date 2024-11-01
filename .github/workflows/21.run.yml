@@ -209,6 +209,7 @@ jobs:
         with:
           python-version: 3.9
           cache: 'pip'
+          cache-dependency-path: 'mypy/requirements.txt'
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
