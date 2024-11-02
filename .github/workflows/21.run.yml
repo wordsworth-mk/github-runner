@@ -218,8 +218,7 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          # path: ~/.cache/pip
-          key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }} }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }}
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
