@@ -217,11 +217,12 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }}-${{ hashFiles('mypy/requirements.txt') }}-${{ hashFiles('mypy/requirements.txt') }}
+          # path: ~/.cache/pip
+          key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }} }}
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
-        if: ${{ ! inputs.SIMPLE_RUN }}
+        if: ${{ ! inputs.SIMPLE_RUN }} && steps.cache.outputs.cache-hit != 'true'
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
           # choco: ${{ inputs.DEPENDENT_BINARY }}
