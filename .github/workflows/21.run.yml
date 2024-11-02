@@ -212,6 +212,13 @@ jobs:
           # cache: 'pip'
           # cache-dependency-path: 'mypy/requirements.txt'
 
+      - name: 缓存 pip 依赖
+        uses: actions/cache@v3.2.4
+        id: cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }}-${{ hashFiles('mypy/requirements.txt') }}-${{ hashFiles('mypy/requirements.txt') }}
+
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
         if: ${{ ! inputs.SIMPLE_RUN }}
