@@ -208,9 +208,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.9
-          # XXX cache 没起作用
-          # cache: 'pip'
-          # cache-dependency-path: 'mypy/requirements.txt'
 
       # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
       - name: 缓存 pip 依赖
