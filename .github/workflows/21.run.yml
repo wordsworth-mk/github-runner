@@ -219,7 +219,8 @@ jobs:
 
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
-        if: ${{ ! inputs.SIMPLE_RUN }} && steps.cache.outputs.cache-hit != 'true'
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        # if: steps.cache.outputs.cache-hit != 'true'  # 是否命中缓存
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
           # choco: ${{ inputs.DEPENDENT_BINARY }}
