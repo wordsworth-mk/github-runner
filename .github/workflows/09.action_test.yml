@@ -66,12 +66,14 @@ env:
 
 jobs:
   test:
-    - name: Annotate Test
-      uses: yuzutech/annotations-action@v0.4.0
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        title: "lint"
-        input: "./annotations.json"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Annotate Test
+        uses: yuzutech/annotations-action@v0.4.0
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          title: "lint"
+          input: "./annotations.json"
 
   run:
     # NOTICE: 如果您是通过 repository_dispatch 触发工作流，需要使用 github.event.client_payload.[参数] 来传递参数
