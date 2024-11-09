@@ -71,15 +71,15 @@ jobs:
   note:
     runs-on: ubuntu-latest
     steps:
-      - name: create annotations file
+      - name: 创建声明文件
         run: |
           cat << EOF > ./annotations.json
           [
             {
               "file": "path/to/file.js",
               "line": 5,
-              "title": "登录账号: ${{inputs.LOGIN_NAME}}",
-              "message": "课程地址: ${{inputs.COURSE_URL}}",
+              "title": "用户名: ${{inputs.LOGIN_NAME}}",
+              "message": "- 课程地址: ${{inputs.COURSE_URL}}\n- 登录账号: ${{inputs.LOGIN_NAME}}",
               "annotation_level": "notice"
             }
           ]
