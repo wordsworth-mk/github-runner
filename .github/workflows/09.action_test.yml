@@ -68,6 +68,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: create annotations file
+        run: |
+          cat << EOF > annotations.json
+          [
+            {
+              file: "path/to/file.js",
+              line: 5,
+              title: "title for my annotation",
+              message: "my message",
+              annotation_level: "failure"
+            }
+          ]
+          EOF
       - name: Annotate Test
         uses: yuzutech/annotations-action@v0.4.0
         with:
