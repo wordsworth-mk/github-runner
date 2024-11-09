@@ -79,7 +79,7 @@ jobs:
               "file": "path/to/file.js",
               "line": 5,
               "title": "用户名: ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}",
-              "message": "课程地址: ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}"
+              "message": "课程地址: ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}",
               "annotation_level": "notice"
             }
           ]
