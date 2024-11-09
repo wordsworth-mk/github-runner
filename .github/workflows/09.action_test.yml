@@ -73,11 +73,11 @@ jobs:
           cat << EOF > ./annotations.json
           [
             {
-              file: "path/to/file.js",
-              line: 5,
-              title: "title for my annotation",
-              message: "my message",
-              annotation_level: "failure"
+              "file": "path/to/file.js",
+              "line": 5,
+              "title": "title for my annotation",
+              "message": "my message",
+              "annotation_level": "failure"
             }
           ]
           EOF
