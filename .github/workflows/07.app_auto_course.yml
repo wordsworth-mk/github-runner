@@ -68,6 +68,30 @@ on:
       - app_auto_course
 
 jobs:
+  note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create annotations file
+        run: |
+          cat << EOF > ./annotations.json
+          [
+            {
+              "file": "path/to/file.js",
+              "line": 5,
+              "title": "账号信息",
+              "message": "【${{inputs.COURSE_URL}}】",
+              "annotation_level": "notice"
+            }
+          ]
+          EOF
+          cat ./annotations.json
+      - name: Annotate
+        uses: yuzutech/annotations-action@v0.4.0
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          title: "lint"
+          input: "./annotations.json"
+
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:

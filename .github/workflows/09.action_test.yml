@@ -76,7 +76,7 @@ jobs:
               "file": "path/to/file.js",
               "line": 5,
               "title": "title for my annotation",
-              "message": "my message",
+              "message": "my message: ${{inputs.ENV_PUBLISH_PLATFORMS}}",
               "annotation_level": "failure"
             }
           ]
