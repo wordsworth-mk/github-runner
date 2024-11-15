@@ -231,6 +231,7 @@ jobs:
           bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
+        if: steps.cache.outputs.cache-hit != 'true' # 未命中缓存
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
