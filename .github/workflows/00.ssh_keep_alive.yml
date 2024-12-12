@@ -167,7 +167,7 @@ jobs:
       - name: 创建软链
         continue-on-error: true
         run: |
-          ln -s $GITHUB_WORKSPACE ~/my
+          ln -s $GITHUB_WORKSPACE ~/python
 
           # 创建个脚本，继续执行后续流水线
           echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
