@@ -184,11 +184,6 @@ jobs:
     name: 🔴🟡🟢 运行 🟢🟡🔴
     runs-on: ubuntu-latest
     steps:
-      - name: Hide the inputs values to keep them private in the logs when running this workflow
-        uses: levibostian/action-hide-sensitive-inputs@v1
-        with:
-          exclude_inputs: operation, name, aws_region, environment, product
-
       - name: Checkout
         # uses 之后不能再用 run
         uses: actions/checkout@v4
