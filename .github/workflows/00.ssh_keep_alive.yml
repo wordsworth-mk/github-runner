@@ -45,6 +45,7 @@ env:
   FONT_DIR: mypy/assets/font
   ENV_INIT_SCRIPT: mypy/env_init.sh
   DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils wkhtmltopdf"
+  ENV_IN_GITHUBACTION: true
 
 jobs:
   new_ssh_keep_connect:
