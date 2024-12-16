@@ -16,7 +16,7 @@ jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
-      APP: auto_course
+      APP: quant
       WITH_3PARTY: false
       ARGS: >-
         --module "${{ inputs.MODULE || github.event.client_payload.MODULE }}"
