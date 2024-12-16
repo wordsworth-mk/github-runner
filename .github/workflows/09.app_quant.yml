@@ -1,6 +1,10 @@
 name: 09. 🟢 app_quant
 
 on:
+  # 使用 cron 定时执行
+  schedule:
+    - cron: "30 1 * * *"
+
   workflow_dispatch:
     inputs:
       MODULE:
