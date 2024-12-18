@@ -23,7 +23,7 @@ jobs:
       APP: quant
       WITH_3PARTY: false
       ARGS: >-
-        --module "${{ inputs.MODULE || github.event.client_payload.MODULE }} || "monitor"
+        --module ${{ inputs.MODULE || github.event.client_payload.MODULE || monitor }}
       COMMIT_CHANGE: false
       DEPENDENT_BINARY: ""
 
