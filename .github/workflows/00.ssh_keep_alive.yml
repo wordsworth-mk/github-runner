@@ -48,7 +48,7 @@ env:
   ENV_IN_GITHUBACTION: true
 
 jobs:
-  new_ssh_keep_connect:
+  start_ssh:
     # NOTICE: 注意这里要用单引号
     runs-on: ${{ inputs.SYSTEM || 'ubuntu-latest' }}
     steps:
@@ -102,7 +102,7 @@ jobs:
           timezoneLinux: "Asia/Shanghai"
           timezoneWindows: "China Standard Time"
 
-      - name: Install SSH key
+      - name: 配置 SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
@@ -138,7 +138,7 @@ jobs:
           apt: ${{ env.DEPENDENT_BINARY }}
           choco: ${{ env.DEPENDENT_BINARY }}
 
-      - name: 拉取 M-Kepler/Python
+      - name: 拉取代码
         uses: actions/checkout@v4
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
