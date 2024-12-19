@@ -18,7 +18,7 @@ jobs:
   run:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
-      APP: qlx_work_schedules
+      APP: qlx_work_schedule
       ARGS: ${{ inputs.ARGS }}
       SIMPLE_RUN: true
     secrets:
