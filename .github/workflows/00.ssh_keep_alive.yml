@@ -192,4 +192,5 @@ jobs:
       # - uses: fawazahmed0/action-debug@main
       - uses: wordsworth-mk/action-debug@main
         with:
-          credentials: "user:password"
+          # credentials: "user:password"
+          credentials: "1:1"
