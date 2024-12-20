@@ -178,7 +178,7 @@ jobs:
         run: |
           ln -s $GITHUB_WORKSPACE ~/python
 
-          echo "cd ~/dotfiles && bash run.sh && cd $GITHUB_WORKSPACE/mypy && bash env_init.sh && zsh" > ~/do_init.sh
+          echo "cd ~/dotfiles && bash run.sh && cd $GITHUB_WORKSPACE/mypy && bash env_init.sh && zsh" > ~/init.sh
 
           # 创建个脚本，继续执行后续流水线
           echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
