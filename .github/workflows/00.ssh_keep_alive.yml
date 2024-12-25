@@ -133,6 +133,7 @@ jobs:
 
       # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
       - name: 缓存 pip 依赖
+        continue-on-error: true
         uses: actions/cache@v3.2.4
         id: cache
         with:
