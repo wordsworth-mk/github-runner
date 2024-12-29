@@ -112,7 +112,7 @@ jobs:
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
         -f ${{ inputs.PLATFORM || github.event.client_payload.PLATFORM || 'huayi' }}
         -e ${{ inputs.DO_EXAM || github.event.client_payload.DO_EXAM || 'yes' }}
-        -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'xxx' }}
+        -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'UNKNOW' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
       COMMIT_CHANGE: false
       DEPENDENT_BINARY: ""
