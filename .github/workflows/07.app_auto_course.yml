@@ -78,16 +78,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 创建声明文件
-        # annotation_level 为 failure 级别会立马显示出来, notice 则不会
+        # annotation_level:可选 failure notice
         run: |
           cat << EOF > ./annotations.json
           [
             {
               "file": "path/to/file.js",
               "line": 5,
-              "title": "用户名: ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}",
-              "message": "课程地址: ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}",
-              "annotation_level": "failure"
+              "title": "用户: ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME }}",
+              "message": "课程: ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}",
+              "annotation_level": "notice"
             }
           ]
           EOF
