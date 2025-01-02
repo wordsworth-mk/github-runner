@@ -35,13 +35,13 @@ on:
 
 env:
   PYTHON_VERSION: 3.9
-  APP_BASE_PATH: mypy/apps
-  BUILD_TOOL: mypy/build/build.sh
+  APP_BASE_PATH: mypy/mypy/apps
+  BUILD_TOOL: mypy/mypy/build/build.sh
   ENV_INIT_SCRIPT: mypy/env_init.sh
   # 打包后的 APP 可执行文件的存放路径
-  PKG_ZIP_PATH: mypy/build/_pkg.zip
-  BUILD_PKG_PATH: mypy/build/_pkg/
-  CHANGEL_LOG_PATH: mypy/CHANGELOG.md
+  PKG_ZIP_PATH: mypy/mypy/build/_pkg.zip
+  BUILD_PKG_PATH: mypy/mypy/build/_pkg/
+  CHANGEL_LOG_PATH: mypy/mypy/CHANGELOG.md
 
 jobs:
   package:
@@ -79,7 +79,7 @@ jobs:
 
       # - name: 安装字体
       #   run: |
-      #     bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+      #     bash mypy/mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
         run: |
@@ -95,7 +95,7 @@ jobs:
           # 指定应用打包
           # all 表示全部进行打包
           if [[ -n "${{ inputs.APP_DIR }}" && "${{inputs.APP_DIR}}" != "all" ]]; then
-            bash ${{ env.BUILD_TOOL }} mypy/${{ inputs.APP_DIR }}
+            bash ${{ env.BUILD_TOOL }} mypy/mypy/${{ inputs.APP_DIR }}
           else
             for app in $(ls -d ${{ env.APP_BASE_PATH }}/*/); do
               bash ${{ env.BUILD_TOOL }} $app

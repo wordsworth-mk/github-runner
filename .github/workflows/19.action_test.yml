@@ -60,10 +60,6 @@ on:
         required: false
         default: false
 
-env:
-  APP_BASE_PATH: mypy/apps
-  # 把 github action 的 input 设置到环境变量中
-
 jobs:
   test:
     runs-on: ubuntu-latest

@@ -25,8 +25,7 @@ on:
 
 # NOTICE: env 上下文只能在 run 步骤中使用
 env:
-  BASE_PATH: mypy
-  APP_BASE_PATH: mypy/apps
+  BASE_PATH: mypy/mypy
 
 jobs:
   ###########################################
@@ -37,7 +36,7 @@ jobs:
     # 这个 uses 不能用环境变量
     uses: wordsworth-mk/github-runner/.github/workflows/24.syntax_check.yml@main
     with:
-      BASE_PATH: mypy
+      BASE_PATH: mypy/mypy
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
 
@@ -53,7 +52,7 @@ jobs:
     uses: wordsworth-mk/github-runner/.github/workflows/23.unittest.yml@main
     # NOTICE 要在 with 子句中传递环境变量，您应该使用 secrets 或 inputs
     with:
-      CASE_PATH: mypy/tests
+      CASE_PATH: mypy/mypy/tests
       # 依赖的二进制文件
       DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils wkhtmltopdf"
       NOT_RUN_MARK: ${{ inputs.CASE_SKIP_MARK }}
@@ -84,7 +83,7 @@ jobs:
       - name: 获取打包 APP 路径列表
         id: set-matrix
         run: |
-          apps=$(bash ${{ env.BASE_PATH }}/build/get_apps.sh ${{ env.APP_BASE_PATH }})
+          apps=$(bash ${{ env.BASE_PATH }}/build/get_apps.sh "mypy/mypy/apps"
           echo "found apps: $apps"
           # key=value 格式
           echo "apps=[$apps]" >> $GITHUB_OUTPUT

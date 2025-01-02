@@ -27,7 +27,7 @@ on:
       MISSION_BATCH_MODE:
         description: "课件学习模式"
         type: choice
-        # 在 mypy/apps/auto_course/main.py 下定义
+        # 定义在 auto_course/main.py 下
         default: "one_by_one"
         required: true
         options:

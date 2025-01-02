@@ -40,7 +40,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     env:
-      FONT_DIR: mypy/assets/font
+      FONT_DIR: mypy/mypy/assets/font
       ALLURE_RESULT_DIR: ".report/allure/result"
       ALLURE_REPORT_DIR: ".report/allure/report"
       ALLURE_HISTORY: ".report/allure/history"
@@ -81,7 +81,7 @@ jobs:
 
       - name: 安装字体
         run: |
-          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+          bash mypy/mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
         if: steps.cache.outputs.cache-hit != 'true' # 未命中缓存
@@ -91,7 +91,7 @@ jobs:
       - name: 安装第三方服务
         continue-on-error: true
         run: |
-          bash mypy/3party/init.sh
+          bash mypy/mypy/3party/init.sh
 
       # --------------------------
       # 以上步骤与 run 一致

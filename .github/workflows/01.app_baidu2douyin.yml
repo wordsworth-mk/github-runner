@@ -25,7 +25,7 @@ on:
              发布 N 天的视频
 
           -d, --debug
-             调试，会拷贝 mypy/tools 下的 cookies 过来
+             调试，会拷贝 tools 下的 cookies 过来
         required: false
         type: string
         # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"

@@ -166,9 +166,9 @@ on:
 
 # env 上下文只能在 run 步骤中使用
 env:
-  APP_BASE_PATH: mypy/apps
+  APP_BASE_PATH: mypy/mypy/apps
   APP_ENTRY: main.py
-  FONT_DIR: mypy/assets/font
+  FONT_DIR: mypy/mypy/assets/font
   # 环境变量
   ENV_INIT_SCRIPT: mypy/env_init.sh
   ENV_IN_GITHUBACTION: true
@@ -225,7 +225,7 @@ jobs:
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
-          bash mypy/build/install_font.sh ${{ env.FONT_DIR }}
+          bash mypy/mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
         if: steps.cache.outputs.cache-hit != 'true' # 未命中缓存
@@ -236,7 +236,7 @@ jobs:
         if: ${{ inputs.WITH_3PARTY }}
         continue-on-error: true
         run: |
-          bash mypy/3party/init.sh
+          bash mypy/mypy/3party/init.sh
 
       - name: 调试
         if: ${{ inputs.DEBUG }}
