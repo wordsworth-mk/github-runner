@@ -5,9 +5,9 @@ on:
     inputs:
       ARGS:
         description: "排班参数用逗号分隔: 0 表示休息, 1 表示上班, 2 表示夜班, 3 表示备班, 4 表示备班二"
+        default: "-u "
         required: false
         type: string
-        default: "-u "
 
   # 定时执行
   schedule:
@@ -20,6 +20,6 @@ jobs:
     with:
       APP: qlx_work_schedule
       ARGS: ${{ inputs.ARGS }}
-      SIMPLE_RUN: true
+      WITH_3PARTY: false
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

@@ -28,7 +28,7 @@ jobs:
       - name: Flake8 检查
         run: |
           pip install flake8 > /dev/null 2>&1
-          flake8 --config .flake8 ${{ inputs.BASE_PATH }}
+          flake8 --config mypy/.flake8 ${{ inputs.BASE_PATH }}
           [ $? == 0 ] && echo "flake8 success"
 
       - name: Pylint 检查
@@ -36,6 +36,6 @@ jobs:
         run: |
           pip install pylint > /dev/null 2>&1
           # pylint 命令执行返回码非 0 的话，后面的命令不会被执行的
-          pylint --rcfile .pylintrc ${{ inputs.BASE_PATH }} -r y || true
+          pylint --rcfile mypy/.pylintrc ${{ inputs.BASE_PATH }} -r y || true
           # 不论 pylint 结果如何，始终是 0
           # pylint_ret=$?

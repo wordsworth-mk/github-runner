@@ -1,4 +1,4 @@
-name: 19. 🟢 action_test
+name: 19. 🟢 app_action_test
 
 on:
   # 该事件可以通过 API 触发
@@ -97,7 +97,7 @@ jobs:
       APP: test_app
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
       REF: ${{ inputs.REF }}
-      SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
+      # SIMPLE_RUN: ${{ inputs.SIMPLE_RUN || github.event.client_payload.SIMPLE_RUN }}
       # COMMIT_CHANGE: ${{ inputs.COMMIT_CHANGE || github.event.client_payload.COMMIT_CHANGE || false }}
       COMMIT_CHANGE: false
       DEBUG: ${{ inputs.DEBUG || false }}

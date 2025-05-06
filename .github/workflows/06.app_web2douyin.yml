@@ -4,14 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       ARGS:
-        description: |
-          -u 网页地址
-
+        description: 网页地址
         required: false
         type: string
-        # 如果要传入整个字符串，需要用双引号括起来输入 "-m once"
-        # 这种方式就像终端输入命令一样的
-        default: "-u "
 
       ENV_PUBLISH_ACCOUNT:
         type: choice
@@ -50,7 +45,7 @@ jobs:
 
       APP: web2douyin
       # 定时执行没传这个值也可以，在 run.yml 已经做了处理了
-      ARGS: ${{ inputs.ARGS }}
+      ARGS: -u ${{ inputs.ARGS }}
       WITH_3PARTY: false
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

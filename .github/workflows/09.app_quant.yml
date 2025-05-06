@@ -16,7 +16,6 @@ on:
         options:
           - "monitor"
 
-
 jobs:
   run_app:
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
@@ -26,7 +25,7 @@ jobs:
       ARGS: >-
         --module ${{ inputs.MODULE || github.event.client_payload.MODULE || 'monitor' }}
       COMMIT_CHANGE: false
-      DEPENDENT_BINARY: ""
+      SIMPLE_RUN: true
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

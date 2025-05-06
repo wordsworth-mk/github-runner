@@ -1,3 +1,5 @@
+# 默认工作路径是在 $GITHUB_WORKSPACE 路径下 即 /home/runner/work/github-runner/github-runner
+# 默认是 docker 组下的 runner 用户
 # https://zhuanlan.zhihu.com/p/387389708?utm_id=0
 # https://github.com/marketplace/actions/debugging-with-tmate
 # https://github.com/marketplace/actions/debugging-with-ssh
@@ -15,6 +17,18 @@ on:
         options:
           - windows-latest
           - ubuntu-latest
+
+      SETUP_KIND:
+        type: boolean
+        description: "安装 kind"
+        required: false
+        default: false
+
+      SSH_WITH_VSCODE:
+        type: boolean
+        description: "用 vscode 连接远程"
+        required: false
+        default: false
 
       FREE_DISK:
         type: boolean
@@ -103,6 +117,9 @@ jobs:
           timezoneWindows: "China Standard Time"
 
       - name: 配置 SSH key
+        # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
+        # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
+        # 而通过以下方式这不需要账密认证
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
@@ -120,25 +137,33 @@ jobs:
         continue-on-error: true
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
-          # pip 换了源反而更慢了
-          # cd ~/dotfiles
-          # export MSYSTEM=1
-          # bash run.sh
-          # sed -i '1i export MSYSTEM=1' ~/.bashrc
+          cd ~/dotfiles
+          bash run.sh
+          if [ "${{ inputs.SETUP_KIND }}" = "true" ]; then
+            echo "ENABLE_K8S_TOOL=1" >> ~/.bashrc
+            echo "ENABLE_K8S_TOOL=1" >> ~/.zshrc
+          fi
 
       - name: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.PYTHON_VERSION }}
 
-      # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
       - name: 缓存 pip 依赖
+        # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
         continue-on-error: true
-        uses: actions/cache@v3.2.4
+        uses: actions/cache@v4.2.2
         id: cache
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }}
+
+      - name: 缓存 apt 包
+        if: ${{ runner.os == 'Linux' }}
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: ${{ env.DEPENDENT_BINARY }} # 要安装的软件包的空格分隔列表
+          version: 1.0 # 要加载的缓存版本
 
       - name: 安装依赖程序
         continue-on-error: true
@@ -147,7 +172,7 @@ jobs:
           apt: ${{ env.DEPENDENT_BINARY }}
           choco: ${{ env.DEPENDENT_BINARY }}
 
-      - name: 拉取代码
+      - name: 拉取 Python 代码 # 会把代码克隆到 $GITHUB_WORKSPACE 下
         uses: actions/checkout@v4
         env:
           MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -167,31 +192,54 @@ jobs:
         shell: bash
 
       # 在流水线执行脚本创建的文件夹都是 root 权限，而通过 action-debug 进入环境时 docker:runner 权限
-      # 会导致无法操作这些文件或目录
-      - name: 安装第三方服务
-        if: ${{ runner.os == 'Linux' }}
-        continue-on-error: true
-        run: |
-          bash mypy/mypy/3party/init.sh
+      # 会导致无法操作这些文件或目录, 所以还是进入 ssh 后再手动安装第三方服务吧
+      # - name: 安装第三方服务
+      #   if: ${{ runner.os == 'Linux' }}
+      #   continue-on-error: true
+      #   run: |
+      #     bash mypy/mypy/3party/init.sh
 
       - name: 创建软链
         continue-on-error: true
         run: |
-          ln -s $GITHUB_WORKSPACE ~/python
+          ln -s $GITHUB_WORKSPACE ~/workspace
 
-          echo "cd ~/dotfiles && bash run.sh && cd $GITHUB_WORKSPACE/mypy && bash env_init.sh && zsh" > ~/init.sh
+          # 一键初始化
+          echo "echo 'python-mypy init' && cd $GITHUB_WORKSPACE/mypy && bash env_init.sh" > ~/mypy-init.sh
 
-          # 创建个脚本，继续执行后续流水线
-          echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
-          chmod a+x ~/quit_ssh
+          # 一键退出
+          echo "touch $GITHUB_WORKSPACE/continue && echo '即将退出 github action 服务器'" > ~/quit-ssh
+          chmod a+x ~/quit-ssh
 
       ##################################################
-      # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
-      # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
-      # 而通过以下方式这不需要账密认证
+      # 安装配置 kind 集群
+      ##################################################
+      - name: 拉取 docker-compose
+        if: ${{ inputs.SETUP_KIND }}
+        run: |
+          git clone git@github.com:M-Kepler/docker-compose
+          ls -al ./docker-compose/
 
+      - name: 创建 k8s kind 集群
+        if: ${{ inputs.SETUP_KIND && runner.os == 'Linux' }}
+        continue-on-error: true
+        uses: helm/kind-action@v1.12.0
+        with:
+          # 注意: 即使把 docker-compose clone 到 ~ 下也无法访问到
+          # 除非，你先 clone 到 $HOME 下，然后再进入终端手动启动
+          config: ./docker-compose/00.kind/kind-3nodes.yaml
+          cluster_name: test
+
+      ##################################################
+      # ssh github action runner
+      ##################################################
       # - uses: fawazahmed0/action-debug@main
       - uses: wordsworth-mk/action-debug@main
+        if: ${{ ! inputs.SSH_WITH_VSCODE }}
         with:
           # credentials: "user:password"
           credentials: "1:1"
+
+      - name: 通过 vscode 连接到 github action
+        if: ${{ inputs.SSH_WITH_VSCODE }}
+        uses: fawazahmed0/action-debug-vscode@main

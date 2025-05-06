@@ -41,5 +41,4 @@ jobs:
       - name: debug
         uses: wordsworth-mk/action-debug@main
         with:
-            credentials: "user:password"
-
+          credentials: "user:password"

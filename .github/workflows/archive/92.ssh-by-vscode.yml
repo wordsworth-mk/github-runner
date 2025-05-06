@@ -1,0 +1,56 @@
+name: 99. 🍉 ssh-by-vscode
+
+on:
+  workflow_dispatch:
+    inputs:
+      REPOSITORY:
+        type: string
+        default: M-Kepler/Golang
+        description: "代码仓库"
+        required: false
+
+jobs:
+  ssh-by-vscode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 创建软链
+        continue-on-error: true
+        run: |
+          ln -s $GITHUB_WORKSPACE ~/workspace
+
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 配置 SSH key
+        # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
+        # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
+        # 而通过以下方式这不需要账密认证
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 配置 git 账号
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions-user@github.com"
+          git config --global --list
+
+      - name: 设置运行环境配置
+        continue-on-error: true
+        run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          cd ~/dotfiles
+          bash run.sh
+
+      - name: 拉取代码
+        run: |
+          git clone git@github.com:${{ inputs.REPOSITORY }}
+
+      - name: 通过 vscode 连接到 github action
+        uses: fawazahmed0/action-debug-vscode@main

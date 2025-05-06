@@ -67,7 +67,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: 缓存 pip 依赖
-        uses: actions/cache@v3.2.4
+        uses: actions/cache@v4.2.2
         id: cache
         with:
           path: ${{ env.pythonLocation }}
@@ -101,8 +101,8 @@ jobs:
 
       - name: 🟢 自动化测试
         run: |
-          pip install -r ${{ inputs.CASE_PATH }}/requirements.txt > /dev/null 2>&1
-          bash pytest.sh -d ${{ inputs.CASE_PATH }} -g -s "${{ inputs.NOT_RUN_MARK }}"
+          pip install -r mypy/requirements_test.txt > /dev/null 2>&1 && \
+          bash mypy/pytest.sh -d ${{ inputs.CASE_PATH }} -g -s "${{ inputs.NOT_RUN_MARK }}"
 
       ################################################################
 

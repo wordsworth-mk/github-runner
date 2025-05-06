@@ -83,7 +83,7 @@ jobs:
       - name: 获取打包 APP 路径列表
         id: set-matrix
         run: |
-          apps=$(bash ${{ env.BASE_PATH }}/build/get_apps.sh "mypy/mypy/apps"
+          apps=$(bash ${{ env.BASE_PATH }}/build/get_apps.sh "mypy/mypy/apps")
           echo "found apps: $apps"
           # key=value 格式
           echo "apps=[$apps]" >> $GITHUB_OUTPUT

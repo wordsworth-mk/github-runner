@@ -36,10 +36,10 @@ on:
         default: "ffmpeg libreoffice poppler-utils wkhtmltopdf"
 
       SIMPLE_RUN:
-        description: "是否简单运行（不安装程序依赖和字体）"
+        description: "是否简单运行（不安装程序依赖和字体，也不安装 mypy）"
         type: boolean
         required: false
-        default: true
+        default: false
 
       COMMIT_CHANGE:
         description: "是否提交更改"
@@ -118,7 +118,7 @@ on:
         required: false
 
       SIMPLE_RUN:
-        description: "是否安装程序依赖和字体"
+        description: "是否简单运行（不安装程序依赖和字体，也不安装 mypy）"
         type: boolean
         required: false
         default: false
@@ -208,19 +208,25 @@ jobs:
 
       # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
       - name: 缓存 pip 依赖
-        uses: actions/cache@v3.2.4
+        uses: actions/cache@v4.2.2
         id: cache
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('mypy/requirements.txt') }}
 
+      - name: 缓存 apt 包
+        if: ${{ ! inputs.SIMPLE_RUN }}
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: ${{ inputs.DEPENDENT_BINARY }} # 要安装的软件包的空格分隔列表
+          version: 1.0 # 要加载的缓存版本
+
       - name: 安装依赖程序
         uses: ConorMacBride/install-package@v1.1.0
-        if: ${{ ! inputs.SIMPLE_RUN }}
-        # if: steps.cache.outputs.cache-hit != 'true'  # 是否命中缓存
+        if: ${{ ! inputs.SIMPLE_RUN && steps.cache.outputs.cache-hit != 'true' }}
         with:
           apt: ${{ inputs.DEPENDENT_BINARY }}
-          # choco: ${{ inputs.DEPENDENT_BINARY }}
+          choco: ${{ inputs.DEPENDENT_BINARY }}
 
       - name: 安装字体
         if: ${{ ! inputs.SIMPLE_RUN }}
@@ -228,12 +234,12 @@ jobs:
           bash mypy/mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
       - name: 初始化运行环境
-        if: steps.cache.outputs.cache-hit != 'true' # 未命中缓存
+        if: ${{ ! inputs.SIMPLE_RUN }}
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
 
       - name: 安装第三方服务
-        if: ${{ inputs.WITH_3PARTY }}
+        if: ${{ inputs.WITH_3PARTY && ! inputs.SIMPLE_RUN }}
         continue-on-error: true
         run: |
           bash mypy/mypy/3party/init.sh
