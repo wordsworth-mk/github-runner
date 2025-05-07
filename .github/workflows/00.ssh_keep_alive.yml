@@ -204,12 +204,8 @@ jobs:
         run: |
           ln -s $GITHUB_WORKSPACE ~/workspace
 
-          # 一键初始化
+          # 初始化 mypy 环境
           echo "echo 'python-mypy init' && cd $GITHUB_WORKSPACE/mypy && bash env_init.sh" > ~/mypy-init.sh
-
-          # 一键退出
-          echo "touch $GITHUB_WORKSPACE/continue && echo '即将退出 github action 服务器'" > ~/quit-ssh
-          chmod a+x ~/quit-ssh
 
       ##################################################
       # 安装配置 kind 集群
@@ -234,6 +230,12 @@ jobs:
       # 内网穿透
       ##################################################
       # - uses: fawazahmed0/action-debug@main
+      - name: 创建退出 ssh 脚本
+        run: |
+          # 一键退出
+          echo "touch $GITHUB_WORKSPACE/continue && echo '即将退出 github action 服务器'" > ~/quit-ssh
+          chmod a+x ~/quit-ssh
+
       - uses: wordsworth-mk/action-debug@main
         with:
           credentials: "1:1"
@@ -241,4 +243,4 @@ jobs:
 
       - name: 通过 vscode 连接到 github action
         if: ${{ inputs.SSH_WITH_VSCODE }}
-        uses: fawazahmed0/action-debug-vscode@main
+        uses: wordsworth-mk/action-debug-vscode@main
