@@ -27,5 +27,5 @@ jobs:
           loop_wait: ${{ inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
 
       - name: 通过 vscode 连接到 github action
-        if: ${{ inputs.SSH_WITH_VSCODE }}
+        if: ${{ inputs.SSH_WITH_VSCODE == 'false' }}
         uses: wordsworth-mk/action-debug-vscode@main
