@@ -238,8 +238,8 @@ jobs:
         # if: ${{ ! inputs.SSH_WITH_VSCODE }}
         with:
           credentials: "1:1"
-          port: 8392 # 默认是 8391, 为了不与 action-debug-vscode 冲突，这里改一下
+          with_vscode: true
 
-      - name: 通过 vscode 连接到 github action
-        # if: ${{ inputs.SSH_WITH_VSCODE }}
-        uses: fawazahmed0/action-debug-vscode@main
+      # - name: 通过 vscode 连接到 github action
+      #   # if: ${{ inputs.SSH_WITH_VSCODE }}
+      #   uses: fawazahmed0/action-debug-vscode@main
