@@ -7,7 +7,7 @@ on:
         type: choice
         description: "true 则只开启 SSH, false 则开启 vscode"
         required: false
-        default: "false"
+        default: "true"
         options:
           - "true"
           - "false"
