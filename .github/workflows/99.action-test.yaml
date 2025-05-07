@@ -1,4 +1,4 @@
-name: 99. action-test
+name: 99. 🔧 action-test
 
 on:
   workflow_dispatch:
