@@ -5,7 +5,7 @@ on:
     inputs:
       SSH_WITH_VSCODE:
         type: choice
-        description: "true 则只 SSH, false 则开启 vscode"
+        description: "true 则只开启 SSH, false 则开启 vscode"
         required: false
         default: "false"
         options:
