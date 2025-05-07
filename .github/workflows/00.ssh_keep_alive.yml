@@ -231,15 +231,15 @@ jobs:
           cluster_name: test
 
       ##################################################
-      # ssh github action runner
+      # 内网穿透
       ##################################################
       # - uses: fawazahmed0/action-debug@main
       - uses: wordsworth-mk/action-debug@main
-        if: ${{ ! inputs.SSH_WITH_VSCODE }}
+        # if: ${{ ! inputs.SSH_WITH_VSCODE }}
         with:
-          # credentials: "user:password"
           credentials: "1:1"
+          port: 8392 # 默认是 8391, 为了不与 action-debug-vscode 冲突，这里改一下
 
       - name: 通过 vscode 连接到 github action
-        if: ${{ inputs.SSH_WITH_VSCODE }}
+        # if: ${{ inputs.SSH_WITH_VSCODE }}
         uses: fawazahmed0/action-debug-vscode@main
