@@ -237,6 +237,7 @@ jobs:
           chmod a+x ~/quit-ssh
 
       - uses: wordsworth-mk/action-debug@main
+        continue-on-error: true # 即使失败了也继续后续流程
         with:
           credentials: "1:1"
           with_vscode: ${{ inputs.SSH_WITH_VSCODE }}

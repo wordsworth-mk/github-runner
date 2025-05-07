@@ -1,0 +1,24 @@
+name: ---test---
+
+on:
+  workflow_dispatch:
+    inputs:
+      SSH_WITH_VSCODE:
+        type: boolean
+        description: "用 vscode 连接远程"
+        required: false
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wordsworth-mk/action-debug@main
+        continue-on-error: true # 即使失败了也继续后续流程
+        with:
+          credentials: "1:1"
+          with_vscode: ${{ inputs.SSH_WITH_VSCODE }}
+
+      - name: 通过 vscode 连接到 github action
+        if: ${{ inputs.SSH_WITH_VSCODE }}
+        uses: wordsworth-mk/action-debug-vscode@main
