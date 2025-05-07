@@ -16,3 +16,13 @@ jobs:
       - name: 测试
         run: |
           echo "hello world"
+
+      - uses: wordsworth-mk/action-debug@main
+        continue-on-error: true # 即使失败了也继续后续流程
+        with:
+          credentials: "1:1"
+          loop_wait: ${{ ! inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
+
+      - name: 通过 vscode 连接到 github action
+        if: ${{ inputs.SSH_WITH_VSCODE }}
+        uses: wordsworth-mk/action-debug-vscode@main
