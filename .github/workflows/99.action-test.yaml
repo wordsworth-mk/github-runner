@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       SSH_WITH_VSCODE:
-        type: boolean
-        description: "用 vscode 连接远程"
+        type: choice
+        description: "true 则只 SSH, false 则开启 vscode"
         required: false
-        default: false
+        default: "false"
+        options:
+          - "true"
+          - "false"
 
 jobs:
   test:
@@ -21,7 +24,7 @@ jobs:
         continue-on-error: true # 即使失败了也继续后续流程
         with:
           credentials: "1:1"
-          loop_wait: ${{ ! inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
+          loop_wait: ${{ inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
 
       - name: 通过 vscode 连接到 github action
         if: ${{ inputs.SSH_WITH_VSCODE }}
