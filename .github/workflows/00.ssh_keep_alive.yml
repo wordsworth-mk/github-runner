@@ -143,8 +143,8 @@ jobs:
           cd ~/dotfiles
           bash run.sh
           if [ "${{ inputs.SETUP_KIND }}" = "true" ]; then
-            echo "ENABLE_K8S_TOOL=1" >> ~/.bashrc
-            echo "ENABLE_K8S_TOOL=1" >> ~/.zshrc
+            echo "ENABLE_K8S_TOOL=true" >> ~/.bashrc
+            echo "ENABLE_K8S_TOOL=true" >> ~/.zshrc
           fi
 
       - name: 设置 Python 环境
