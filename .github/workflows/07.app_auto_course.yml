@@ -52,16 +52,6 @@ on:
           - "huayi"
           - "haoyisheng"
 
-      LOGIN_TYPE:
-        description: "登录账号类型"
-        type: choice
-        default: "1"
-        required: true
-        options:
-          - "1" # 用户名
-          - "3" # 邮箱
-          - "4" # 身份证
-
       REF:
         description: "Python 仓库分支或标签、提交ID"
         type: string
@@ -106,7 +96,6 @@ jobs:
       WITH_3PARTY: false
       ARGS: >-
         -u "${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}"
-        -t ${{ inputs.LOGIN_TYPE || github.event.client_payload.LOGIN_TYPE }}
         -n ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}
         -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
