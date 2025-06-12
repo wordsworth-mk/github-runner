@@ -216,6 +216,7 @@ jobs:
 
       - name: 缓存 apt 包
         if: ${{ ! inputs.SIMPLE_RUN }}
+        continue-on-error: true
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: ${{ inputs.DEPENDENT_BINARY }} # 要安装的软件包的空格分隔列表
