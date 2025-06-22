@@ -103,7 +103,7 @@ jobs:
         -e ${{ inputs.DO_EXAM || github.event.client_payload.DO_EXAM || 'yes' }}
         -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'UNKNOW' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
-      COMMIT_CHANGE: false
+      COMMIT_CHANGE: true
       DEPENDENT_BINARY: ""
 
     secrets:
