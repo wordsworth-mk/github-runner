@@ -272,9 +272,10 @@ jobs:
           git pull
 
           echo "-----> 提交改动 <-----"
-          # 添加所有的配置文件改动
-          git add **/*.ini
-          git add **/*.json
+          # # 添加所有的配置文件改动
+          # git add **/*.ini
+          # git add **/*.json
+          git add .
           # 无改动不报错
           git diff --cached --exit-code || git commit -m "[UPD][${{ inputs.APP }}]: commit githubaction change"
           git push origin master
