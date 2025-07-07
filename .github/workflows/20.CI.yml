@@ -110,6 +110,6 @@ jobs:
 
     with:
       # APPS_PATH: ${{ fromJSON(needs.get_apps.outputs.apps) }}
-      DO_RELEASE: ${{ inputs.DO_RELEASE }}
+      DO_RELEASE: ${{ inputs.DO_RELEASE || false }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}

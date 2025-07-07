@@ -35,7 +35,7 @@ jobs:
     name: 单元测试
     strategy:
       matrix:
-        python-version: ["3.9"]
+        python-version: ["3.11"]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}

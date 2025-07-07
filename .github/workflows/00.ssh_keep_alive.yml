@@ -42,7 +42,7 @@ on:
       PYTHON_VERSION:
         type: string
         description: "python 版本"
-        default: "3.10"
+        default: "3.11"
 
   # # 定时执行
   # schedule:
