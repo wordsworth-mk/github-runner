@@ -1,4 +1,4 @@
-name: 06. 🟢 app_web2douyin
+name: 10. 🟢 app_web2douyin
 
 on:
   workflow_dispatch:

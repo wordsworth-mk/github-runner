@@ -1,4 +1,4 @@
-name: 10. 🟢 app_auto_bing_rewards
+name: 06. 🟢 app_auto_bing_rewards
 
 on:
   # 使用 cron 定时执行
