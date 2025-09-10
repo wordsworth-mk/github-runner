@@ -3,8 +3,7 @@ name: 10. 🟢 app_auto_bing_rewards
 on:
   # 使用 cron 定时执行
   schedule:
-    # 关于小时的参数，我想 9:30 启动的，按理说 UTC + 8 应该是 1 才对，但是实测确实 10:30 才启动，所以改为 0
-    - cron: "0 0 * * 1-5"
+    - cron: "0 23 * * *"
 
   workflow_dispatch:
 
