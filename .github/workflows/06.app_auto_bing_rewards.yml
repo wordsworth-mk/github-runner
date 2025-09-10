@@ -17,7 +17,7 @@ jobs:
     with:
       APP: auto_bing_rewards
       WITH_3PARTY: false
-      ARGS: --device ${{ matrix.is_device }}
+      ARGS: --device ${{ matrix.device }}
       COMMIT_CHANGE: false
       SIMPLE_RUN: true
 
