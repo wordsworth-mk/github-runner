@@ -3,7 +3,7 @@ name: 06. 🟢 app_auto_bing_rewards
 on:
   # 使用 cron 定时执行
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 12 * * *"
 
   workflow_dispatch:
 

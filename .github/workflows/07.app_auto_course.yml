@@ -95,7 +95,7 @@ jobs:
       APP: auto_course
       WITH_3PARTY: false
       ARGS: >-
-        -u "${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}"
+        -u ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}
         -n ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}
         -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
