@@ -31,6 +31,7 @@ on:
         default: "one_by_one"
         required: true
         options:
+          - "real_one_by_one"
           - "one_by_one"
           - "multi"
 
