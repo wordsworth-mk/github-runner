@@ -9,15 +9,10 @@ on:
 
 jobs:
   run_app:
-    strategy:
-      matrix:
-        # 移动端设备、PC
-        device: ["mobile", "pc"]
     uses: wordsworth-mk/github-runner/.github/workflows/21.run.yml@main
     with:
       APP: auto_bing_rewards
       WITH_3PARTY: false
-      ARGS: --device ${{ matrix.device }}
       COMMIT_CHANGE: false
       SIMPLE_RUN: true
 
