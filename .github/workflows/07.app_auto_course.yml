@@ -34,7 +34,7 @@ on:
         description: "课件学习模式"
         type: choice
         # 定义在 auto_course/main.py 下
-        default: "one_by_one"
+        default: "real_one_by_one"
         required: true
         options:
           - "real_one_by_one"
