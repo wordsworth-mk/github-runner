@@ -265,7 +265,7 @@ jobs:
           echo "===== git 配置 ====="
           git config --global user.email "actions@github.com"
           git config --global user.name "github_action"
-          git config --global pull.rebase false  # 改为 merge 方式
+          git config --global pull.rebase true
           git config --global core.globstar true
 
           echo "===== 提交本地更改 ====="
