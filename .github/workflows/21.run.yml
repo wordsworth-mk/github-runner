@@ -269,6 +269,7 @@ jobs:
           # 为了让 `**` 在Git命令中递归地工作, 需要在你的Git配置中设置 core.globstar 为 true
           git config --global core.globstar true
 
+          git pull
           echo "===== 提交改动 ====="
           git status
           # # 添加所有的配置文件改动
