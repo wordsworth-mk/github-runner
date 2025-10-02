@@ -262,17 +262,15 @@ jobs:
           # 这个 token 不需要配置，默认自带的
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "===== git 配置 ====="
           git config --global user.email "actions@github.com"
           git config --global user.name "github_action"
           git config --global pull.rebase true
-          # 为了让 `**` 在Git命令中递归地工作，需要在你的Git配置中设置 core.globstar 为true
+          # 为了让 `**` 在Git命令中递归地工作, 需要在你的Git配置中设置 core.globstar 为 true
           git config --global core.globstar true
 
-          echo "-----> 拉取最新代码 <-----"
+          echo "===== 提交改动 ====="
           git status
-          git pull
-
-          echo "-----> 提交改动 <-----"
           # # 添加所有的配置文件改动
           # git add **/*.ini
           # git add **/*.json
