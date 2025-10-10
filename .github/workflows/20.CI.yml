@@ -20,8 +20,8 @@ on:
         default: false
 
   schedule:
-    # 代表北京时间每周五 17:30
-    - cron: "30 09 * * 5"
+    # 每个月 25-31 日之间的周五，北京时间 17:30
+    - cron: "30 09 22-30 * 5"
 
 # NOTICE: env 上下文只能在 run 步骤中使用
 env:
