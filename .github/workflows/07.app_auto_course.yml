@@ -103,13 +103,13 @@ jobs:
       WITH_3PARTY: false
       ARGS: >-
         -u ${{ inputs.COURSE_URL || github.event.client_payload.COURSE_URL }}
-        -n ${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}
-        -p ${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}
+        -n "${{ inputs.LOGIN_NAME || github.event.client_payload.LOGIN_NAME }}"
+        -p "${{ inputs.LOGIN_PWD || github.event.client_payload.LOGIN_PWD }}"
         -s ${{ inputs.TARGET_SCORE || github.event.client_payload.TARGET_SCORE || '0' }}
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
         -f ${{ inputs.PLATFORM || github.event.client_payload.PLATFORM || 'huayi' }}
         -e ${{ inputs.DO_EXAM || github.event.client_payload.DO_EXAM || 'yes' }}
-        -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'UNKNOW' }}
+        -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'UNKNOWN' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
       COMMIT_CHANGE: true
       DEPENDENT_BINARY: ""
