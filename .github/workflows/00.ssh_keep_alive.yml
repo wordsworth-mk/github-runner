@@ -187,6 +187,7 @@ jobs:
 
       - name: 初始化运行环境
         run: |
+          pip install --upgrade pip setuptools wheel
           bash ${{ env.ENV_INIT_SCRIPT }}
         # windows 版支持用 gitbash 执行命令
         shell: bash
