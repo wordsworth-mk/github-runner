@@ -187,6 +187,7 @@ jobs:
 
       - name: Install build dependencies
         run: |
+          pip uninstall setuptools
           pip install --upgrade pip setuptools wheel
 
       - name: 初始化运行环境
