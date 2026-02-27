@@ -185,9 +185,12 @@ jobs:
         run: |
           bash mypy/mypy/build/install_font.sh ${{ env.FONT_DIR }}
 
-      - name: 初始化运行环境
+      - name: Install build dependencies
         run: |
           pip install --upgrade pip setuptools wheel
+
+      - name: 初始化运行环境
+        run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
         # windows 版支持用 gitbash 执行命令
         shell: bash
