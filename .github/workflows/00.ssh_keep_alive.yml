@@ -191,6 +191,7 @@ jobs:
           pip install --upgrade pip setuptools wheel
 
       - name: 初始化运行环境
+        continue-on-error: true
         run: |
           bash ${{ env.ENV_INIT_SCRIPT }}
         # windows 版支持用 gitbash 执行命令
