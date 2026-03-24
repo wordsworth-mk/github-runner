@@ -67,7 +67,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: 缓存 pip 依赖
-        uses: actions/cache@v4.2.2
+        uses: actions/cache@v5
         id: cache
         with:
           path: ${{ env.pythonLocation }}
