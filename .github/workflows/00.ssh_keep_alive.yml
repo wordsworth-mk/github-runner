@@ -3,6 +3,15 @@
 # https://zhuanlan.zhihu.com/p/387389708?utm_id=0
 # https://github.com/marketplace/actions/debugging-with-tmate
 # https://github.com/marketplace/actions/debugging-with-ssh
+#
+# cloudflared tunnel 内网穿透 `fawazahmed0/action-debug@main`
+#
+# # https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare
+# # https://devsdawn.com/2021/10/use-trycloudflare-cloudflared-to-achieve-free-intranet-penetration/
+# # 可以根据需要用 cloudflared 开放端口
+# # 执行后访问给出的 URL 即可
+# cloudflared tunnel --url http://localhost:8080
+#
 
 name: 00. 🍉 ssh_keep_alive
 
@@ -148,6 +157,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.PYTHON_VERSION }}
+
+      - name: 设置 Nodejs 环境
+        uses: actions/setup-node@v6
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also admits such aliases as lts/*, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: ">=22.14.0"
 
       - name: 缓存 pip 依赖
         # [关于 setup-python 缓存时没有把二进制一起缓存下来的问题](https://github.com/actions/setup-python/issues/330)
