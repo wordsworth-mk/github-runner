@@ -56,6 +56,17 @@ jobs:
           # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
           node-version: ">=22.14.0"
 
+      # https://github.com/marketplace/actions/setup-cloudflared
+      # 安装 cloudflared
+      - name: Setup cloudflared
+        uses: AnimMouse/setup-cloudflared@v2
+
+      # 配置 tunnel （现在这一步放到 openclaw/init.sh 里了）
+      # - name: Setup cloudflared tunnel
+      #   uses: AnimMouse/setup-cloudflared/tunnel@v2
+      #   with:
+      #     url: http://localhost:18790
+
       - name: 设置 dotfiles 配置并启动 OpenClaw
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
@@ -75,7 +86,7 @@ jobs:
       - uses: wordsworth-mk/action-debug@main
         continue-on-error: true # 即使失败了也继续后续流程
         with:
-          credentials: "1:1"
+          credentials: "1:1" # 登录用户名和密码
           loop_wait: ${{ inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
 
       - name: 通过 vscode 连接到 github action
