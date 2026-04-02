@@ -1,0 +1,93 @@
+name: 11. 🟢 app_OpenClaw
+
+on:
+  workflow_dispatch:
+    inputs:
+      SYSTEM:
+        type: choice
+        description: "系统"
+        required: false
+        default: ubuntu-latest
+        options:
+          - windows-latest
+          - ubuntu-latest
+
+      SSH_WITH_VSCODE:
+        type: choice
+        description: "true 则只开启 SSH, false 则开启 vscode"
+        required: false
+        default: "true"
+        options:
+          - "true"
+          - "false"
+
+  # 该事件可以通过 API 触发
+  repository_dispatch:
+    types:
+      - ssh_keep_alive
+
+env:
+  ENV_IN_GITHUBACTION: true
+  ENABLE_OPENCLAW: true
+
+jobs:
+  start_ssh:
+    # NOTICE: 注意这里要用单引号
+    runs-on: ${{ inputs.SYSTEM || 'ubuntu-latest' }}
+    steps:
+      - name: 设置时区
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+
+      - name: 配置 SSH key
+        # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
+        # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
+        # 而通过以下方式这不需要账密认证
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 配置 git 账号
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions-user@github.com"
+          git config --global --list
+
+      - name: 设置 Nodejs 环境
+        uses: actions/setup-node@v6
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also admits such aliases as lts/*, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: ">=22.14.0"
+
+      - name: 设置 dotfiles 配置并启动 OpenClaw
+        run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          cd ~/dotfiles
+          bash setup.sh
+
+      ##################################################
+      # 内网穿透
+      ##################################################
+      # - uses: fawazahmed0/action-debug@main
+      - name: 创建退出 ssh 脚本
+        run: |
+          # 一键退出
+          echo "touch $GITHUB_WORKSPACE/continue && echo '即将退出 github action 服务器'" > ~/quit-ssh
+          chmod a+x ~/quit-ssh
+
+      - uses: wordsworth-mk/action-debug@main
+        continue-on-error: true # 即使失败了也继续后续流程
+        with:
+          credentials: "1:1"
+          loop_wait: ${{ inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
+
+      - name: 通过 vscode 连接到 github action
+        if: ${{ inputs.SSH_WITH_VSCODE == 'false' }}
+        uses: wordsworth-mk/action-debug-vscode@main

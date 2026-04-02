@@ -142,16 +142,16 @@ jobs:
           git config --global user.email "actions-user@github.com"
           git config --global --list
 
-      - name: 设置运行环境配置
+      - name: 设置 dotfiles 配置
         continue-on-error: true
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
-          bash run.sh
           if [ "${{ inputs.SETUP_KIND }}" = "true" ]; then
             echo "ENABLE_K8S_TOOL=true" >> ~/.bashrc
             echo "ENABLE_K8S_TOOL=true" >> ~/.zshrc
           fi
+          bash setup.sh
 
       - name: 设置 Python 环境
         uses: actions/setup-python@v5

@@ -22,7 +22,7 @@ jobs:
           export ENABLE_K8S_TOOL=true
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
-          bash run.sh
+          bash setup.sh
           # 创建个脚本，继续执行后续流水线
           echo "touch $GITHUB_WORKSPACE/continue" > ~/quit_ssh
           chmod a+x ~/quit_ssh
