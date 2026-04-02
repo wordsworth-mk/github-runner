@@ -19,7 +19,6 @@ on:
 
 env:
   ENV_IN_GITHUBACTION: true
-  ENABLE_OPENCLAW: true
 
 jobs:
   start_openclaw:
@@ -71,7 +70,8 @@ jobs:
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
-          bash setup.sh
+          # 加环境变量后启动
+          export ENABLE_OPENCLAW=true && bash setup.sh
 
       ##################################################
       # 内网穿透
