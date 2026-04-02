@@ -1,17 +1,8 @@
-name: 11. 🟢 app_OpenClaw
+name: 11. 🟢 app_openclaw
 
 on:
   workflow_dispatch:
     inputs:
-      SYSTEM:
-        type: choice
-        description: "系统"
-        required: false
-        default: ubuntu-latest
-        options:
-          - windows-latest
-          - ubuntu-latest
-
       SSH_WITH_VSCODE:
         type: choice
         description: "true 则只开启 SSH, false 则开启 vscode"
@@ -31,9 +22,8 @@ env:
   ENABLE_OPENCLAW: true
 
 jobs:
-  start_ssh:
-    # NOTICE: 注意这里要用单引号
-    runs-on: ${{ inputs.SYSTEM || 'ubuntu-latest' }}
+  start_openclaw:
+    runs-on: "ubuntu-latest"
     steps:
       - name: 设置时区
         uses: szenius/set-timezone@v2.0
