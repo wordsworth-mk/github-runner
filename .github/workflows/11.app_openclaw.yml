@@ -77,6 +77,7 @@ jobs:
       # 内网穿透
       ##################################################
       # - uses: fawazahmed0/action-debug@main
+      # wordsworth-mk/action-debug@main 会检查是否有文件标记，有的话退出
       - name: 创建退出 ssh 脚本
         run: |
           # 一键退出
