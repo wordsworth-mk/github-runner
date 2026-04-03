@@ -11,6 +11,11 @@ on:
         options:
           - "true"
           - "false"
+      OPENCLAW_VERSION:
+        type: string
+        description: "openclaw 版本，比如: 2026.3.24，默认 latest"
+        required: false
+        default: "latest"
 
   # 该事件可以通过 API 触发
   repository_dispatch:
@@ -71,7 +76,7 @@ jobs:
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
           # 加环境变量后启动
-          export ENABLE_OPENCLAW=true && bash setup.sh
+          export ENABLE_OPENCLAW=true && export OPENCLAW_VERSION=${{env.OPENCLAW_VERSION}} bash setup.sh
 
       ##################################################
       # 内网穿透
