@@ -76,7 +76,7 @@ jobs:
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
           cd ~/dotfiles
           # 加环境变量后启动
-          export ENABLE_OPENCLAW=true && export OPENCLAW_VERSION=${{env.OPENCLAW_VERSION}} bash setup.sh
+          export ENABLE_OPENCLAW=true && export OPENCLAW_VERSION=${{inputs.OPENCLAW_VERSION}} bash setup.sh
 
       ##################################################
       # 内网穿透
