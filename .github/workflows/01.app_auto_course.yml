@@ -1,4 +1,4 @@
-name: 07. 🟢 app_auto_course
+name: 01. 🟢 app_auto_course
 
 on:
   workflow_dispatch:

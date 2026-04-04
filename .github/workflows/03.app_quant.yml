@@ -1,4 +1,4 @@
-name: 09. 🟢 app_quant
+name: 03. 🟢 app_quant
 
 on:
   # 使用 cron 定时执行
