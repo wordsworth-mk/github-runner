@@ -17,11 +17,6 @@ on:
         required: false
         default: "latest"
 
-  # 该事件可以通过 API 触发
-  repository_dispatch:
-    types:
-      - ssh_keep_alive
-
 env:
   ENV_IN_GITHUBACTION: true
 
