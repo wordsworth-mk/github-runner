@@ -20,7 +20,7 @@ on:
 
       DEBUG:
         type: choice
-        description: "true 则开启 SSH"
+        description: "true 则开启 SSH 调试"
         required: false
         default: "false"
         options:
