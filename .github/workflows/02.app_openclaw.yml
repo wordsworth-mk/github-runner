@@ -9,15 +9,6 @@ on:
         required: false
         default: "latest"
 
-      DEBUG:
-        type: choice
-        description: "true 则开启 SSH 调试"
-        required: false
-        default: "false"
-        options:
-          - "true"
-          - "false"
-
 env:
   ENV_IN_GITHUBACTION: true
 
@@ -90,4 +81,4 @@ jobs:
         continue-on-error: true # 即使失败了也继续后续流程
         with:
           credentials: "1:1" # 登录用户名和密码
-          loop_wait: ${{ inputs.DEBUG }} # 是否在这里死循环等待退出
+          loop_wait: true # 是否在这里死循环等待退出
