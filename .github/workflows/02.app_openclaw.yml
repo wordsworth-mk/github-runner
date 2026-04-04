@@ -11,11 +11,21 @@ on:
         options:
           - "true"
           - "false"
+
       OPENCLAW_VERSION:
         type: string
         description: "openclaw 版本，比如: 2026.3.24，默认 latest"
         required: false
         default: "latest"
+
+      DEBUG:
+        type: choice
+        description: "true 则开启 SSH"
+        required: false
+        default: "false"
+        options:
+          - "true"
+          - "false"
 
 env:
   ENV_IN_GITHUBACTION: true
@@ -87,10 +97,11 @@ jobs:
 
       - uses: wordsworth-mk/action-debug@main
         continue-on-error: true # 即使失败了也继续后续流程
+        if: ${{ inputs.DEBUG == 'true'}}
         with:
           credentials: "1:1" # 登录用户名和密码
           loop_wait: ${{ inputs.SSH_WITH_VSCODE }} # 是否在这里死循环等待退出
 
       - name: 通过 vscode 连接到 github action
-        if: ${{ inputs.SSH_WITH_VSCODE == 'false' }}
+        if: ${{ inputs.DEBUG == 'true' && inputs.SSH_WITH_VSCODE == 'false' }}
         uses: wordsworth-mk/action-debug-vscode@main
