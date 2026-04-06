@@ -58,7 +58,7 @@ jobs:
       #   with:
       #     url: http://localhost:18790
 
-      - name: 设置 dotfiles 配置并启动 OpenClaw
+      - name: 🟢 设置 dotfiles 配置并启动 OpenClaw
         continue-on-error: true # 即使失败了也继续后续流程
         run: |
           git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
