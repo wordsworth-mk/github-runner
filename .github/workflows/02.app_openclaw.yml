@@ -1,4 +1,4 @@
-name: 02. 🟢 app_openclaw
+name: 02. 🦞 app_openclaw
 
 on:
   workflow_dispatch:
