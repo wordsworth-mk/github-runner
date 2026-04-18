@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       OPENCLAW_VERSION:
-        type: string
+        type: choice
         description: "版本，比如: latest 或 2026.3.24"
         required: false
-        default: "2026.4.5"
-        # 4.9 版本用feishu的话，要先进行一次审批
+        default: "latest"
+        options:
+          - "latest"
+          - "2026.3.24"
+          - "2026.4.5"
+          - "2026.4.9" # 4.9 版本用feishu的话，要先进行一次审批
 
 env:
   ENV_IN_GITHUBACTION: true
