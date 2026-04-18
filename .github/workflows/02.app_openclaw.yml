@@ -5,7 +5,7 @@ on:
     inputs:
       OPENCLAW_VERSION:
         type: choice
-        description: "版本，比如: latest 或 2026.3.24"
+        description: "OpenClaw 版本"
         required: false
         default: "latest"
         options:
