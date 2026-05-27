@@ -245,6 +245,12 @@ jobs:
         run: |
           bash mypy/mypy/3party/init.sh
 
+      - name: 设置 dotfiles 配置
+        continue-on-error: true
+        run: |
+          git clone git@github.com:M-Kepler/dotfiles ~/dotfiles
+          cd ~/dotfiles && bash setup.sh
+
       - name: 调试
         if: ${{ inputs.DEBUG }}
         uses: wordsworth-mk/action-debug@main
