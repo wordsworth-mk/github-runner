@@ -245,6 +245,23 @@ jobs:
         run: |
           bash mypy/mypy/3party/init.sh
 
+      - name: 配置 SSH key
+        # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
+        # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
+        # 而通过以下方式这不需要账密认证
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: 配置 git 账号
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions-user@github.com"
+          git config --global --list
+
       - name: 设置 dotfiles 配置
         continue-on-error: true
         run: |
