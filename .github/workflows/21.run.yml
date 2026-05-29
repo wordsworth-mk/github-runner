@@ -251,7 +251,7 @@ jobs:
         # 而通过以下方式这不需要账密认证
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ github.token }}
+          key: ${{ secrets.SSH_KEY }}
           name: id_rsa
           known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
