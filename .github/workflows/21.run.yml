@@ -65,11 +65,6 @@ on:
         required: false
         default: master
 
-      SSH_KEY:
-        description: "访问个人仓库的ssh凭证, 当 run.yaml 被 use 引用的时候需要传入"
-        type: string
-        required: false
-
   # 流水线调用
   # [支持的变量类型](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputsinput_idtype)
   workflow_call:
@@ -164,9 +159,11 @@ on:
         required: false
         default: master
 
-    # 外部调用的时候提供 token 用来拉取本私有仓库
+    # NOTICE: 外部 use 调用本工作流的时候需要提供 secrets，直接用就不需要
     secrets:
       MYPY_ACCESS_TOKEN:
+        required: false
+      SSH_KEY:
         required: false
 
 # env 上下文只能在 run 步骤中使用
@@ -256,7 +253,7 @@ jobs:
         # 而通过以下方式这不需要账密认证
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_KEY || inputs.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           name: id_rsa
           known_hosts: "github.com" # ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
