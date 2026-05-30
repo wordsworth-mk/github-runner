@@ -113,6 +113,7 @@ jobs:
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
       COMMIT_CHANGE: true
       DEPENDENT_BINARY: ""
+      DEBUG: true
 
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
