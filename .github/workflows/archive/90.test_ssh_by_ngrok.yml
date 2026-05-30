@@ -15,7 +15,7 @@ jobs:
       - name: Debug via SSH
         uses: luchihoratiu/debug-via-ssh@v1.2
         with:
-            # NGROK 凭证
-            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
-            # 用于 SSH 登录
-            SSH_PASS: ${{ secrets.USER_PASS }}
+          # NGROK 凭证
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
+          # 用于 SSH 登录密码
+          SSH_PASS: ${{ secrets.USER_PASS }}
