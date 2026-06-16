@@ -1,4 +1,4 @@
-name: 05. 🟢 app_checkin
+name: 05. ✅ app_checkin
 
 # 触发条件 通常是某些事件，例如：​​release​​​、​​push​​​、​​pull_request​​​等
 on:
