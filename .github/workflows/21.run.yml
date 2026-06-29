@@ -185,6 +185,9 @@ jobs:
   run:
     name: 🔴🟡🟢 运行 🟢🟡🔴
     runs-on: ubuntu-latest
+    env:
+        # 在 job 级别将 secret 注入 env，这样 step 的 if 里就能用了
+        SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
       - name: Checkout
         # uses 之后不能再用 run
@@ -251,7 +254,7 @@ jobs:
         # https://stackoverflow.com/questions/75578151/how-do-i-clone-a-repo-in-b-repo-github-actions-if-two-repo-is-in-same-organizati
         # NOTICE: 也可以手动在 github actions 里拉取，不过要用 https 协议，而且提交的时候需要进行账密认证
         # 而通过以下方式这不需要账密认证
-        if: ${{ secrets.SSH_KEY != '' }}
+        if: ${{ env.SSH_KEY != '' }}
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
