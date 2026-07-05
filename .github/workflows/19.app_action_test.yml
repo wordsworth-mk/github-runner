@@ -103,3 +103,4 @@ jobs:
       DEBUG: ${{ inputs.DEBUG || false }}
     secrets:
       MYPY_ACCESS_TOKEN: ${{ secrets.MYPY_ACCESS_TOKEN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
