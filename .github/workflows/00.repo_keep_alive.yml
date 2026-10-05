@@ -1,0 +1,71 @@
+# 仓库保活：防止 public 仓库因 60 天无活动而被自动禁用定时流水线
+#
+# 规则：public 仓库连续 60 天没有任何活动时，GitHub 会自动禁用所有 schedule 触发的
+#       workflow（状态变为 disabled_inactivity）并发送邮件通知。
+# 参考：https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows
+#
+# 本 workflow 每 5 天运行一次，做两件事：
+#   1. 往 main 推一个空提交，刷新仓库活跃时间，让 60 天计时器永远走不到头；
+#   2. 扫描并重新启用任何处于 disabled_inactivity 状态的 workflow（自愈，双保险）。
+
+name: 00. 💓 repo_keep_alive
+
+on:
+  # 手动触发
+  workflow_dispatch:
+  # 外部定时器（如 cron-job.org）可通过 API 触发，type 为 keep_alive
+  repository_dispatch:
+    types:
+      - keep_alive
+  schedule:
+    # 国际标准时间（北京时间需 +8 小时）
+    # 每月的 1/6/11/16/21/26/31 号 00:00 运行，即约每 5 天一次，远小于 60 天上限
+    - cron: "0 0 */5 * *"
+
+permissions:
+  contents: write # 推送空提交，刷新仓库活跃度
+  actions: write # 重新启用被自动禁用的 workflow
+
+concurrency:
+  group: repo-keep-alive
+  cancel-in-progress: false
+
+jobs:
+  keep_alive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # 固定检出 main，避免手动从其它分支触发时把提交推到错误的分支
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Push empty commit to keep the repository active
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          echo "当前 HEAD: $(git rev-parse --short HEAD)"
+          git commit --allow-empty -m "chore: keepalive [skip ci]"
+          git push origin HEAD:main
+          echo "已推送空提交，仓库活跃时间已刷新"
+
+      - name: Re-enable workflows disabled by inactivity
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 只处理因长时间无活动被自动禁用的 workflow；已经是 active 的不动
+          ids=$(gh workflow list --all --json id,state \
+            --jq '.[] | select(.state == "disabled_inactivity") | .id')
+
+          if [ -z "$ids" ]; then
+            echo "没有被自动禁用的 workflow，无需处理"
+            exit 0
+          fi
+
+          for id in $ids; do
+            name=$(gh workflow view "$id" --json name --jq '.name')
+            echo "重新启用: $name ($id)"
+            gh workflow enable "$id" || echo "启用失败（可能权限不足）: $name"
+          done
