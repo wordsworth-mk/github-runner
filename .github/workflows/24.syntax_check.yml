@@ -15,7 +15,7 @@ on:
 jobs:
   # 代码质量
   code_quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         # 访问仓库用到的 Personal access token

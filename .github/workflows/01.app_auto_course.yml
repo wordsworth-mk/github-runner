@@ -72,7 +72,7 @@ on:
 
 jobs:
   note:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: 创建声明文件
         # annotation_level:可选 failure notice

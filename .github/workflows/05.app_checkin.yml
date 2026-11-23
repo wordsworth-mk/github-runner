@@ -13,7 +13,7 @@ jobs:
   # 定义一个任务
   first_job:
     # 在什么环境运行任务
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # 使用别人预先设置好的 Actions，引用 actions/checkout 这个 action，与所在的github仓库同名
       - uses: actions/checkout@v4

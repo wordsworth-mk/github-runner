@@ -66,7 +66,7 @@ jobs:
   ###########################################
   get_apps:
     name: 获取打包 APP 名称列表
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # 设置输出，可在多个作业间传递参数
     outputs:
       apps: ${{ steps.set-matrix.outputs.apps }}

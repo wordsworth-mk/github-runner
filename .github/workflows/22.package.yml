@@ -169,7 +169,7 @@ jobs:
 
   update_changelog:
     name: 更新 CHANGELOG.md
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: ${{ inputs.DO_RELEASE }}
     steps:
       - name: 拉取代码

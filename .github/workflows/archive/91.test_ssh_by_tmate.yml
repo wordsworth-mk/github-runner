@@ -11,7 +11,7 @@ on:
 
 jobs:
   SSH:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # 保持 SSH 长连接 touch /tmp/keepalive
       # 会卡在这里等待链接，默认 15 分钟

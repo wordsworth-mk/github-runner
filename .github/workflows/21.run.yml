@@ -184,7 +184,7 @@ env:
 jobs:
   run:
     name: 🔴🟡🟢 运行 🟢🟡🔴
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
         # 在 job 级别将 secret 注入 env，这样 step 的 if 里就能用了
         SSH_KEY: ${{ secrets.SSH_KEY }}

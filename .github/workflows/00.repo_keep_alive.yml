@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   keep_alive:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       # 固定检出 main，避免手动从其它分支触发时把提交推到错误的分支

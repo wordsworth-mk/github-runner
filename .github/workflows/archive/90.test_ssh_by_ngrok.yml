@@ -9,7 +9,7 @@ on:
 
 jobs:
   SSH:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # 需要在仓库中设置 NGROK_TOKEN 和 USER_PASS
       - name: Debug via SSH

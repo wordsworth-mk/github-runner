@@ -7,7 +7,7 @@ env:
 
 jobs:
   create-cluster:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2

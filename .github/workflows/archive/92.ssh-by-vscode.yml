@@ -11,7 +11,7 @@ on:
 
 jobs:
   ssh-by-vscode:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: 创建软链
         continue-on-error: true
