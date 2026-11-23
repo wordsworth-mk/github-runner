@@ -93,7 +93,7 @@ jobs:
       ENV_PUBLISH_MOD: ${{ github.event.inputs.ENV_PUBLISH_MOD }}
       ENV_PUBLISH_PLATFORMS: ${{ github.event.inputs.ENV_PUBLISH_PLATFORMS }}
       ENV_PUBLISH_ACCOUNT: ${{ github.event.inputs.ENV_PUBLISH_ACCOUNT }}
-
+      DEPENDENT_BINARY: "ffmpeg libreoffice poppler-utils wkhtmltopdf"
       APP: test_app
       ARGS: ${{ inputs.ARGS || github.event.client_payload.ARGS }}
       REF: ${{ inputs.REF }}
