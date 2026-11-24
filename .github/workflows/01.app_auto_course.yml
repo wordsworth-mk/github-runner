@@ -50,6 +50,15 @@ on:
           - "yes"
           - "no"
 
+      APPLY_CERTIFICATE:
+        description: "是否自动申请证书(以证书申请成功作为课程完成标志)"
+        required: false
+        default: "no"
+        type: choice
+        options:
+          - "yes"
+          - "no"
+
       PLATFORM:
         description: "学习平台"
         required: true
@@ -109,6 +118,7 @@ jobs:
         -m ${{ inputs.MISSION_BATCH_MODE || github.event.client_payload.MISSION_BATCH_MODE }}
         -f ${{ inputs.PLATFORM || github.event.client_payload.PLATFORM || 'huayi' }}
         -e ${{ inputs.DO_EXAM || github.event.client_payload.DO_EXAM || 'yes' }}
+        -c ${{ inputs.APPLY_CERTIFICATE || github.event.client_payload.APPLY_CERTIFICATE || 'no' }}
         -w ${{ inputs.WEIXIN_NICKNAME || github.event.client_payload.WEIXIN_NICKNAME || 'UNKNOWN' }}
       REF: ${{ inputs.REF || github.event.client_payload.REF }}
       COMMIT_CHANGE: true
